@@ -12,6 +12,8 @@
 
 ```
 Clone the repository and go to the folder.
+Note: Set autocrlf to 'true' before making any changes.
+$ git config --global core.autocrlf true
 
 Install required packages (it reads from from package.json)
 $ npm install
