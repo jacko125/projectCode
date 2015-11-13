@@ -1,6 +1,6 @@
 var express = require('express');
 var nunjucks = require('nunjucks');
-
+var soap = require('soap');
 
 // Instantiate the app
 var app = express();
@@ -22,7 +22,13 @@ var route = require('./src/route.js')(app);
   // res.render('home.html', view);
 // });
 
-
+  var url = 'http://staffdirectory.pc.internal.macquarie.com/WebServices/SearchService.svc?wsdl';
+  var args = {name: 'Jackson chan'};
+  soap.createClient(url, function(err, client) {
+      client.staffSearch(args, function(err, result) {
+          console.log(result);
+      });
+  });
 
 
 
