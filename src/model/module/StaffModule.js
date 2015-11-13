@@ -4,12 +4,12 @@ var Staff= require('../Staff.js');
 
 module.exports = {
 	
-	CreateStaff: function(firstname, lastname) {
-        StaffDAO.CreateStaff(firstname, lastname);
+	CreateStaff: function(name) {
+        StaffDAO.CreateStaff(name);
 	},
     
-    GetStaff: function(firstname, lastname) {
-        return UserDAO.GetStaff(firstname, lastname);
+    GetStaff: function(name) {
+        return UserDAO.GetStaff(name);
     }
 
 }

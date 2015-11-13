@@ -3,12 +3,12 @@ var Staff = require('../Staff.js');
 
 module.exports = {
 	
-	CreateStaff: function(firstname, lastname) {
-        var newStaff = new Staff(firstname, lastname);
+	CreateStaff: function(name) {
+        var newStaff = new Staff(name);
 	},
     
-    GetStaff: function(firstname, lastname) {
-        var staff = new Staff(firstname, lastname)
+    GetStaff: function(name) {
+        var staff = new Staff(name)
         return staff;
     }
 

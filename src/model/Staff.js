@@ -1,11 +1,10 @@
 module.exports = Staff;
 
-function Staff(firstname, lastname) {
-	this.firstname = firstname;
-	this.lastname = lastname;
+function Staff(name) {
+	this.name = name;
 }
 
-Staff.prototype.sayFullName = function () {
-	return 'My name is ' + this.firstname + ' ' + this.lastname + '.';
+Staff.prototype.sayMyName = function () {
+	return 'My name is ' + this.name + '.';
 };
 
