@@ -3,24 +3,13 @@ var UserModule = require('../model/module/UserModule.js');
 
 var StaffModule = require('../model/module/StaffModule.js');
 // Set initial template variables.
-var view = {
-    navItems: {
-        'Find': '/',
-        'About': '/about'
-        }
-    }
+var view = {};
 
 module.exports = {
 	
-	viewFind: function (req, res) {
-        view.selectedItem = "Find";
-		res.render('home/find.html', view);
+	viewMain: function (req, res) {
+		res.render('base/parent.html');
 	},
-    
-    viewAbout: function (req, res) {
-        view.selectedItem = "About";
-        res.render('home/about.html', view);
-    },
 	
     // Example handler that "creates" and "gets" a User.
 	testGetUser: function (req, res) {        
@@ -35,5 +24,4 @@ module.exports = {
         var staff = StaffModule.GetStaff('TESTUSER');
 		res.send('<h1>Hello, ' + staff.name + '!</h1><br>' + staff.sayMyName());
 	},
-    
 }

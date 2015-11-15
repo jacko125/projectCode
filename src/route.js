@@ -3,9 +3,9 @@ var homeController = require('./control/HomeController.js');
 
 module.exports = function(app) {
 	
-    app.get('/', homeController.viewFind);
-    app.get('/about', homeController.viewAbout);
-	app.get('/test', homeController.testGetUser);
-	app.get('/staff', homeController.testGetStaff);
+    app.get('/', homeController.viewMain);
 
+	app.get('/test', homeController.testGetUser);
+
+	app.get('/staff', homeController.testGetStaff);
 };
