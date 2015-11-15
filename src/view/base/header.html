@@ -10,14 +10,17 @@
       <a class="navbar-brand" style='color:white;' href="#">Macquarie</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        {% for item, url in navItems %}
-          {% if item == selectedItem %}
-            <li class="active"><a href="{{url}}">{{item}}</a></li>
-          {% else %}
-            <li><a href="{{url}}">{{item}}</a></li>
-          {% endif %}
-        {% endfor %}  
+      <ul class="nav navbar-nav">            
+        
+        <li ng-repeat="item in parentCtrl.navItems"
+            ng-class="parentCtrl.isNavItemActive($index)">
+            <a ng-click="parentCtrl.changeNavItem($index)"
+               ng-bind="parentCtrl.navItems[$index].name"
+               data-toggle="collapse" data-target=".navbar-collapse.in"
+               href="#">
+            </a>
+         </li>
+  
       </ul>
     </div><!--/.nav-collapse -->
   </div>

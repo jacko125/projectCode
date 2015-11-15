@@ -6,8 +6,6 @@
 2. Install NodeJS
 3. Install MongoDB (in its default location)
 
-
-
 ## Installation
 
 ```
@@ -19,18 +17,18 @@ Install required packages (it reads from from package.json)
 $ npm install
 
 Start the server
-$ gulp start-app (or node index.js)
+$ node index.js
 
 View the web app at http://localhost:3000
-The controller/module/DAO test can be found at /test
+The controller/module/DAO test function can be found at http://localhost:3000/test
 
 ```
-
-
 
 ## Advanced features
 
 ```
+There is a gulp.js file that has automated some of the commands. To use this, install Gulp with
+$ npm install -g gulp (Requires external network)
 To view a list of available commands:
 $ gulp
 
