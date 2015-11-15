@@ -23,15 +23,13 @@ var route = require('./src/route.js')(app);
   // res.render('home.html', view);
 // });
 
-  var url = 'http://staffdirectory.pc.internal.macquarie.com/WebServices/SearchService.svc?wsdl';
-  var args = {name: 'Jackson chan'};
+  var url = 'http://staffdirectory.pc.internal.macquarie.com/WebServices/SearchService.svc?singleWsdl';
+  var args = {name: 'Jackson Chan'};
   soap.createClient(url, function(err, client) {
-      client.staffSearch(args, function(err, result) {
+      client.StaffSearchWS.SearchStaff(args, function(err, result) {
           console.log(result);
       });
   });
-
-
 
 var server = app.listen(3000, function () {
   var host = server.address().address;

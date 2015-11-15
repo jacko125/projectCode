@@ -9,7 +9,7 @@ module.exports = {
 	},
     
     GetStaff: function(name) {
-        return UserDAO.GetStaff(name);
+        return StaffDAO.GetStaff(name);
     }
 
 }

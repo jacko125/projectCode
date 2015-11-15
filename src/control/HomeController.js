@@ -23,5 +23,5 @@ module.exports = {
 		StaffModule.CreateStaff('TESTUSER');
         var staff = StaffModule.GetStaff('TESTUSER');
 		res.send('<h1>Hello, ' + staff.name + '!</h1><br>' + staff.sayMyName());
-	},
+	}
 }
