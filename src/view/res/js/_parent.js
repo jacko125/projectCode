@@ -26,5 +26,4 @@ miaApp.controller('parentController',
     self.changeNavItem = function(index) {             
         self.selectedNavItem = self.navItems[index];            
     };
-    
 }]);
