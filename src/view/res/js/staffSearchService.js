@@ -1,7 +1,7 @@
 // Declare the app module
 var miaApp = angular.module('mia');
 
-app.factory('staffSearchService', ['$http', function($http) {
+miaApp.factory('staffSearchService', ['$http', function($http) {
 
     var defaultStaffProfileData = {
         'firstName': = ''

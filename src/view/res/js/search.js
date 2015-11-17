@@ -1,6 +1,6 @@
 var miaApp = angular.module('mia');
 
-miaApp.registerCtrl('searchController', [function($scope, staffSearchService) {
+miaApp.registerCtrl('searchController', ['$scope', 'staffSearchService', function($scope, staffSearchService) {
         var self = this;        
         
         self.title = 'Staff Search'
