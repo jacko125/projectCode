@@ -16,7 +16,6 @@ app.use('/view', express.static('./src/view'));
 // Load routes
 var route = require('./src/route.js')(app);
 
-
 var server = app.listen(3000, function () {
   var host = server.address().address;
   var port = server.address().port;
@@ -24,9 +23,9 @@ var server = app.listen(3000, function () {
   console.log('Example app listening at http://%s:%s', host, port);
 }); 
 
+// Websocket server (to be refactored)
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ port: 3001 });
-
 wss.on('connection', function connection(ws) {
       
   var currentMsg = 'start';
@@ -45,6 +44,3 @@ wss.on('connection', function connection(ws) {
 
     ws.send('Returning: ' + currentMsg);  
 });
-
-
-
