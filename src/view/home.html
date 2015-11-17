@@ -5,6 +5,26 @@
   <div class="container-home">
     <h1 ng-bind="homeCtrl.title"></h1>
     <p class="lead" ng-bind="homeCtrl.message"></p>    
+    
+    <button type="button" 
+        class="btn btn-info"            
+        ng-click='homeCtrl.testButtonClick("open")'>Open connection</button>
+    <br>
+    <input type="text" ng-model="homeCtrl.wsMsg"/>
+    <button type="button" 
+        class="btn btn-info"            
+        ng-click='homeCtrl.testButtonClick("send")'>Send message</button>
+    <br>
+    <button type="button" 
+        class="btn btn-info"            
+        ng-click='homeCtrl.testButtonClick("close")'>Close connection</button>
+        
+    <br>
+    <br>
+    <button type="button" 
+        class="btn btn-info"            
+        ng-click='homeCtrl.testButtonClick("broadcast")'>Broadcast</button>
+        
   </div>
 
 </div><!-- /.container -->
