@@ -1,8 +1,9 @@
 // Declare the app module
 var miaApp = angular.module('mia', []);
 
-miaApp.config(['$controllerProvider', function($controllerProvider) { 
+miaApp.config(['$controllerProvider', '$provide', function($controllerProvider, $provide) { 
     miaApp.registerCtrl = $controllerProvider.register;
+    miaApp.registerFactory = $provide.factory;
 }]);
 
 miaApp.controller('parentController', 
