@@ -1,7 +1,6 @@
 // Modules this controller depends on.
 var UserModule = require('../model/module/UserModule.js');
 
-var StaffModule = require('../model/module/StaffModule.js');
 // Set initial template variables.
 var view = {};
 
