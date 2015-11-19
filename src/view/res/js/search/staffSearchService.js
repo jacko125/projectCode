@@ -15,7 +15,12 @@ miaApp.registerFactory('staffSearchService', ['$http', function($http) {
         });
     };
 
+    var getProfileImage = function(employeeID) {
+
+    };
+
     return { 
-        getStaffList: getStaffList
+        getStaffList: getStaffList,
+        getProfileImage: getProfileImage
     };
 }])
