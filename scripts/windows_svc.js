@@ -10,7 +10,7 @@
 var Service = require('node-windows').Service;
 
 if (process.argv.length != 3) {
-    console.log('Usage: node windows_svc.js [install|uninstall]');
+    console.log('Usage: node windows_svc [install|uninstall]');
     return;
 }
 
@@ -18,7 +18,12 @@ if (process.argv.length != 3) {
 var svc = new Service({
   name:'TGP_MIA_prod_service',
   description: 'The Grad Project - MIA production service',
-  script: 'D:\\TGP\\mia\\index.js'
+  script: 'D:\\TGP\\mia\\index.js',
+  env:
+  {
+	  name: 'ENVIRONMENT',
+	  value: 'prod'
+  }
 });
 
 // Listen for the "install" event, which indicates the process is available as a service.   

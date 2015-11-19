@@ -1,17 +1,21 @@
 var express = require('express');
 var nunjucks = require('nunjucks');
-var util = require('util');
 
 // Instantiate the app
 var app = express();
 
-// Configure the template engine
+// Configure production environment settings
+if (process.env.ENVIRONMENT == 'prod') {
+    console.log('Running in a production environment.');   
+}
+
+// Configure the template engine and static resources
 nunjucks.configure('./src/view', {
     autoescape: true,
     express: app
 });
-app.use('/', express.static('./src/view/res'));
-app.use('/view', express.static('./src/view'));
+app.use('/', express.static(__dirname + '/src/view/res'));
+app.use('/view', express.static(__dirname + '/src/view'));
 
 // Load routes
 var route = require('./src/route.js')(app);
@@ -31,6 +35,7 @@ wss.on('connection', function connection(ws) {
   var currentMsg = 'start';
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);    
+    ws.send('The server received: ' + currentMsg);  
     
     if (message == 'close') {
         ws.close();
@@ -40,7 +45,5 @@ wss.on('connection', function connection(ws) {
   
   ws.on('close', function close() {
     console.log('disconnected');
-  });
-
-    ws.send('Returning: ' + currentMsg);  
+  });    
 });
