@@ -7,8 +7,8 @@ miaApp.registerCtrl('searchController', ['$scope', 'staffSearchService', functio
         self.loadStaffList = function(name) {
             
             staffSearchService.getStaffList(name).then(function(results) {
-                $scope.staffList = results;
-                console.log(results);
+                $scope.staffList = results.data;
+                console.log($scope.staffList);
             });
                         
         };
