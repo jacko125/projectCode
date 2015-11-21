@@ -1,6 +1,8 @@
 var gulp = require('gulp');
+var bump = require('gulp-bump');
+var git = require('gulp-git');
+var sequence = require('gulp-sequence');
 var exec = require('child_process').exec;
-var pjson = require('./package.json');
 
 gulp.task('default', function() {
   console.log('Usage: gulp <command>\n'
@@ -12,7 +14,7 @@ gulp.task('default', function() {
 	);
 });
 
-// Run app
+// Run app  
 gulp.task('start-app', runCommand('node index.js'));
 
 // MongoDB tasks
@@ -22,7 +24,7 @@ gulp.task('start-mongo', ['init-mongo'], runCommand('start "MongoDB" "' + mongo_
 gulp.task('stop-mongo', runCommand('"' + mongo_dir + '\\mongo.exe" admin --eval "db.shutdownServer();"'));
 
 //Bootstrap tasks
-var bootstrap_ver = pjson.dependencies.bootstrap;
+var bootstrap_ver = require('./package.json').dependencies.bootstrap;
 gulp.task('compile-bootstrap', runCommand('cd node_modules\\bootstrap && grunt dist'));
 gulp.task('deploy-bootstrap-css', ['compile-bootstrap'], runCommand('copy \
 	node_modules\\bootstrap\\dist\\css\\bootstrap.css \
@@ -33,7 +35,21 @@ gulp.task('deploy-bootstrap-js', runCommand('copy \
 	src\\view\\res\\js\\bootstrap-' + bootstrap_ver + '.js')
 	);
 gulp.task('deploy-bootstrap', ['deploy-bootstrap-css', 'deploy-bootstrap-js']);
- 
+
+// Release tasks
+gulp.task('release-bump-minor', function() {
+    gulp.src('./package.json')
+        .pipe(bump({ type:'minor' }))
+        .pipe(gulp.dest('./'));
+});
+gulp.task('release-commit', function() {    
+    return gulp.src('./package.json')
+        .pipe(git.commit('Rolling package.json version to ' + require('./package.json').version + ' for release'    ));
+});
+gulp.task('release-tag', function() {
+    git.tag('release-' + require('./package.json').version, "Release for MIA");    
+});
+     
 function runCommand(command) {
   return function (cb) {
     exec(command, function (err, stdout, stderr) {
