@@ -1,6 +1,6 @@
 {
   "name": "MIA",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Macquarie Interactive App",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^3.3.5",
-    "express": "^4.13.3",    
+    "express": "^4.13.3",
+    "gulp": "^3.9.0",
+    "gulp-bump": "^1.0.0",
+    "gulp-git": "^1.6.0",
     "nunjucks": "^2.1.0",
     "ws": "^0.8.0"
   }
