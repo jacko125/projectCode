@@ -1,5 +1,14 @@
-.container-home {
-    text-align: center;
-    margin-top: 40px;
+.container-home-main {
+  text-align: center;
+  margin-top: 40px;
 
+}
+
+.home-item {  
+  padding-left:40px;
+  padding-right:40px;
+  padding-top:10px;
+  padding-bottom:10px;
+  margin-top:10px;
+  margin-bottom:10px;
 }

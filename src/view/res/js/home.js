@@ -1,47 +1,39 @@
-miaApp.registerCtrl('homeController', [function() { 
+miaApp.registerCtrl('homeController', ['$http', '$window', 'wsService', 
+    function($http, $window, wsService) {   
         var self = this;        
         
-        self.title = 'Home';
-        self.message = 'This page allows you to log into the MIA service';
+        // Subpage logic
+        self.pages = [
+            { name: 'login', template: 'view/home/login.html' },
+            { name: 'main', template: 'view/home/main.html' }
+        ];
         
-        self.wsMsg = 'testData';
-        
-        var exampleSocket = new WebSocket("ws://localhost:3001"); 
-        exampleSocket.onopen = function(event)
-        {
-            console.log('opened!');                            
-        };
-        
-        exampleSocket.onclose = function(event)
-        {
-            console.log('closed!');
-        }
-        
-        self.testButtonClick = function (event) {
+        self.selectedPage = self.pages[1];
+        console.log('selected page: ' + self.selectedPage.name);
             
-            switch (event) {
-                case 'open':    
-                    exampleSocket = new WebSocket("ws://localhost:3001"); 
-                            exampleSocket.onopen = function(event)
-        {
-            console.log('opened!');                            
+        self.buttonClick = function(clickedPage) {                
+            for (var i = 0; i < self.pages.length; i++) {                    
+                if (self.pages[i].name == clickedPage)
+                    self.selectedPage = self.pages[i];            
+            }        
+        };
+
+        self.loginForm = {
+            username: "",
+            password: ""
         };
         
-        exampleSocket.onclose = function(event)
-        {
-            console.log('closed!');
-        }
-                    break;
-                case 'send':                     
-                     exampleSocket.send(self.wsMsg);
-                     console.log('sent ' + self.wsMsg);
-                    break;
-                case 'close':
-                    exampleSocket.close();
-                    break;                         
-            }
-        }
-                                   
-
-                      
-}]);
+        self.loginSubmit = function() {      
+            $http.post('/login', self.loginForm)
+                .then(function success(response) {                
+                    $window.sessionStorage.token = response.data.token;
+                    wsService.connect(self.loginForm.username, response.data.token);
+                    //Connect to webservice
+                    //Go to home page
+                    
+                }, function error(response) {
+                    delete $window.sessionStorage.token;                
+                    //handle erroneous login
+                });                    
+        }                     
+    }]);
