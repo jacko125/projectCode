@@ -9,11 +9,14 @@
   "author": "The Grad Project",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.14.1",
     "bootstrap": "^3.3.5",
     "express": "^4.13.3",
+    "express-jwt": "^3.3.0",
     "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
     "gulp-git": "^1.6.0",
+    "jsonwebtoken": "^5.4.1",
     "nunjucks": "^2.1.0",
     "ws": "^0.8.0"
   }

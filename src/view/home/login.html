@@ -1,0 +1,23 @@
+<div class="container-home-main">
+
+  <h1>Log in</h1>
+  <p class="lead">Who's looking for you?</p>  
+  <div class="row">
+    <div class="col-xs-4 col-xs-offset-4">
+    <form ng-submit="homeCtrl.loginSubmit()">
+      <div class="form-group">        
+        <input type="text" class="form-control" placeholder="Username" ng-model="homeCtrl.loginForm.username">
+      </div>
+      <div class="form-group">        
+        <input type="password" class="form-control" placeholder="Password" ng-model="homeCtrl.loginForm.password">
+      </div>
+      <button type="submit" class="btn btn-default">Log in</button>
+    </form>
+    <br>
+    <p>Click <b><a href="#" ng-click="homeCtrl.buttonClick('main')">here</a></b> to go back</p>
+    </div>
+  </div>
+    
+</div>
+    
+    
