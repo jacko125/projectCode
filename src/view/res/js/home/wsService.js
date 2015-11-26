@@ -9,7 +9,7 @@ miaApp.registerFactory('wsService', ['$http', function($http) {
         self.token = token;
         self.username = username;
         
-        self.webSocket = new WebSocket("ws://localhost:3001", 'TGP.MIA.ws'); 
+        self.webSocket = new WebSocket("ws://localhost:3001", self.token); 
         self.webSocket.onopen = function(event) {            
             console.log('connection opened. sending connect packet...');
             self.webSocket.send(JSON.stringify(

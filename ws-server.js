@@ -1,8 +1,10 @@
-// Websocket server (to be refactored)
-var util = require('util');
 var http = require('http');
 var WebSocketServer = require('ws').Server;
-var wsModule = require('./src/model/module/wsModule.js');
+var wsModule = require('./src/model/module/WsModule.js');
+var jwt = require('jsonwebtoken');
+
+var util = require('util');
+
 var wss = new WebSocketServer(
 {
     port: 3001,
@@ -13,9 +15,16 @@ var wss = new WebSocketServer(
             hostname = 'ntsydv1946';
         }                        
         console.log(util.inspect(info.req.headers));        
-        return (info.req.headers['sec-websocket-protocol'] == 'TGP.MIA.ws');
-    }
-    
+                
+        
+        try {
+          var decoded = jwt.verify(info.req.headers['sec-websocket-protocol'], 'secret');                    
+        } catch(err) {
+            return false;
+        }
+        
+        return true;
+    }        
 });
 
 wss.on('connection', function connection(ws) {
