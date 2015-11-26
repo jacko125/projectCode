@@ -4,20 +4,20 @@
         npm install -g node-windows
         npm link node-windows    
     
-    Usage: node windows_svc [install | uninstall]
+    Usage: Usage: node httpd_windows_svc [install | uninstall]
 */
 
 var Service = require('node-windows').Service;
 
 if (process.argv.length != 3) {
-    console.log('Usage: node windows_svc [install|uninstall]');
+    console.log('Usage: node httpd_windows_svc [install | uninstall]');
     return;
 }
 
 // Create a new service object
 var svc = new Service({
-  name:'TGP_MIA_prod_service',
-  description: 'The Grad Project - MIA production service',
+  name:'TGP_MIA_prod_httpd_service',
+  description: 'The Grad Project - MIA production HTTPD service',
   script: 'D:\\TGP\\mia\\index.js',
   env:
   {
