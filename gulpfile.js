@@ -11,6 +11,11 @@ gulp.task('default', function() {
 	+ 'start-mongo          Start the MongoDB server (Can cancel gulp-task after starting)\n' 
 	+ 'stop-mongo           Stop the MongoDB server)\n'
     + 'deploy-bootstrap     Compile bootstrap.css from variables.less and deploy\n'
+    + 'Release tasks:\n'
+    + 'release-bump         Bump package.json version x.x.Y\n'
+    + 'release-bump-minor   Bump package.json version x.Y.x\n'
+    + 'release-commit       Commit package.json with release version message\n'
+    + 'release-tag          Tag latest commit with release version\n'
 	);
 });
 
@@ -37,6 +42,11 @@ gulp.task('deploy-bootstrap-js', runCommand('copy \
 gulp.task('deploy-bootstrap', ['deploy-bootstrap-css', 'deploy-bootstrap-js']);
 
 // Release tasks
+gulp.task('release-bump', function() {
+    gulp.src('./package.json')
+        .pipe(bump())
+        .pipe(gulp.dest('./'));
+});
 gulp.task('release-bump-minor', function() {
     gulp.src('./package.json')
         .pipe(bump({ type:'minor' }))
