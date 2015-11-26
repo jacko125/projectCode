@@ -21,9 +21,9 @@
          </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li ng-if="parentCtrl.loggedIn">
+        <li ng-if="loggedIn">
           <div id="btn-logout">
-            <a class="btn btn-default navbar-btn btn-block" href="#">Logout</a>
+            <a class="btn btn-default navbar-btn btn-block" href="#" ng-click="parentCtrl.logoutButtonClick()">Logout</a>
           </div>
         </li>        
       </ul>         

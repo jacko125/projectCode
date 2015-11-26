@@ -12,17 +12,3 @@ module.exports = {
         }
     }	
 }
-
-function getRequest() {
-                   
-        http.get({
-                host: 'localhost',
-                port: 3000,
-                path: '/wsauth',
-                headers: {
-                    'Authorization' : 'Bearer ' + info.req.headers['sec-websocket-protocol']   
-                }
-            }, function(response) {
-                console.log('Status ' + response.statusCode);                
-            });
-}

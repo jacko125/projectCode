@@ -3,19 +3,19 @@
     <h1>MIA</h1>
     <p class="lead">The Macquarie Interactive App</p>
     <div class="row">
-      <div class="col-sm-4">
-        <button class="btn btn-success home-item">
+      <div ng-class="homeCtrl.menuOffsetClass()">
+        <button class="btn btn-success home-item" ng-click="parentCtrl.changeNavItemByName('Search')">
           <b>Search staff</b><br>
           Looking for someone?
         </button>
       </div>
       <div class="col-sm-4">
-        <button class="btn btn-info home-item">
+        <button class="btn btn-info home-item" ng-click="parentCtrl.changeNavItemByName('Map')">
           <b>View a map</b><br>
           Find your way around.        
         </button>
       </div>  
-      <div class="col-sm-4">                    
+      <div class="col-sm-4" ng-if="loggedIn == false">                    
         <button class="btn btn-primary home-item" ng-click="homeCtrl.buttonClick('login')">
           <b>Log in</b><br>
           Who's looking for you?

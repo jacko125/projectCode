@@ -1,5 +1,5 @@
-miaApp.registerCtrl('homeController', ['$http', '$window', 'wsService', 
-    function($http, $window, wsService) {   
+miaApp.registerCtrl('homeController', ['$http', '$window', '$scope', 'wsService', 
+    function($http, $window, $scope, wsService) {   
         var self = this;        
         
         // Subpage logic
@@ -27,7 +27,9 @@ miaApp.registerCtrl('homeController', ['$http', '$window', 'wsService',
             $http.post('/login', self.loginForm)
                 .then(function success(response) {                
                     $window.sessionStorage.token = response.data.token;
-                    wsService.connect(self.loginForm.username, response.data.token);
+                    wsService.connect(self.loginForm.username, response.data.token);                    
+                    $scope.$emit('logged_in', self.loginForm.username);
+                    self.buttonClick('main');
                     //Connect to webservice
                     //Go to home page
                     
@@ -35,5 +37,18 @@ miaApp.registerCtrl('homeController', ['$http', '$window', 'wsService',
                     delete $window.sessionStorage.token;                
                     //handle erroneous login
                 });                    
-        }                     
+        }
+        
+        $scope.$on('logged_out', function() {
+            console.log('logged out');
+           self.buttonClick('main');
+        });
+        
+        self.menuOffsetClass = function() {
+            return {
+                'col-sm-offset-2' : $scope.loggedIn,
+                'col-sm-4': true          
+            };
+        };
+           
     }]);
