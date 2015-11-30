@@ -1,0 +1,42 @@
+<div class="container-search">
+
+  <div class="row">
+  
+    <div class="col-sm-4 col-sm-offset-2">
+      <input type="text" class="form-control" 
+        placeholder="Search staff..."
+        ng-model="searchCtrl.searchParams.name"
+        ng-model-options="{ debounce: 750 }"
+        ng-change="searchCtrl.loadStaffList(searchCtrl.searchParams.name)"/>
+      <p class="lead">
+        {{searchCtrl.staff.name}}
+      </p>
+    </div>
+    
+    <div class="col-sm-4">
+      <div class="list-group">
+        <a class="list-group-item" 
+           ng-repeat="staff in searchCtrl.results track by staff.EmployeeId"
+           href="#"
+           ng-click="searchCtrl.staffButtonClick(staff.EmployeeId)">
+          <h5 class="list-group-item-heading" ng-bind="staff.Description"></h5>
+          <!-- <p class="list-group-item-text">This is some text</p> -->
+        </a>
+      </div>
+    </div>
+  </div>
+    
+  <!-- <form name="staffSearchForm">
+      <label for="user">Search by Staff name: <br /> <input type="text"
+               name="staffName"
+               class="form-control"
+               placeholder="Staff Name"
+               ng-model="staff.name"
+               ng-model-options="{ debounce: 2000 }" ng-change="searchCtrl.loadStaffList(staff.name)"></input>
+      </label>
+        <button class="btn btn-primary" ng-click="staffSearchForm.staffName.$rollbackViewValue(); staff.name=''">Clear</button>
+      </form> -->
+  
+</div>
+    
+    
