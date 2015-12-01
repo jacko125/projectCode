@@ -8,3 +8,8 @@
 .container-search-profile {
   text-align: center;
 }
+
+.listnav{
+    max-height: 100vh;
+    overflow-y: scroll;
+}
