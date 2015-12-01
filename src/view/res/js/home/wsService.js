@@ -21,8 +21,7 @@ miaApp.registerFactory('wsService', ['$http', function($http) {
         };
         
         self.webSocket.onmessage = msgHandler;
-        
-        //self.webSocket.onmessage = self
+                
         self.webSocket.onclose = function(event) {
             console.log('closed!');
         };

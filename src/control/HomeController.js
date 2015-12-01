@@ -31,6 +31,10 @@ module.exports = {
     ajaxWsAuth: function (req, res) {        
         res.status(200).send('Websocket client authenticated');        
     },
+    
+    ajaxTestSearch: function (req, res) {
+        res.json(require('../../testSearchResults.json'));
+    },
         
 	
     // Example handler that "creates" and "gets" a User.

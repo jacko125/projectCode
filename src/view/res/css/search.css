@@ -1,5 +1,10 @@
-.container-search {
-    text-align: center;
-    margin-top: 40px;
+.container-search {    
+    margin-top: 20px;
+    
+    margin-bottom: 80px;
+    
+}
 
+.container-search-profile {
+  text-align: center;
 }

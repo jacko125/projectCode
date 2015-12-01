@@ -12,6 +12,8 @@ module.exports = function(app) {
         
     app.get('/wsauth', expressJwt({secret: jwtSecret}), homeController.ajaxWsAuth);
     
+    app.get('/testsearch', homeController.ajaxTestSearch);
+    
 	app.get('/test', homeController.testGetUser);
     
     

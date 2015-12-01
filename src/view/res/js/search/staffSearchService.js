@@ -1,26 +1,45 @@
 miaApp.registerFactory('staffSearchService', ['$http', function($http) {
+    var self = this;
+    self.staffSearchURL = 'http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc'
 
-    var defaultStaffProfileData = {
-        'firstName': '',
-        'lastName': ''
-    };
-
-    var getStaffList = function(name) {
+    var getStaffList = function(staffSearch) {
         var params = {
-            'name': name
+            'name': staffSearch.name
         };
 
-        return $http.get('http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc/FindADProfileByName', {
-            params: params
+        return $http.get(self.staffSearchURL + '/FindADProfileByName', {
+            'params': params
         });
     };
 
     var getProfileImage = function(employeeID) {
 
     };
+    
+    var getStaffProfile = function(employeeID) {
+        var params = {
+            'employeeID': employeeID
+        }
+        return $http.get(self.staffSearchURL + '/FindADProfileByEmployeeID', {
+           'params' : params 
+        });
+    }
+    
+    var getStaffListTest = function(staffSearch) {
+        var params = {
+            'name': staffSearch.name
+        };
+
+        return $http.get('/testsearch', {
+            'params': params
+        });
+    }
 
     return { 
-        getStaffList: getStaffList,
-        getProfileImage: getProfileImage
+        getStaffList: getStaffList,        
+        getProfileImage: getProfileImage,
+        getStaffProfile: getStaffProfile,
+        
+        getStaffListTest: getStaffListTest,
     };
 }])

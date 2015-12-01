@@ -1,0 +1,7 @@
+<div class="container container-search-profile">
+  <h2 ng-bind="searchCtrl.profile.Description"></h2>
+  <img ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{searchCtrl.profile.EmployeeId}}.jpg">
+  <p class="lead" ng-bind="searchCtrl.profile.Group + ', ' + searchCtrl.profile.Division"></p>
+  <button class="btn btn-success">Request location</button><br><br>
+  <button class="btn btn-default" ng-click="searchCtrl.pageButtonClick('list')">Back to results</button>
+</div>

@@ -3,6 +3,11 @@
   margin-right: 10px;
 }
 
+html {
+  position:relative;
+  min-height:100%;
+}
+
 body {
   padding-top: 50px;
   margin-bottom: 60px;

@@ -8,8 +8,7 @@ miaApp.registerCtrl('homeController', ['$http', '$window', '$scope', 'wsService'
             { name: 'main', template: 'view/home/main.html' }
         ];
         
-        self.selectedPage = self.pages[1];
-        console.log('selected page: ' + self.selectedPage.name);
+        self.selectedPage = self.pages[1];        
             
         self.buttonClick = function(clickedPage) {                
             for (var i = 0; i < self.pages.length; i++) {                    
@@ -29,9 +28,7 @@ miaApp.registerCtrl('homeController', ['$http', '$window', '$scope', 'wsService'
                     $window.sessionStorage.token = response.data.token;
                     wsService.connect(self.loginForm.username, response.data.token);                    
                     $scope.$emit('logged_in', self.loginForm.username);
-                    self.buttonClick('main');
-                    //Connect to webservice
-                    //Go to home page
+                    self.buttonClick('main');                                        
                     
                 }, function error(response) {
                     delete $window.sessionStorage.token;                
@@ -39,8 +36,7 @@ miaApp.registerCtrl('homeController', ['$http', '$window', '$scope', 'wsService'
                 });                    
         }
         
-        $scope.$on('logged_out', function() {
-            console.log('logged out');
+        $scope.$on('logged_out', function() {            
            self.buttonClick('main');
         });
         
