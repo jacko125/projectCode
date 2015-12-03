@@ -1,7 +1,18 @@
-<div class="container container-search-profile">
+<div class="row">
+
+  <div class="col-sm-6 col-sm-offset-3">
+<div class="container-search-profile" style="padding-top: 10%;">
+  <div class="profile-container-large">
+    <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{searchCtrl.profile.EmployeeId}}.jpg">
+    </div>
   <h2 ng-bind="searchCtrl.profile.Description"></h2>
-  <img ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{searchCtrl.profile.EmployeeId}}.jpg">
+
   <p class="lead" ng-bind="searchCtrl.profile.Group + ', ' + searchCtrl.profile.Division"></p>
+  <div><p>Email Address: {{searchCtrl.profile.EmailAddress}}</p>
+      <p>Contact Number: {{searchCtrl.profile.FullTelephoneNumber}}</p>
+  </div>
   <button class="btn btn-success">Request location</button><br><br>
   <button class="btn btn-default" ng-click="searchCtrl.pageButtonClick('list')">Back to results</button>
+</div>
+    </div>
 </div>
