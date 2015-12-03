@@ -1,0 +1,40 @@
+<div class="container-request">  
+  
+  <h2>Pending requests</h2>
+  
+  <p class="lead" ng-if="requestCtrl.requests.length == 0">You have no outstanding requests</p>
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">      
+        <div class="panel panel-default panel-body  ">
+          <div class="media media-middle text-left"
+             ng-repeat="request in requestCtrl.requests track by request.sender"
+             ng-controller="requestProfileController as reqProfileCtrl" ng-init="init(request.sender)">          
+             
+            <div class="media-left">
+              <img class="media-object request-img" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{reqProfileCtrl.user.EmployeeId}}.jpg">
+            </div>
+             
+            <div class="media-body">
+              <div class="list-group-item-heading">
+                <b>{{reqProfileCtrl.user.Description}}</b> ({{reqProfileCtrl.user.Group}}, {{reqProfileCtrl.user.Division}})
+              </div>
+              <div class="list-group-item-text">                
+                Requested <b>{{request.datetime | timeSince }}</b> ago 
+                <br><br>
+                <button class="btn btn-success" 
+                  ng-click="requestCtrl.acceptRequestButtonClick(request.sender)">Accept</button>
+                  &nbsp;
+                <button class="btn btn-warning"
+                  ng-click="requestCtrl.ignoreRequestButtonClick(request.sender)">Ignore</button>
+              </div>
+            </div>                                          
+          </div>
+        </div>
+          
+          <!-- <img class="profile-image" ng-src=""> -->
+
+          <!-- <p class="list-group-item-text">This is some text</p> -->
+      </div>  
+    </div>
+      
+</div>

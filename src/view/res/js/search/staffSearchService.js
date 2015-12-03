@@ -25,9 +25,9 @@ miaApp.registerFactory('staffSearchService', ['$http', function($http) {
         });
     }
 
-    var getStaffProfileByShortname = function(staffSearch) {        
+    var getStaffProfileByShortname = function(shortname) {        
         var params = {
-            'shortname': staffSearch.username
+            'shortname': shortname
         }        
         return $http.get(self.staffSearchURL + '/FindADProfileByShortname', {
             'params' : params            
@@ -45,13 +45,12 @@ miaApp.registerFactory('staffSearchService', ['$http', function($http) {
         });
     }
     
-    var getStaffProfileByShortnameTest = function(staffSearch) {        
-        var params = {
-            'shortname': staffSearch.username
-        }        
-        return $http.get('/testGetStaffProfile', {
-            'params': params
-        });
+    var getStaffProfileByShortnameTest = function(params) {        
+        return $http.get('/testGetStaffProfile');
+    }
+    
+    var getStaffProfileTest = function(params) {
+        return $http.get('/testGetStaffProfile');
     }
     
 
@@ -62,5 +61,7 @@ miaApp.registerFactory('staffSearchService', ['$http', function($http) {
         getStaffProfileByShortname: getStaffProfileByShortname,
         
         getStaffListTest: getStaffListTest,
+        getStaffProfileByShortnameTest: getStaffProfileByShortnameTest,
+        getStaffProfileTest: getStaffProfileTest,
     };
 }])

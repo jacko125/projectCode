@@ -10,30 +10,44 @@
     <link rel="stylesheet" href="/css/_parent.css">               
     <link rel="stylesheet" href="/util/bootstrap/bootstrap-3.3.5.css">
     <link rel="stylesheet" href="/util/leaflet/leaflet.css">
+    <link rel="stylesheet" href="/util/angular-loading-bar/loading-bar.css">    
+    <link rel="stylesheet" href="/util/ngToast/ngToast-animations.css">
+    <link rel="stylesheet" href="/util/ngToast/ngToast.css">
     
     <!-- Page-specific CSS -->
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/map.css">
     <link rel="stylesheet" href="/css/search.css">
     <link rel="stylesheet" href="/css/meeting.css">
+    <link rel="stylesheet" href="/css/request.css">
+    
     <link rel="stylesheet" href="/css/example.css">
+    
+    
 </head>
 <body ng-controller='parentController as parentCtrl'>
     
 	{% include 'base/header.html' %}
-    
+  <toast></toast>
     <div class="fill" ng-include="parentCtrl.selectedNavItem.template">        
     
     </div>    
-            
+    
 	{% include 'base/footer.html' %}
+  
+  
 	    
-    <script src="/util/jquery-2.1.4.min.js"></script>
+    <script src="/util/jquery-2.1.4.js"></script>
     <script src="/util/bootstrap/bootstrap-3.3.5.js"></script>
     <script src="/util/leaflet/leaflet.js"></script>       
-    <script src="/util/angular-1.4.min.js"></script>    
-    <script src="/js/_parent.js"></script>       
-    
+    <script src="/util/angular-1.4.min.js"></script>      
+    <script src="/util/angular-loading-bar/loading-bar.js"></script>
+    <script src="/util/angular/angular-animate.min.js"></script>
+    <script src="/util/angular/angular-sanitize.min.js"></script>
+           
+    <script src="/util/ngToast/ngToast.js"></script>
+    <script src="/js/_parent.js"></script>               
+
         
 </body>
 </html>

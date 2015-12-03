@@ -21,11 +21,26 @@
                href="#">
             </a>
          </li>
+
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li ng-if="loggedIn">
-          <div id="btn-logout">
-            <a class="btn btn-default navbar-btn btn-block" href="#" ng-click="parentCtrl.logoutButtonClick()">Logout</a>
+      <ul class="nav navbar-nav navbar-right" ng-if="loggedIn">
+        <li>
+          <div class="btn-nav">
+            <a class="btn btn-info navbar-btn" href="#" ng-click="parentCtrl.requestPageButtonClick()">
+              Requests <span class="badge" ng-bind="requestCount"></span>
+            </a>
+          </div>          
+        </li>
+        <li>
+          <div class="btn-nav">
+            <a class="btn btn-success navbar-btn" href="#" ng-click="parentCtrl.responsePageButtonClick()">
+              Responses <span class="badge" ng-bind="responseCount"></span>
+            </a>
+          </div>          
+        </li>
+        <li>
+          <div class="btn-nav">
+            <a class="btn btn-default navbar-btn" href="#" ng-click="parentCtrl.logoutButtonClick()">Logout (<b><span ng-bind="username"></span></b>)</a>
           </div>
         </li>        
       </ul>         

@@ -1,8 +1,3 @@
-#btn-logout {    
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
 html {
   height:100%;
   min-height:100%;
@@ -22,6 +17,19 @@ body {
   width: auto;
 }
 
+.login-text {
+  margin-left: 10px;
+}
+
+.color-white {
+  color:white;
+}
+
+.btn-nav {    
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 .fill {
   height:100%;
   min-height:100%;
@@ -36,4 +44,8 @@ footer .container .footer-content {
   bottom: 0;
   width: 100%;
   height: 60px; /* Set the fixed height of the footer here */
+}
+
+.toast {
+  margin-right:100px;  
 }

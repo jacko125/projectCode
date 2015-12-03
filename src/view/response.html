@@ -1,0 +1,47 @@
+<script src="/js/request.js"></script>
+
+<div class="container" ng-controller="requestController as requestCtrl">
+
+  <div class="container-request">  
+
+      <h2>Received responses</h2>
+      <p class="lead" ng-if="requestCtrl.responses.length == 0">There are no recent responses</p>
+    
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">      
+          <div class="panel panel-default panel-body  ">
+            
+            <!-- Requests -->
+            <div class="media media-middle text-left"
+              ng-if="requestCtrl.isViewingResponses"
+              ng-repeat="response in requestCtrl.responses track by response.sender"
+              ng-controller="requestProfileController as reqProfileCtrl" ng-init="init(response.sender)">          
+               
+              <div class="media-left">
+                <img class="media-object request-img" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{reqProfileCtrl.user.EmployeeId}}.jpg">
+              </div>
+               
+              <div class="media-body">
+                <div class="list-group-item-heading">
+                  <b>{{reqProfileCtrl.user.Description}}</b> ({{reqProfileCtrl.user.Group}}, {{reqProfileCtrl.user.Division}})
+                </div>
+                <div class="list-group-item-text">                
+                  Requested <b>{{response.datetime | timeSince }}</b> ago 
+                  <br><br>
+                  <button class="btn btn-success" 
+                    ng-click="requestCtrl.viewResponseButtonClick(response)">View</button>
+                    &nbsp;
+                  <button class="btn btn-warning"
+                    ng-click="requestCtrl.ignoreResponseButtonClick(response.sender)">Ignore</button>
+                </div>
+              </div>                                          
+            </div>  
+            
+          </div>
+        </div>  
+      </div>
+        
+  </div>
+
+  
+</div> <!-- /.container -->

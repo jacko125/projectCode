@@ -1,5 +1,5 @@
-miaApp.registerCtrl('homeController', ['$http', '$window', '$scope', 'wsService', 'staffSearchService','$rootScope', 
-    function($http, $window, $scope, wsService, staffSearchService, $rootScope) {   
+miaApp.registerCtrl('homeController', ['$http', '$window', '$scope','$rootScope','wsService', 'staffSearchService', 
+    function($http, $window, $scope, $rootScope, wsService, staffSearchService) {   
         var self = this;        
         
         // Subpage logic
@@ -23,24 +23,28 @@ miaApp.registerCtrl('homeController', ['$http', '$window', '$scope', 'wsService'
         
         self.loginSubmit = function() {      
         
-            staffSearchService.getStaffProfileByShortname(self.loginForm)
+            //TODO-TESTFN
+            staffSearchService.getStaffProfileByShortname(self.loginForm.username)
                 .then(function success(response) {                                                        
+                
                     if (response.data.d.length > 0) {
-                        $rootScope.user = processUserDetails(response.data.d[0]);                        
+                        
+                        $rootScope.user = processUserDetails(response.data.d[0]);  // Save user as object
+                        
                         $http.post('/login', self.loginForm)
-                            .then(function success(response) {               
+                            .then(function success(response) {                                           
                                 $window.sessionStorage.token = response.data.token;
-                                wsService.connect(self.loginForm.username, response.data.token);                    
-                                $scope.$emit('logged_in', self.loginForm.username);
-                                self.buttonClick('main');                                        
+                                wsService.connect($scope, self.loginForm.username, response.data.token);
+                                $scope.$emit('logged_in', $rootScope.user);
+                                self.buttonClick('main');                                
                                 
                             }, function error(response) {
                                 delete $window.sessionStorage.token;                
                                 // Handle HTTP server down
                             });    
+                            
                     } else {
-                        // Handle erroneous login
-                        console.log('nay');
+                        // Handle erroneous login                        
                     }
                 }, function error(response) {
                     // Handle Staff Search service down
@@ -50,6 +54,7 @@ miaApp.registerCtrl('homeController', ['$http', '$window', '$scope', 'wsService'
         }
         
         $scope.$on('logged_out', function() {            
+           wsService.disconnect();
            self.buttonClick('main');
         });
         

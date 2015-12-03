@@ -1,7 +1,9 @@
 // Modules this controller depends on.
 var UserModule = require('../model/module/UserModule.js');
-var http = require('http');
+var RequestModule = require('../model/module/RequestModule.js');
+var ResponseModule = require('../model/module/ResponseModule.js');
 
+var http = require('http');
 var jwt = require('jsonwebtoken');
 var jwtSecret = 'secret';
 
@@ -33,6 +35,28 @@ module.exports = {
     
     ajaxTestGetStaffProfile: function (req,res) {
         res.json(require('../test/testGetStaffProfile.json'));
+    },        
+    
+    actionDumpRequests: function (req,res) {
+        RequestModule.getAllRequests(function(requests) {
+            res.json(requests);
+        });        
+    },
+    
+    actionDumpResponses: function (req,res) {
+        ResponseModule.getAllResponses(function(responses) {
+            res.json(responses);
+        });        
+    },
+    
+    actionDeleteAllRequests: function (req,res) {        
+        RequestModule.deleteAllRequests();
+        res.send('<h3>Deleted all requests.</h3>');
+    },
+    
+    actionDeleteAllResponses: function (req,res) {        
+        ResponseModule.deleteAllResponses();
+        res.send('<h3>Deleted all responses.</h3>');
     },
         
 	
