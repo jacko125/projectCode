@@ -1,18 +1,25 @@
 <div class="row">
 
   <div class="col-sm-6 col-sm-offset-3">
-<div class="container-search-profile" style="padding-top: 10%;">
-  <div class="profile-container-large">
-    <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{searchCtrl.profile.EmployeeId}}.jpg">
-    </div>
+  <div class="media" style="padding-top: 10%;">
+  <div class="media-left media-middle">
+      <div class="profile-container-large">
+        <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{searchCtrl.profile.EmployeeId}}.jpg">
+        </div>
+  </div>
+    <div class="media-body" style="padding-left: 20px;">
   <h2 ng-bind="searchCtrl.profile.Description"></h2>
 
-  <p class="lead" ng-bind="searchCtrl.profile.Group + ', ' + searchCtrl.profile.Division"></p>
+  <p class="lead">{{searchCtrl.profile.Group}}, {{searchCtrl.profile.Division}}</p>
   <div><p>Email Address: {{searchCtrl.profile.EmailAddress}}</p>
       <p>Contact Number: {{searchCtrl.profile.FullTelephoneNumber}}</p>
+      <p>User Name: {{searchCtrl.profile.Shortname}}</p>
+      <p>Address: {{searchCtrl.profile.postalAddress}} <br/> {{searchCtrl.profile.Office}} </p>
+      <p>Skills: {{searchCtrl.profile.Department}}</p>
   </div>
   <button class="btn btn-success">Request location</button><br><br>
   <button class="btn btn-default" ng-click="searchCtrl.pageButtonClick('list')">Back to results</button>
+    </div>
 </div>
     </div>
 </div>
