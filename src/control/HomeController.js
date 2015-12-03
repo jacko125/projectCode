@@ -15,13 +15,8 @@ module.exports = {
         // Inject jwtSecret into the handler
         
         return function (req, res) {
-            // Actually validate
-            console.log('params: ' + require('util').inspect(req.body));
-            if (req.body.username != req.body.password) {                       
-                res.status(401).send("Invalid username/password combination");
-                return;
-            }
-            
+            // Validation at client level                 
+            console.log("logged in");
             var token = jwt.sign({ name: req.params.username }, jwtSecret, { expiresIn: '5h' });        
             console.log('returning token ' + token);
             res.json({ token: token });
@@ -32,8 +27,12 @@ module.exports = {
         res.status(200).send('Websocket client authenticated');        
     },
     
-    ajaxTestSearch: function (req, res) {
-        res.json(require('../../testSearchResults.json'));
+    ajaxTestGetStaffList: function (req, res) {
+        res.json(require('../test/testGetStaffList.json'));
+    },
+    
+    ajaxTestGetStaffProfile: function (req,res) {
+        res.json(require('../test/testGetStaffProfile.json'));
     },
         
 	

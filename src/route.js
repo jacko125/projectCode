@@ -12,7 +12,9 @@ module.exports = function(app) {
         
     app.get('/wsauth', expressJwt({secret: jwtSecret}), homeController.ajaxWsAuth);
     
-    app.get('/testsearch', homeController.ajaxTestSearch);
+    app.get('/testGetStaffList', homeController.ajaxTestGetStaffList);
+    
+    app.get('/testGetStaffProfile', homeController.ajaxTestGetStaffProfile);
     
 	app.get('/test', homeController.testGetUser);
     

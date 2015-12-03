@@ -34,7 +34,7 @@ wss.on('connection', function connection(ws) {
         var message = JSON.parse(event);
         console.log('incoming object: ' + util.inspect(message));
         console.log('handling message from ' + message.username);
-        wsModule.handleMsg(ws, message);    
+        wsModule.handleMsg(wss, ws, message);    
     });
   
   ws.on('close', function close() {

@@ -33,10 +33,10 @@ miaApp.controller('parentController', ['$scope', '$window', function($scope, $wi
             { name: 'Home', template: 'view/home.html'},
             { name: 'Search' , template: 'view/search.html'},
             { name: 'Map' , template: 'view/map.html'},            
-            { name: 'Meeting' , template: 'view/meeting.html'},
+            //{ name: 'Meeting' , template: 'view/meeting.html'},
         ];
     
-    self.navItems.push({ name: 'Example', template: 'view/example.html'});   
+    //self.navItems.push({ name: 'Example', template: 'view/example.html'});   
     
     self.selectedNavItem = self.navItems[0];        
     self.isNavItemActive = function(index) {

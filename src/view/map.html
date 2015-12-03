@@ -1,9 +1,23 @@
 <script src="/js/map.js"></script>
 
-<div class="container" ng-controller="mapController as mapCtrl">
-
-  <div class="container-map">  
-    <div id="map"></div>
-  </div>  
+<div class="container container-map fill"  ng-controller="mapController as mapCtrl">
+  
+    <div class="row fill">
+      <div class="col-sm-6 col-sm-offset-3 fill">        
+        <div class="panel panel-default">
+          <div class="panel-heading">            
+            <select ng-options="building for building in mapCtrl.allBuildings"
+                    ng-model="mapCtrl.currentLocation.building"
+                    ng-change="mapCtrl.changeBuilding()">              
+            </select>            
+            <select ng-options="level for level in mapCtrl.allLevels"
+                    ng-model="mapCtrl.currentLocation.level"
+                    ng-change="mapCtrl.changeLevel()">
+            </select>
+          </div>          
+        </div>  
+        <div id="map"></div>
+      </div>
+    </div>    
 
 </div> <!-- /.container -->

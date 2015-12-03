@@ -24,21 +24,42 @@ miaApp.registerFactory('staffSearchService', ['$http', function($http) {
            'params' : params 
         });
     }
+
+    var getStaffProfileByShortname = function(staffSearch) {        
+        var params = {
+            'shortname': staffSearch.username
+        }        
+        return $http.get(self.staffSearchURL + '/FindADProfileByShortname', {
+            'params' : params            
+        });
+    }
+    
     
     var getStaffListTest = function(staffSearch) {
         var params = {
             'name': staffSearch.name
         };
 
-        return $http.get('/testsearch', {
+        return $http.get('/testGetStaffList', {
             'params': params
         });
     }
+    
+    var getStaffProfileByShortnameTest = function(staffSearch) {        
+        var params = {
+            'shortname': staffSearch.username
+        }        
+        return $http.get('/testGetStaffProfile', {
+            'params': params
+        });
+    }
+    
 
     return { 
         getStaffList: getStaffList,        
         getProfileImage: getProfileImage,
         getStaffProfile: getStaffProfile,
+        getStaffProfileByShortname: getStaffProfileByShortname,
         
         getStaffListTest: getStaffListTest,
     };

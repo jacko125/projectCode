@@ -18,13 +18,14 @@ nunjucks.configure('./src/view', {
 });
 app.use('/', express.static(__dirname + '/src/view/res'));
 app.use('/view', express.static(__dirname + '/src/view'));
+app.use('/maps', express.static(__dirname + '/data/maps'));
 
 // Configure router-level middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Load routes
-var route = require('./src/route.js')(app);
+var route = require('./src/route.js')(app); 
 
 // Start Websocket server
 //require('./ws-server.js');
