@@ -28,9 +28,9 @@
           </div>
             <div class="media-body" style="padding-left: 5px;">
             <h4 class="media-heading" ng-bind="staff.Description"></h4>
-              <p>Group: {{staff.Group}}</p>
-              <p>Office: {{staff.Office}}</p>
-              <p>Location: {{staff.postalAddress}} - {{staff.Country}}</p>
+              <p> {{staff.Group}}</p>
+              <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
+              <p>{{staff.postalAddress}} - {{staff.Country}}</p>
             </div>
           </div>
            <!--<p class="list-group-item-text">This is some text</p>-->
