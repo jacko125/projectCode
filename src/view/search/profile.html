@@ -17,8 +17,9 @@
     <p>User Name: {{searchCtrl.profile.Shortname}}</p>
     <p>Address: {{searchCtrl.profile.postalAddress}} <br/> {{searchCtrl.profile.Office}} </p>
   </div>
-  <button class="btn btn-success">Request location</button><br><br>
-  <button class="btn btn-default" ng-click="searchCtrl.pageButtonClick('list')">Back to results</button>
+      <button class="btn btn-success"
+              ng-click="searchCtrl.requestLocationButtonClick(searchCtrl.profile.Shortname)">Request location</button><br><br>
+      <button class="btn btn-default" ng-click="searchCtrl.pageButtonClick('list')">Back to results</button>
     </div>
 </div>
     </div>

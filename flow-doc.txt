@@ -1,0 +1,35 @@
+open website
+
+front page buttons
+* log in [view/make location requests]
+* map
+    - ask for location
+    if (location && detected building) {
+        what floor?
+        set marker        
+    } else {
+        what building?
+        what floor?
+        no marker
+    }
+    - save session details.
+    - display map (with user location)
+        - display map info (toilets, lift, meeting rooms, kitchen)
+        * request someone's location
+            - log in
+                - staff search page
+                    - send request
+                
+* request someone's location
+    - log in
+        request location
+        
+(logged in)* view location requests
+
+
+
+
+[Authentication with ws]
+* Log in, retrieve token.
+Token is used to verify websocket server calls.
+Websocket server uses simple requests to authenticate token.

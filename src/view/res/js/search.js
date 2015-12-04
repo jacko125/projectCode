@@ -1,5 +1,5 @@
-miaApp.registerCtrl('searchController', ['$scope', 'staffSearchService', 
-    function($scope, staffSearchService) {
+miaApp.registerCtrl('searchController', ['$scope', '$rootScope', 'staffSearchService','wsService', 
+    function($scope, $rootScope, staffSearchService, wsService) {
         var self = this;        
                     
         self.pages = [
@@ -34,5 +34,10 @@ miaApp.registerCtrl('searchController', ['$scope', 'staffSearchService',
                 self.profile = results.data.d[0];                
             });
             self.pageButtonClick('profile');                        
+        }
+        
+        self.requestLocationButtonClick = function(recipient) {
+            console.log('request button clicked');
+            wsService.requestLocation($rootScope.user.Shortname, recipient);            
         }
     }]);

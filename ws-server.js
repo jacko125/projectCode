@@ -14,8 +14,7 @@ var wss = new WebSocketServer(
         if (process.env.ENVIRONMENT == 'prod') {
             hostname = 'ntsydv1946';
         }                        
-        console.log(util.inspect(info.req.headers));        
-                
+        console.log(util.inspect(info.req.headers));                        
         
         try {
           var decoded = jwt.verify(info.req.headers['sec-websocket-protocol'], 'secret');                    
@@ -27,14 +26,12 @@ var wss = new WebSocketServer(
     }        
 });
 
-wss.on('connection', function connection(ws) {
-    console.log('opened connection');    
+wss.on('connection', function connection(ws) {     
     
     ws.on('message', function incoming(event) {
         var message = JSON.parse(event);
         console.log('incoming object: ' + util.inspect(message));
-        console.log('handling message from ' + message.username);
-        wsModule.handleMsg(ws, message);    
+        wsModule.handleMsg(wss, ws, message);    
     });
   
   ws.on('close', function close() {

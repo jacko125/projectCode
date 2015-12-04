@@ -1,10 +1,12 @@
 // Declare the app module
-var miaApp = angular.module('mia', []);
+var miaApp = angular.module('mia', ['angular-loading-bar', 'ngToast']);
 
-miaApp.config(['$httpProvider', '$controllerProvider', '$provide', function($httpProvider, $controllerProvider, $provide) { 
-    $httpProvider.interceptors.push('authInterceptor');
-    miaApp.registerCtrl = $controllerProvider.register;
-    miaApp.registerFactory = $provide.factory;
+miaApp.config(['$httpProvider', '$controllerProvider','$filterProvider', '$provide', 
+    function($httpProvider, $controllerProvider, $filterProvider, $provide) { 
+        $httpProvider.interceptors.push('authInterceptor');
+        miaApp.registerCtrl = $controllerProvider.register;
+        miaApp.registerFactory = $provide.factory;
+        miaApp.registerFilter = $filterProvider.register;
 }]);
 
 miaApp.factory('authInterceptor', ['$q', '$window', function($q, $window) {
@@ -26,17 +28,17 @@ miaApp.factory('authInterceptor', ['$q', '$window', function($q, $window) {
     };    
 }]);
 
-miaApp.controller('parentController', ['$scope', '$window', function($scope, $window) {
+miaApp.controller('parentController', ['$scope', '$rootScope', '$window', 'ngToast', function($scope, $rootScope, $window, ngToast) {
 
     var self = this;               
     self.navItems = [
             { name: 'Home', template: 'view/home.html'},
             { name: 'Search' , template: 'view/search.html'},
             { name: 'Map' , template: 'view/map.html'},            
-            { name: 'Meeting' , template: 'view/meeting.html'},
+            //{ name: 'Meeting' , template: 'view/meeting.html'},
         ];
-    
-    self.navItems.push({ name: 'Example', template: 'view/example.html'});   
+        
+    //self.navItems.push({ name: 'Example', template: 'view/example.html'});   
     
     self.selectedNavItem = self.navItems[0];        
     self.isNavItemActive = function(index) {
@@ -55,24 +57,113 @@ miaApp.controller('parentController', ['$scope', '$window', function($scope, $wi
         }      
     }    
         
-    loginFunctions(self, $scope, $window);       
+    $rootScope.isChoosingLocation = false;
+    $rootScope.isViewingResponses = false;
+    $rootScope.requests = [];
+    $rootScope.responses = [];
+    
+    // Login functions
+    loginFunctions(self, {
+        $scope: $scope,
+        $window: $window
+    });       
+                    
+    // Request functions    
+    requestFunctions(self, {
+        $scope: $scope,
+        $rootScope: $rootScope
+    });
+    
+    responseFunctions(self, {
+        $scope: $scope,
+        $rootScope: $rootScope,
+        ngToast: ngToast        
+    });  
 
 }]);
 
-function loginFunctions(self, $scope, $window) {       
+function loginFunctions(self, dep) {       
 
-    $scope.loggedIn = false;
+    dep.$scope.loggedIn = false;
         
-    $scope.$on('logged_in', function(event, data) {        
+    dep.$scope.$on('logged_in', function(event, data) {        
         self.changeNavItemByName('Home');        
-        $scope.loggedIn = true;
+        dep.$scope.username = data.Shortname;        
+        dep.$scope.loggedIn = true;                
     });
     
     self.logoutButtonClick = function() {        
-        delete $window.sessionStorage.token;
-        $scope.loggedIn = false;
-        $scope.$broadcast('logged_out');
+        delete dep.$window.sessionStorage.token;
+        dep.$scope.loggedIn = false;
+        dep.$scope.$broadcast('logged_out');
+        self.changeNavItemByName('Home');        
         $('.navbar-toggle').click();          
     }               
 }
 
+function requestFunctions(self, dep) {
+    
+    self.requestPageButtonClick = function() { 
+        dep.$rootScope.isViewingResponses = false;        
+        self.selectedNavItem = { name: 'Requests', template: 'view/request.html' };                      
+    }   
+        
+    dep.$scope.requestCount = 0;            
+    dep.$scope.$on('ws-receive-request-list', function(event, data) {       
+        dep.$scope.$apply(function() { dep.$scope.requestCount = data.length; });                              
+    });
+    
+    dep.$scope.$on('request-accept', function(event, data) {                
+        dep.$rootScope.isChoosingLocation = true;
+        dep.$scope.$broadcast('request-accept', data);
+        self.changeNavItemByName('Map');
+    });
+    
+    dep.$scope.$on('request-backtolist', function(event) {
+        dep.$rootScope.isChoosingLocation = false;
+        self.requestPageButtonClick();
+    });
+}
+
+function responseFunctions(self, dep) {
+    self.responsePageButtonClick = function() {
+        dep.$rootScope.isViewingResponses = true;        
+        self.selectedNavItem = { name: 'Requests', template: 'view/response.html' };                      
+    }    
+    
+    dep.$scope.responseCount = 0;          
+    dep.$scope.$on('ws-receive-response-list', function(event, data) {       
+        dep.$scope.$apply(function() { dep.$scope.responseCount = data.length; });                              
+    });
+    
+    dep.$scope.$on('response-backtolist', function(event) {
+        dep.$rootScope.isViewingLocation = false;        
+        self.responsePageButtonClick();
+    });
+    
+    dep.$scope.$on('ws-receive-response', function(event, data) {        
+    
+        console.log('Parent received response');
+        var toastMsg = data.sender + ' has sent you their location';
+        dep.ngToast.create({
+            className: 'success',
+            animation: 'fade',
+            content: '<div class="toast">' + toastMsg + '</div>',
+            horizontalPosition: 'left'
+        });
+        dep.$rootScope.responses.push(data);
+        dep.$scope.$apply(function() { dep.$scope.responseCount = dep.$rootScope.responses.length; });                                              
+    });      
+    
+    dep.$scope.$on('response-sent', function(event, data) {
+        var toastMsg = 'You have responded to ' + data;
+        dep.ngToast.create({
+            className: 'success',
+            animation: 'fade',
+            content: '<div class="toast">' + toastMsg + '</div>',
+            horizontalPosition: 'left'
+        });
+        
+    });
+    
+}

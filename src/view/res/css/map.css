@@ -1,14 +1,9 @@
 .container-map {
-    text-align: center;
-    margin-top: 40px;
-
+  text-align: center;
+  padding-top: 20px;
 }
 
 #map {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    margin: 0px;
+  height:50%;  
+  background:white;
 }

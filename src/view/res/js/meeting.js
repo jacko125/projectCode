@@ -1,7 +1,7 @@
-miaApp.registerCtrl('meetingController', [function() { 
+miaApp.registerCtrl('meetingController', ['$rootScope', function($rootScope) { 
         var self = this;        
         
         self.title = 'Meeting Room Booking System';
-        self.message = 'This page allows you to search and book meeting rooms';
+        self.message = 'Welcome ' + $rootScope.user.Description;
                 
 }]);   
