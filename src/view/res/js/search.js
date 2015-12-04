@@ -22,8 +22,8 @@ miaApp.registerCtrl('searchController', ['$scope', '$rootScope', 'staffSearchSer
         self.results = {};               
         self.loadStaffList = function() {           
             staffSearchService.getStaffList(self.searchParams).then(function(results) {
-                self.results = results.data.d;                
-            });                        
+                self.results = results.data.d;
+            });
         };
 
         self.profile = {};

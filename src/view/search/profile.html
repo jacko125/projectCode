@@ -1,8 +1,26 @@
-<div class="container container-search-profile">
+<div class="row">
+
+  <div class="col-sm-6 col-sm-offset-3">
+  <div class="media" style="padding-top: 10%;">
+  <div class="media-left media-top">
+      <div class="profile-container-large">
+        <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{searchCtrl.profile.EmployeeId}}.jpg">
+        </div>
+  </div>
+    <div class="media-body container-search-profile" style="padding-left: 20px;">
   <h2 ng-bind="searchCtrl.profile.Description"></h2>
-  <img ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{searchCtrl.profile.EmployeeId}}.jpg">
-  <p class="lead" ng-bind="searchCtrl.profile.Group + ', ' + searchCtrl.profile.Division"></p>
-  <button class="btn btn-success"
-          ng-click="searchCtrl.requestLocationButtonClick(searchCtrl.profile.Shortname)">Request location</button><br><br>
-  <button class="btn btn-default" ng-click="searchCtrl.pageButtonClick('list')">Back to results</button>
-</div>  
+
+  <p class="lead">{{searchCtrl.profile.Group}}, {{searchCtrl.profile.Division}}</p>
+      <div><p>Team: {{searchCtrl.profile.Department}}</p>
+        <p>Email Address: {{searchCtrl.profile.EmailAddress}}</p>
+        <p>Contact Number: {{searchCtrl.profile.FullTelephoneNumber}}</p>
+    <p>User Name: {{searchCtrl.profile.Shortname}}</p>
+    <p>Address: {{searchCtrl.profile.postalAddress}} <br/> {{searchCtrl.profile.Office}} </p>
+  </div>
+      <button class="btn btn-success"
+              ng-click="searchCtrl.requestLocationButtonClick(searchCtrl.profile.Shortname)">Request location</button><br><br>
+      <button class="btn btn-default" ng-click="searchCtrl.pageButtonClick('list')">Back to results</button>
+    </div>
+</div>
+    </div>
+</div>
