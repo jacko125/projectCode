@@ -87,22 +87,33 @@ function msgHandler(self, dep) {
         switch (message.type) {
             //"requests"
             case 'request-list':
-                console.log('Received request list.');
+                console.log('Received request list at service level.');
                 console.log(message.requests);
                 dep.$rootScope.requests = message.requests;
                 dep.$scope.$emit('ws-receive-request-list', message.requests);
                 break;                            
                                 
             case 'response':
-                console.log('Received response.');                
-                dep.$scope.$emit('ws-receive-response', message.response); 
+                console.log('Received response at service level.');                
+                //dep.$scope.$emit('ws-receive-response', message.response); 
+                dep.$rootScope.$broadcast('ws-receive-response-test', message.response);
+                break;
+                
+            case 'request-location':
+                var request = JSON.parse(message.request);
+                console.log(request);
+                console.log(request.sender + ' is requesting your location');
+                dep.$rootScope.requests.push(request); //!
+                dep.$scope.$emit('request-location', request);
                 break;
                 
             case 'response-list':
-                console.log('Received response list.');
+                console.log('Received response list at service level.');
                 console.log(message.responses);
                 dep.$rootScope.responses = message.responses;
+                console.log(dep.$rootScope.responses);
                 dep.$scope.$emit('ws-receive-response-list', message.responses);
+                dep.$rootScope.$broadcast('ws-receive-response-list-test', message.responses);
                 break;
             
             default:

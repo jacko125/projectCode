@@ -57,11 +57,9 @@ miaApp.controller('parentController', ['$scope', '$rootScope', '$window', 'ngToa
         }      
     }    
         
-    $rootScope.isChoosingLocation = false;
-    $rootScope.isViewingResponses = false;
-    $rootScope.requests = [];
-    $rootScope.responses = [];
-    
+        self.isViewingResponses = $rootScope.isViewingResponses;        
+        self.requests = $rootScope.requests;         
+        self.responses = $rootScope.responses;        
     // Login functions
     loginFunctions(self, {
         $scope: $scope,
@@ -71,7 +69,8 @@ miaApp.controller('parentController', ['$scope', '$rootScope', '$window', 'ngToa
     // Request functions    
     requestFunctions(self, {
         $scope: $scope,
-        $rootScope: $rootScope
+        $rootScope: $rootScope,
+        ngToast: ngToast        
     });
     
     responseFunctions(self, {
@@ -113,6 +112,20 @@ function requestFunctions(self, dep) {
         dep.$scope.$apply(function() { dep.$scope.requestCount = data.length; });                              
     });
     
+    dep.$scope.$on('request-location', function (event, data) {
+        dep.$scope.$apply(function() { dep.$scope.requestCount = dep.$rootScope.requests.length; });                              
+        
+        console.log('parent found request-location');
+        
+        var toastMsg = data.sender + ' has requested your location';
+        dep.ngToast.create({
+            className: 'info',
+            animation: 'fade',
+            content: '<div class="toast">' + toastMsg + '</div>',
+            horizontalPosition: 'left'
+        });
+    });
+    
     dep.$scope.$on('request-accept', function(event, data) {                
         dep.$rootScope.isChoosingLocation = true;
         dep.$scope.$broadcast('request-accept', data);
@@ -131,14 +144,28 @@ function responseFunctions(self, dep) {
         self.selectedNavItem = { name: 'Requests', template: 'view/response.html' };                      
     }    
     
-    dep.$scope.responseCount = 0;          
+           
     dep.$scope.$on('ws-receive-response-list', function(event, data) {       
+        console.log('Received response list. Updating number to ' + data.length);        
+        console.log(data);        
         dep.$scope.$apply(function() { dep.$scope.responseCount = data.length; });                              
+        //toast
     });
+
     
+    dep.$rootScope.$on('ws-receive-response-test-list', function(event, data) {
+        console.log('RESPONSE TEST LIST HIT');
+    });
+   
     dep.$scope.$on('response-backtolist', function(event) {
         dep.$rootScope.isViewingLocation = false;        
         self.responsePageButtonClick();
+    });
+    
+    dep.$rootScope.$on('ws-receive-response-test', function(event, data) {
+        console.log('RESPONSE TEST HIT');
+        dep.$rootScope.responses.push(data);
+        dep.$scope.$apply(function() { dep.$scope.responseCount = dep.$rootScope.responses.length; });                              
     });
     
     dep.$scope.$on('ws-receive-response', function(event, data) {        
@@ -152,18 +179,14 @@ function responseFunctions(self, dep) {
             horizontalPosition: 'left'
         });
         dep.$rootScope.responses.push(data);
-        dep.$scope.$apply(function() { dep.$scope.responseCount = dep.$rootScope.responses.length; });                                              
-    });      
+        dep.$scope.$apply(function() { dep.$scope.responseCount = dep.$rootScope.responses.length; });                              
+                
+    });   
     
-    dep.$scope.$on('response-sent', function(event, data) {
-        var toastMsg = 'You have responded to ' + data;
-        dep.ngToast.create({
-            className: 'success',
-            animation: 'fade',
-            content: '<div class="toast">' + toastMsg + '</div>',
-            horizontalPosition: 'left'
-        });
-        
+    dep.$scope.$on('view-response-parent', function(event, data) {
+        dep.$rootScope.viewMapResponse = true;
+        dep.$rootScope.responseLocation = data;
+        self.changeNavItemByName('Map');        
     });
-    
 }
+

@@ -23,8 +23,8 @@ L.Map = L.Map.extend({
 
 miaApp.registerCtrl('mapController', ['$rootScope', '$scope', 'wsService',
     function($rootScope, $scope, wsService) { 
-        var self = this;        
-                        
+        var self = this;
+                                
         var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 1' };
         self.currentLocation = ($rootScope.user) ? getUserLocation($rootScope.user) : defaultLocation;                   
         checkUnsupportedMap(self);
@@ -62,6 +62,18 @@ miaApp.registerCtrl('mapController', ['$rootScope', '$scope', 'wsService',
             wsService: wsService,
             userMarker: userMarker
         });
+        
+        $scope.$on('view-response-map', function(event, data) {
+            console.log('Map showing stuff now');
+        });
+        
+        if ($rootScope.viewMapResponse == true) {
+            var responseLocation = $rootScope.responseLocation.location;
+            self.currentLocation.building = responseLocation.building;
+            self.currentLocation.level = responseLocation.level;
+            userMarker.setLatLng(L.latLng(responseLocation.latLng.lat, responseLocation.latLng.lng));
+            self.changeBuilding();
+        }
 
 }]);   
 

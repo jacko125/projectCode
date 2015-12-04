@@ -22,8 +22,11 @@ miaApp.registerCtrl('requestController', ['$rootScope', '$scope', 'wsService', '
         self.responses = $rootScope.responses;
         
         self.viewResponseButtonClick = function(response) {
-            //$scope.$emit('view-response')
-            //$rootScope.$broadcast('view-response', response);
+            console.log('View response button clicked');
+            console.log(response);
+            //$scope.$emit('view-response', response);
+            $scope.$emit('view-response-parent', response);
+            //$rootScope.$broadcast('view-response-map', response);
             //emit to map controllers
             //set map controller viewing mode
             //two buttons - delete and back            

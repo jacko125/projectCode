@@ -33,6 +33,16 @@ module.exports = {
                 console.log('Received request for ' + message.recipient + '\'s location');
                                                
                 RequestModule.createRequest(new Request(message.sender, message.recipient, message.datetime));                                 
+                
+                sendToClient(wss, ws, message.recipient, {
+                    type: 'request-location',
+                    request: JSON.stringify({
+                        sender: message.sender,
+                        recipient: message.recipient,
+                        datetime: message.datetime                                            
+                    })                    
+                });
+                
                 //TODO Send request to user if connected
                 
                 break;
@@ -84,7 +94,7 @@ module.exports = {
                                 
                 RequestModule.deleteRequest(message.sender, message.recipient, function() { // Delete from sender's requests                   
                     RequestModule.getRequestsForUser(message.recipient, function(requests) { // Resend sender's requests    
-                        sendToClient(wss, ws, message.recipient, {
+                        sendToClient(wss, ws, message.sender, {
                             type: 'request-list',
                             requests: requests
                         });
