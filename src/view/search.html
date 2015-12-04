@@ -1,28 +1,10 @@
-<script src="/js/search/staffSearchService.js"></script>
 <script src="/js/search.js"></script>
+<script src="/js/search/staffSearchService.js"></script>
 
 <div class="container" ng-controller="searchController as searchCtrl">
 
-  <div class="container-map">  
-    <h1 ng-bind="searchCtrl.title"></h1>
-    <p class="lead" ng-bind="searchCtrl.message"></p>
-    <div class="clearfix"></div>
-    <div class="form-group">
-      <form name="staffSearchForm">
-      <label for="user">Search by Staff name: <br /> <input type="text"
-               name="staffName"
-               class="form-control"
-               placeholder="Staff Name"
-               ng-model="staff.name"
-               ng-model-options="{ debounce: 2000 }" ng-change="searchCtrl.loadStaffList(staff.name)"></input>
-      </label>
-        <button class="btn btn-primary" ng-click="staffSearchForm.staffName.$rollbackViewValue(); staff.name=''">Clear</button>
-      </form>
-    </div>
+  <div ng-include="searchCtrl.selectedPage.template">
 
-    <div class="grid">
-
-    </div>
   </div>
-
+  
 </div> <!-- /.container -->

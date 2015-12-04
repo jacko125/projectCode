@@ -1,0 +1,12 @@
+.container-request {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.request-img {
+
+  object-fit: cover;
+  height:100px;
+  width:auto;
+  
+}

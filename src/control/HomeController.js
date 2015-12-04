@@ -1,7 +1,9 @@
 // Modules this controller depends on.
 var UserModule = require('../model/module/UserModule.js');
-var http = require('http');
+var RequestModule = require('../model/module/RequestModule.js');
+var ResponseModule = require('../model/module/ResponseModule.js');
 
+var http = require('http');
 var jwt = require('jsonwebtoken');
 var jwtSecret = 'secret';
 
@@ -15,13 +17,8 @@ module.exports = {
         // Inject jwtSecret into the handler
         
         return function (req, res) {
-            // Actually validate
-            console.log('params: ' + require('util').inspect(req.body));
-            if (req.body.username != req.body.password) {                       
-                res.status(401).send("Invalid username/password combination");
-                return;
-            }
-            
+            // Validation at client level                 
+            console.log("logged in");
             var token = jwt.sign({ name: req.params.username }, jwtSecret, { expiresIn: '5h' });        
             console.log('returning token ' + token);
             res.json({ token: token });
@@ -30,6 +27,36 @@ module.exports = {
     
     ajaxWsAuth: function (req, res) {        
         res.status(200).send('Websocket client authenticated');        
+    },
+    
+    ajaxTestGetStaffList: function (req, res) {
+        res.json(require('../test/testGetStaffList.json'));
+    },
+    
+    ajaxTestGetStaffProfile: function (req,res) {
+        res.json(require('../test/testGetStaffProfile.json'));
+    },        
+    
+    actionDumpRequests: function (req,res) {
+        RequestModule.getAllRequests(function(requests) {
+            res.json(requests);
+        });        
+    },
+    
+    actionDumpResponses: function (req,res) {
+        ResponseModule.getAllResponses(function(responses) {
+            res.json(responses);
+        });        
+    },
+    
+    actionDeleteAllRequests: function (req,res) {        
+        RequestModule.deleteAllRequests();
+        res.send('<h3>Deleted all requests.</h3>');
+    },
+    
+    actionDeleteAllResponses: function (req,res) {        
+        ResponseModule.deleteAllResponses();
+        res.send('<h3>Deleted all responses.</h3>');
     },
         
 	
