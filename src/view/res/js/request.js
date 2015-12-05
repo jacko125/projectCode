@@ -1,4 +1,4 @@
-miaApp.registerCtrl('requestController', ['$rootScope', '$scope', 'wsService', 'staffSearchService', 
+miaApp.controller('requestController', ['$rootScope', '$scope', 'wsService', 'staffSearchService', 
     function($rootScope, $scope, wsService, staffSearchService) { 
         var self = this;                
                        
@@ -38,7 +38,7 @@ miaApp.registerCtrl('requestController', ['$rootScope', '$scope', 'wsService', '
         
 }]);
 
-miaApp.registerCtrl('requestProfileController', ['$scope', 'staffSearchService', function($scope, staffSearchService) {
+miaApp.controller('requestProfileController', ['$scope', 'staffSearchService', function($scope, staffSearchService) {
     var self = this;
     self.user = {};
     
@@ -54,9 +54,8 @@ miaApp.registerCtrl('requestProfileController', ['$scope', 'staffSearchService',
         
 }]);
 
-miaApp.registerFilter('timeSince', [function() {
-    return function(input) {
-                
+miaApp.filter('timeSince', [function() {
+    return function(input) {                
         return timeSince(Date.parse(input));                
     }
 }]);

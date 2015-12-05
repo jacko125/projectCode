@@ -1,4 +1,4 @@
-miaApp.registerFactory('wsService', ['$rootScope', function($rootScope) {       
+miaApp.factory('wsService', ['$rootScope', function($rootScope) {       
     var self = this;
     self.webSocket = {};
     self.username = {};

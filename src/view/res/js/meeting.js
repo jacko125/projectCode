@@ -1,4 +1,4 @@
-miaApp.registerCtrl('meetingController', ['$rootScope', function($rootScope) { 
+miaApp.controller('meetingController', ['$rootScope', function($rootScope) { 
         var self = this;        
         
         self.title = 'Meeting Room Booking System';

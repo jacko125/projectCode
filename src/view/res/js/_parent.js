@@ -1,12 +1,9 @@
 // Declare the app module
-var miaApp = angular.module('mia', ['angular-loading-bar', 'ngToast']);
+var miaApp = angular.module('mia', ['ui.router', 'angular-loading-bar', 'ngToast']);
 
-miaApp.config(['$httpProvider', '$controllerProvider','$filterProvider', '$provide', 
-    function($httpProvider, $controllerProvider, $filterProvider, $provide) { 
-        $httpProvider.interceptors.push('authInterceptor');
-        miaApp.registerCtrl = $controllerProvider.register;
-        miaApp.registerFactory = $provide.factory;
-        miaApp.registerFilter = $filterProvider.register;
+miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 
+    function($httpProvider, $stateProvider, $urlRouterProvider) { 
+        $httpProvider.interceptors.push('authInterceptor');        
 }]);
 
 miaApp.factory('authInterceptor', ['$q', '$window', function($q, $window) {
@@ -34,11 +31,8 @@ miaApp.controller('parentController', ['$scope', '$rootScope', '$window', 'ngToa
     self.navItems = [
             { name: 'Home', template: 'view/home.html'},
             { name: 'Search' , template: 'view/search.html'},
-            { name: 'Map' , template: 'view/map.html'},            
-            //{ name: 'Meeting' , template: 'view/meeting.html'},
-        ];
-        
-    //self.navItems.push({ name: 'Example', template: 'view/example.html'});   
+            { name: 'Map' , template: 'view/map.html'},           
+        ];            
     
     self.selectedNavItem = self.navItems[0];        
     self.isNavItemActive = function(index) {

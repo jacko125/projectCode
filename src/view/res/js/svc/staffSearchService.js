@@ -1,4 +1,4 @@
-miaApp.registerFactory('staffSearchService', ['$http', function($http) {
+miaApp.factory('staffSearchService', ['$http', function($http) {
     var self = this;
     self.staffSearchURL = 'http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc'
 

@@ -21,7 +21,7 @@ L.Map = L.Map.extend({
     }
 });
 
-miaApp.registerCtrl('mapController', ['$rootScope', '$scope', 'wsService',
+miaApp.controller('mapController', ['$rootScope', '$scope', 'wsService',
     function($rootScope, $scope, wsService) { 
         var self = this;
                                 

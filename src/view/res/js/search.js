@@ -1,4 +1,4 @@
-miaApp.registerCtrl('searchController', ['$scope', '$rootScope', 'staffSearchService','wsService', 
+miaApp.controller('searchController', ['$scope', '$rootScope', 'staffSearchService','wsService', 
     function($scope, $rootScope, staffSearchService, wsService) {
         var self = this;        
                     
@@ -21,7 +21,7 @@ miaApp.registerCtrl('searchController', ['$scope', '$rootScope', 'staffSearchSer
         };       
         self.results = {};               
         self.loadStaffList = function() {           
-            staffSearchService.getStaffList(self.searchParams).then(function(results) {
+            staffSearchService.getStaffListTest(self.searchParams).then(function(results) {
                 self.results = results.data.d;
             });
         };
@@ -29,7 +29,7 @@ miaApp.registerCtrl('searchController', ['$scope', '$rootScope', 'staffSearchSer
         self.profile = {};
         self.staffButtonClick = function(employeeID) {
             self.profile = {};
-            self.selectedProfile = staffSearchService.getStaffProfile(employeeID).then(function(results) {
+            self.selectedProfile = staffSearchService.getStaffProfileTest(employeeID).then(function(results) {
                 console.log(results);
                 self.profile = results.data.d[0];                
             });

@@ -30,11 +30,11 @@ module.exports = {
     },
     
     ajaxTestGetStaffList: function (req, res) {
-        res.json(require('../test/testGetStaffList.json'));
+        res.json(require('../../resources/test/testGetStaffList.json'));
     },
     
     ajaxTestGetStaffProfile: function (req,res) {
-        res.json(require('../test/testGetStaffProfile.json'));
+        res.json(require('../../resources/test/testGetStaffProfile.json'));
     },        
     
     actionDumpRequests: function (req,res) {

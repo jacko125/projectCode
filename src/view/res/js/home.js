@@ -1,4 +1,4 @@
-miaApp.registerCtrl('homeController', ['$http', '$window', '$scope','$rootScope','wsService', 'staffSearchService', 
+miaApp.controller('homeController', ['$http', '$window', '$scope','$rootScope','wsService', 'staffSearchService', 
     function($http, $window, $scope, $rootScope, wsService, staffSearchService) {   
         var self = this;        
         
