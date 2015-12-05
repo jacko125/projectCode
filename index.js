@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var app = express();
 
 // Configure production environment settings
-if (process.env.ENVIRONMENT == 'prod') {
-    console.log('Running in a production environment.');   
+if (process.env.ENVIRONMENT === 'prod') {
+    console.log('Running in a production environment.'); 
 }
 
 // Configure the template engine and static resources
@@ -25,17 +25,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Load routes
-var route = require('./src/route.js')(app); 
+require('./src/route.js')(app);
 
 // Start Websocket server
 //require('./ws-server.js');
 
 // Start HTTP server
 var server = app.listen(3000, function () {
-  var host = server.address().address;
-  var port = server.address().port;
-
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log('MIA listening at http://%s:%s', server.address().address, server.address().port);
 });
 
 
