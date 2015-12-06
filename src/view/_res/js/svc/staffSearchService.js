@@ -45,12 +45,20 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
         });
     }
     
-    var getStaffProfileByShortnameTest = function(params) {        
-        return $http.get('/testGetStaffProfile');
+    var getStaffProfileByShortnameTest = function(shortname) {        
+        return $http.get('/testGetStaffProfile', {
+            params: {
+                username: shortname
+            }
+        });
     }
     
-    var getStaffProfileTest = function(params) {
-        return $http.get('/testGetStaffProfile');
+    var getStaffProfileTest = function(shortname) {        
+        return $http.get('/testGetStaffProfile', {
+            params: {
+                username: shortname
+            }
+        });       
     }
     
 

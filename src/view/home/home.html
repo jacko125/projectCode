@@ -18,14 +18,14 @@
             </button>
           </div>
           <div class="col-sm-6">
-            <button class="btn btn-info home-item" ui-sref="map">
+            <button class="btn btn-info home-item" ng-click="parentCtrl.changeNavItemByName('Map')">
               <b>View a map</b><br>
               Find your way around.        
             </button>
           </div>        
           <div class="col-sm-6" ng-if="loggedIn == false">                    
             <button class="btn btn-primary home-item" 
-              ng-click="homeCtrl.loginButtonClick()">
+            ng-click="homeCtrl.loginButtonClick()">
               <b>Log in</b><br>
               Who's looking for you?
             </button>

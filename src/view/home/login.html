@@ -6,7 +6,9 @@
     <div class="col-sm-4 col-sm-offset-4">
     <form ng-submit="homeCtrl.loginSubmit()">
       <div class="form-group">        
-        <input type="text" class="form-control" placeholder="Username" ng-model="homeCtrl.loginForm.username">
+        <input type="text" class="form-control" 
+          placeholder="Username"
+          ng-model="homeCtrl.loginForm.username">
       </div>
 
       <!--
@@ -18,7 +20,7 @@
       <button type="submit" class="btn btn-default">Log in</button>
     </form>
     <br>
-    <p>Click <b><a href="#" ng-click="homeCtrl.buttonClick('main')">here</a></b> to go back</p>
+    <p>Click <b><a ui-sref="home">here</a></b> to go back</p>
     </div>
   </div>
     

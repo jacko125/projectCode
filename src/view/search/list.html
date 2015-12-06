@@ -17,9 +17,9 @@
       <p class="alert alert-info" role="alert" style="padding: 15px;" ng-if="searchCtrl.results.length <= 0"> No matching staff profile found!</p>
       <div class="list-group listnav">
         <a class="list-group-item"
-        ng-repeat="staff in searchCtrl.results track by staff.EmployeeId"
-           href="#"
-           ng-click="searchCtrl.staffButtonClick(staff.EmployeeId)">
+          ng-repeat="staff in searchCtrl.results track by staff.EmployeeId"           
+          ng-click="searchCtrl.staffButtonClick(staff.EmployeeId)"
+          ui-sref="search.profile">
           <div class="media">
             <div class="media-left  media-middle">
           <div class="profile-container">

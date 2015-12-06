@@ -10,7 +10,7 @@ var jwtSecret = 'secret';
 module.exports = {
 	
 	viewMain: function (req, res) {
-		res.render('base/parent.html');
+		res.render('_base/parent.html');
 	},
        
     ajaxLogin: function (jwtSecret) {               
@@ -34,7 +34,11 @@ module.exports = {
     },
     
     ajaxTestGetStaffProfile: function (req,res) {
-        res.json(require('../../resources/test/testGetStaffProfile.json'));
+        console.log(require('util').inspect(req.params));
+        if (req.query.username == 'hgoh2')
+            res.json(require('../../resources/test/testGetStaffProfileA.json'));
+        else            
+            res.json(require('../../resources/test/testGetStaffProfileB.json'));
     },        
     
     actionDumpRequests: function (req,res) {

@@ -7,7 +7,15 @@ var RequestDAO = require('../dao/RequestDAO.js');
 module.exports = {
 	
     createRequest: function(request) {       
-        RequestDAO.createRequest({ request: request});
+        RequestDAO.createRequest({ request: request });
+    },
+    
+    deleteRequest: function(sender, recipient, callback) {
+        RequestDAO.deleteRequest({
+            sender: sender,
+            recipient: recipient,
+            callback: callback
+        });
     },
         
     deleteAllRequests: function() {        

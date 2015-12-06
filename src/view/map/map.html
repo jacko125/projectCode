@@ -1,10 +1,8 @@
-<script src="/js/map.js"></script>
-
-<div class="container container-map fill"  ng-controller="mapController as mapCtrl">
+<div class="container container-map fill">
   
     <div class="row fill">
       <div class="col-sm-6 col-sm-offset-3 fill">      
-        <div ng-if="mapCtrl.isChoosingLocation" class="alert alert-info">Place a pin at your location</div>
+        <div ng-if="action === 'send-response'" class="alert alert-info">Place a pin at your location</div>
         <div class="panel panel-default">
           <div class="panel-heading">            
             <select ng-options="building for building in mapCtrl.allBuildings"
@@ -20,12 +18,15 @@
         <div id="map"></div>
         <div ng-if="mapCtrl.unsupportedMap" class="alert alert-warning">This map is not supported. Please select another</div>
         <br>
-        <div ng-if="mapCtrl.isChoosingLocation">
-          <button ng-class="mapCtrl.sendLocationButtonClass()"
-                  ng-click="mapCtrl.sendLocationButtonClick()">Send location</button>
+        <div ng-if="action === 'send-response'">
+          <a ng-class="mapCtrl.sendLocationButtonClass()"
+                  ng-click="mapCtrl.sendLocationButtonClick(target)"
+                  ui-sref="home">Send location</a>
           &nbsp;
-          <button class="btn btn-default" 
-                  ng-click="mapCtrl.backToRequestListButtonClick()">Back to list</button>
+          <a class="btn btn-default" ui-sref="requests({ action: 'requests'})">Back to list</a>
+        </div>
+        <div ng-if="action === 'view-response'">
+          <a class="btn btn-default" ui-sref="requests({ action: 'responses' })">Back to list</a>
         </div>
       </div>
     </div>    

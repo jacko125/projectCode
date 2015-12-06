@@ -27,16 +27,14 @@
 </head>
 <body ng-controller='parentController as parentCtrl'>
     
-	{% include 'base/header.html' %}
-  <toast></toast>
-    <div class="fill" ng-include="parentCtrl.selectedNavItem.template">        
+	{% include '_base/header.html' %}
+    <toast></toast>
+    <div class="container fill" ui-view>        
     
     </div>    
     
-	{% include 'base/footer.html' %}
+	{% include '_base/footer.html' %}
   
-  
-	    
     <script src="/util/jquery-2.1.4.js"></script>
     <script src="/util/bootstrap/js/bootstrap.js"></script>
     <script src="/util/leaflet/leaflet.js"></script>       
@@ -55,6 +53,7 @@
     <Script src="/js/request.js"></script>
     <Script src="/js/meeting.js"></script>
     
+    <script src="/js/svc/requestService.js"></script>
     <script src="/js/svc/staffSearchService.js"></script>
     <script src="/js/svc/wsService.js"></script>
     

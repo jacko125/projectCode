@@ -21,8 +21,9 @@ L.Map = L.Map.extend({
     }
 });
 
-miaApp.controller('mapController', ['$rootScope', '$scope', 'wsService',
-    function($rootScope, $scope, wsService) { 
+miaApp.controller('mapController', ['$rootScope', '$scope', '$state', '$stateParams',
+    'ngToast', 'wsService',
+    function($rootScope, $scope, $state, $stateParams, ngToast, wsService) { 
         var self = this;
                                 
         var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 1' };
@@ -46,39 +47,32 @@ miaApp.controller('mapController', ['$rootScope', '$scope', 'wsService',
         
         // TODO When logged out, reset allLocations         
         
-        var userMarker = L.marker(L.latLng(0,0), { draggable: true });
+        var userMarker = L.marker(L.latLng(0,0), { draggable: true });       
         
         mapFunctions(self, {
             userMarker: userMarker
         });
         
-        self.isChoosingLocation = $rootScope.isChoosingLocation;
-        self.isViewingLocation = $rootScope.isViewingResponse;
-        self.recipient = $rootScope.responseRecipient; // The person receiving a location-response
-                
-        requestFunctions(self, {
-            $scope: $scope,
+        $scope.action = $stateParams.action;
+        $scope.target = $stateParams.target;
+        
+        if ($stateParams.action === 'view-response') {
+            var response = $stateParams.target;            
+            self.currentLocation.building = response.location.building;
+            self.currentLocation.level = response.location.level;
+            userMarker.setLatLng(L.latLng(response.location.latLng.lat, response.location.latLng.lng));
+            self.changeBuilding();
+        }
+             
+        requestFunctions(self, {            
+            $scope: $scope,     
             $rootScope: $rootScope,
             wsService: wsService,
             userMarker: userMarker
-        });
-        
-        $scope.$on('view-response-map', function(event, data) {
-            console.log('Map showing stuff now');
-        });
-        
-        if ($rootScope.viewMapResponse == true) {
-            var responseLocation = $rootScope.responseLocation.location;
-            self.currentLocation.building = responseLocation.building;
-            self.currentLocation.level = responseLocation.level;
-            userMarker.setLatLng(L.latLng(responseLocation.latLng.lat, responseLocation.latLng.lng));
-            self.changeBuilding();
-        }
-
+        });                
 }]);   
 
 function mapFunctions(self, dep) {
-    
     
     var southWest = L.latLng(-500, -250),
             northEast = L.latLng(500, 250),
@@ -135,19 +129,12 @@ function requestFunctions(self, dep) {
         };
     };            
     
-    self.sendLocationButtonClick = function() {        
-        dep.wsService.sendResponse(dep.$rootScope.user.Shortname, dep.$rootScope.responseRecipient, {
+    self.sendLocationButtonClick = function(request) {        
+        dep.wsService.sendResponse(dep.$rootScope.user.Shortname, request.sender, {
             building: self.currentLocation.building,
             level: self.currentLocation.level,
             latLng: dep.userMarker.getLatLng()
-        });
-        
-        self.isChoosingLocation = false;
-        dep.$scope.$emit('response-sent', dep.$rootScope.responseRecipient);
-    }
-    
-    self.backToRequestListButtonClick = function() {
-        dep.$scope.$emit('request-backtolist');
+        }); // Parent is notified as observer from wsService (for toast)        
     }
 }
 

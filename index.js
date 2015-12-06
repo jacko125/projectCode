@@ -16,7 +16,7 @@ nunjucks.configure('./src/view', {
     autoescape: true,
     express: app
 });
-app.use('/', express.static(__dirname + '/src/view/res'));
+app.use('/', express.static(__dirname + '/src/view/_res'));
 app.use('/view', express.static(__dirname + '/src/view'));
 app.use('/maps', express.static(__dirname + '/data/maps'));
 

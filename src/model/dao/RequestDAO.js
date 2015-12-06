@@ -10,6 +10,8 @@ var mongoURL = 'mongodb://localhost:27017/mia';
 module.exports = {
     
 	createRequest: mongoCommand(createRequest),
+    
+    deleteRequest: mongoCommand(deleteRequest),
           
     getRequestsForUser: mongoCommand(getRequestsForUser),
     
@@ -43,6 +45,17 @@ function createRequest(db, params) {
     });    
 }
 
+function deleteRequest(db, params) {
+
+    db.collection('requests').removeOne(params, function(err, r) {
+        if (r.result.n > 0) {
+            console.log('Deleted existing request (' + params.sender + ':' + params.recipient + ')');
+        }        
+        db.close();
+        params.callback();
+    });    
+}
+
 function getRequestsForUser(db, params) {    
     
     return db.collection('requests').find({recipient: params.username}).toArray(function(err, docs) {
@@ -66,25 +79,6 @@ function deleteAllRequests(db, params) {
         db.close();
     });    
 }
-
-function deleteRequest(db, params) {
-    var condition = {
-        sender: params.sender,
-        recipient: params.recipient
-    }
-    
-    db.collection('requests').removeOne(condition, function(err, r) {
-        console.log('Deleted one request, condition: ' + util.inspect(condition));
-        db.close();
-        params.callback();
-    });
-}
-
-
-
-
-
-
 
 
 
