@@ -27,9 +27,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Load routes
 require('./src/route.js')(app);
 
-// Start Websocket server
-//require('./ws-server.js');
-
 // Start HTTP server
 var server = app.listen(3000, function () {
   console.log('MIA listening at http://%s:%s', server.address().address, server.address().port);

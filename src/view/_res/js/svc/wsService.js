@@ -58,7 +58,7 @@ miaApp.factory('wsService', ['$location', 'requestService',
     };
 
     var sendResponse = function(sender, recipient, location) {        
-        requestService.removeRequest(requestService, recipient);        
+        requestService.removeRequest(requestService, sender);        
         notifyObservers('ws-sent-response', recipient);
         self.webSocket.send(JSON.stringify({
             type: "respond-location",
@@ -71,13 +71,30 @@ miaApp.factory('wsService', ['$location', 'requestService',
         }));
     };
     
+    var removeRequest = function(request) {
+        self.webSocket.send(JSON.stringify({
+            type: 'remove-request',
+            request: JSON.stringify(request)
+        }));
+    }
+    
+    var removeResponse = function(response) {
+        self.webSocket.send(JSON.stringify({
+            type: 'remove-response',
+            response: JSON.stringify(response)
+        }));
+    }
+    
     return {         
         registerObserverCallback: registerObserverCallback,
         connect: connect,
         disconnect: disconnect,
         
         requestLocation: requestLocation,
-        sendResponse: sendResponse,        
+        sendResponse: sendResponse,      
+
+        removeRequest: removeRequest,
+        removeResponse: removeResponse
     };
 }]);
 
@@ -109,8 +126,8 @@ function msgHandler(self, dep) {
             case 'response':
                 console.log('Received response at service level, sender: ' + message.sender);
                 var response = JSON.parse(message.response);
-                console.log(response);
-                responses.push(response);
+                response.location = JSON.parse(response.location);
+                console.log(response);                
                 dep.requestService.responses.push(response);
                 dep.notifyObservers('ws-receive-response', response);
                 break;

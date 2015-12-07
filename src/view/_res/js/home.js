@@ -9,7 +9,7 @@ miaApp.controller('homeController', [
         self.loginForm = { username: "" };        
         
         self.loginSubmit = function() {                      
-            staffSearchService.getStaffProfileByShortnameTest(self.loginForm.username)
+            staffSearchService.getStaffProfileByShortname(self.loginForm.username)
             .then(function success(response) {                                                                    
                 if (response.data.d.length > 0) {                    
                     $rootScope.user = processUserDetails(response.data.d[0]);  // Save user as object

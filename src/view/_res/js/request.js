@@ -24,12 +24,14 @@ miaApp.controller('requestController', [
             console.log('incoming req');
             console.log(request);
             requestService.removeRequest(requestService, request.sender);
+            wsService.removeRequest(request);
             $scope.$emit('request-ignore', request.sender);            
         }
             
-        self.ignoreResponseButtonClick = function(response) {            
+        self.removeResponseButtonClick = function(response) {            
             requestService.removeResponse(requestService, response.sender);
-            $scope.$emit('response-ignore', response.sender);
+            wsService.removeResponse(response);
+            $scope.$emit('response-remove', response.sender);
         }        
         
 }]);

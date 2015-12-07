@@ -41,8 +41,7 @@ miaApp.controller('parentController', [
                 case 'ws-receive-response':
                     $scope.responseCount = requestService.responses.length;
                     var toastMsg = data.sender + ' has responded with their location.';
-                    showToast(ngToast, toastMsg, 'success'); 
-                    $state.go('map', { action: 'view-response', target: data })
+                    showToast(ngToast, toastMsg, 'success');                     
                     break;
             }
         });
@@ -70,10 +69,8 @@ miaApp.controller('parentController', [
             showToast(ngToast, toastMsg, 'danger');                                        
         });
         
-        $scope.$on('response-ignore', function(event, data) {
-            $scope.responseCount = requestService.responses.length;
-            var toastMsg = 'You have ignored ' + data + '\'s response';
-            showToast(ngToast, toastMsg, 'warning');                            
+        $scope.$on('response-remove', function(event, data) {
+            $scope.responseCount = requestService.responses.length;                        
         });
 
 }]);

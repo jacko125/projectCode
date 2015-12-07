@@ -33,11 +33,11 @@ var bootstrap_ver = require('./package.json').dependencies.bootstrap;
 gulp.task('compile-bootstrap', runCommand('cd node_modules\\bootstrap && grunt dist'));
 gulp.task('deploy-bootstrap-css', ['compile-bootstrap'], runCommand('copy \
 	node_modules\\bootstrap\\dist\\css\\bootstrap.css \
-	src\\view\\res\\css\\bootstrap-' + bootstrap_ver + '.css')
+	src\\view\\_res\\util\\bootstrap\\bootstrap-' + bootstrap_ver + '.css')
 	);
 gulp.task('deploy-bootstrap-js', runCommand('copy \
 	node_modules\\bootstrap\\dist\\js\\bootstrap.js \
-	src\\view\\res\\js\\bootstrap-' + bootstrap_ver + '.js')
+	src\\view\\_res\\util\\bootstrap\\bootstrap-' + bootstrap_ver + '.js')
 	);
 gulp.task('deploy-bootstrap', ['deploy-bootstrap-css', 'deploy-bootstrap-js']);
 

@@ -2,20 +2,14 @@ var http = require('http');
 var WebSocketServer = require('ws').Server;
 var wsModule = require('./src/model/module/WsModule.js');
 var jwt = require('jsonwebtoken');
-
 var util = require('util');
 
 var wss = new WebSocketServer(
 {
     port: 3001,
     verifyClient: function(info) {          
-        console.log('verifying client...');
-        var hostname = 'localhost';
-        if (process.env.ENVIRONMENT == 'prod') {
-            hostname = 'ntsydv1946';
-        }                        
-        console.log(util.inspect(info.req.headers));                        
-        
+        console.log('verifying client...');   
+        console.log(util.inspect(info.req.headers));                                
         try {
           var decoded = jwt.verify(info.req.headers['sec-websocket-protocol'], 'secret');                    
         } catch(err) {

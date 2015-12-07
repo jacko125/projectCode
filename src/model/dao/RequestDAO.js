@@ -1,11 +1,13 @@
 // Storage-specific (MongoDB) accessors for User objects.
-var User = require('../Request.js');
-
 var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');        
 var util = require('util');
 
-var mongoURL = 'mongodb://localhost:27017/mia';
+var hostname = 'localhost';
+if (process.env.ENVIRONMENT == 'prod') {
+    hostname = 'ntsydv1946';
+}             
+var mongoURL = 'mongodb://' + hostname +':27017/mia';
 
 module.exports = {
     

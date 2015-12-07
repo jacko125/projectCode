@@ -9,6 +9,14 @@ module.exports = {
     createResponse: function(response) {       
         ResponseDAO.createResponse({ response: response });
     },
+    
+    deleteResponse: function(sender, recipient, callback) {
+        ResponseDAO.deleteResponse({
+            sender: sender,
+            recipient: recipient,
+            callback: callback
+        });
+    },
         
     deleteAllResponses: function() {        
         ResponseDAO.deleteAllResponses();

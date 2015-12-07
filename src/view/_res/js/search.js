@@ -22,10 +22,8 @@ miaApp.controller('searchController', [
         };       
         self.results = {};               
         self.loadStaffList = function() {           
-            staffSearchService.getStaffListTest(self.searchParams).then(function(results) {
+            staffSearchService.getStaffList(self.searchParams).then(function(results) {
                 self.results = results.data.d;
-                console.log('results are');
-                console.log(self.results);
             });
         };
 

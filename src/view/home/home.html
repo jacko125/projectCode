@@ -12,20 +12,20 @@
             </a>
           </div>
           <div class="col-sm-6">
-            <button class="btn btn-warning home-item" ui-sref="meeting">
+            <button class="btn btn-warning home-item" href="#">
               <b>Find a meeting room</b><br>
               Looking for a room?       
             </button>
           </div>
           <div class="col-sm-6">
-            <button class="btn btn-info home-item" ng-click="parentCtrl.changeNavItemByName('Map')">
+            <button class="btn btn-info home-item" ui-sref="map">
               <b>View a map</b><br>
               Find your way around.        
             </button>
           </div>        
           <div class="col-sm-6" ng-if="loggedIn == false">                    
             <button class="btn btn-primary home-item" 
-            ng-click="homeCtrl.loginButtonClick()">
+              ng-click="homeCtrl.loginButtonClick()">
               <b>Log in</b><br>
               Who's looking for you?
             </button>

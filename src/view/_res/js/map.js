@@ -22,8 +22,8 @@ L.Map = L.Map.extend({
 });
 
 miaApp.controller('mapController', ['$rootScope', '$scope', '$state', '$stateParams',
-    'ngToast', 'wsService',
-    function($rootScope, $scope, $state, $stateParams, ngToast, wsService) { 
+    'ngToast', 'requestService', 'wsService',
+    function($rootScope, $scope, $state, $stateParams, ngToast, requestService, wsService) { 
         var self = this;
                                 
         var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 1' };
@@ -57,7 +57,9 @@ miaApp.controller('mapController', ['$rootScope', '$scope', '$state', '$statePar
         $scope.target = $stateParams.target;
         
         if ($stateParams.action === 'view-response') {
+            
             var response = $stateParams.target;            
+            console.log(response);
             self.currentLocation.building = response.location.building;
             self.currentLocation.level = response.location.level;
             userMarker.setLatLng(L.latLng(response.location.latLng.lat, response.location.latLng.lng));
@@ -69,7 +71,16 @@ miaApp.controller('mapController', ['$rootScope', '$scope', '$state', '$statePar
             $rootScope: $rootScope,
             wsService: wsService,
             userMarker: userMarker
-        });                
+        });
+        
+        self.removeResponseButtonClick = function(response) {
+            console.log('remove response');
+            console.log(response);
+            requestService.removeResponse(requestService, response.sender);
+            wsService.removeResponse(response);
+        }
+        
+        
 }]);   
 
 function mapFunctions(self, dep) {

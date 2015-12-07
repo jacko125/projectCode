@@ -77,9 +77,8 @@
                   <a class="btn btn-success" 
                     ui-sref="map({ action: 'view-response', target: response })">View</a>
                     &nbsp;
-                  <a class="btn btn-warning"
-                    ui-sref="home"
-                    ng-click="requestCtrl.ignoreResponseButtonClick(response)">Ignore</a>
+                  <a class="btn btn-danger"
+                    ng-click="requestCtrl.removeResponseButtonClick(response)">Remove</a>
                 </div>
               </div>                                          
             </div>  

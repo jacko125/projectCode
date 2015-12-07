@@ -61,25 +61,16 @@ module.exports = {
                         datetime: request.datetime                                            
                     })                    
                 });     
-                console.log('Sending request to ' + request.recipient);                
-                
-                break;
-                                
-            // "sender"
-            case 'get-requests':
-                console.log('received request for requests from ' + message.sender);
-                break;
-                
-                
-            case 'get-responses':
-                console.log('received request for responses from ' + message.recipient);
-                break;
+                console.log('Sending request to ' + request.recipient);                                
+                break;                                      
 
             // "sender", "recipient", "location (building, level, latLng)", "datetime"
             case 'respond-location':                      
                 var response = JSON.parse(message.response);
                 console.log('Received response to ' + response.recipient + '\'s request for ' + response.sender + '\'s location');
-                ResponseModule.createResponse(new Response(response.sender, response.recipient, response.location, response.datetime));                                
+                ResponseModule.deleteResponse(response.sender, response.recipient, function() {
+                    ResponseModule.createResponse(new Response(response.sender, response.recipient, response.location, response.datetime));                                    
+                });                
                 sendToClient(wss, ws, response.recipient, { // Attempt to send response to recipient
                     type: 'response',
                     response: JSON.stringify({
@@ -88,27 +79,22 @@ module.exports = {
                         location: JSON.stringify(response.location),
                         datetime: response.datetime
                     })
-                });
-                
-                // ResponseModule.getResponsesForUser(message.recipient, function(responses) {
-                    // sendToClient(wss, ws, message.recipient, {
-                        // type: 'response-list',
-                        // responses: responses
-                    // });
-                // });                                                             
-                                
-                // RequestModule.deleteRequest(message.sender, message.recipient, function() { // Delete from sender's requests                   
-                    // RequestModule.getRequestsForUser(message.recipient, function(requests) { // Resend sender's requests    
-                        // sendToClient(wss, ws, message.sender, {
-                            // type: 'request-list',
-                            // requests: requests
-                        // });
-                    // });
-                // });
-                
+                });                
                 break;
                 
+            case 'remove-request':
+                var request = JSON.parse(message.request);
+                console.log('Received remove-request ' + request.sender + ':' + request.recipient);
+                RequestModule.deleteRequest(request.sender, request.recipient, function() {});                
+                break;
+                
+            case 'remove-response':
+                var response = JSON.parse(message.response);
+                console.log('Received remove-response ' + response.sender + ':' + response.recipient);
+                ResponseModule.deleteResponse(response.sender, response.recipient, function() {});                
+                break;                                
         }
+       
     }	
 }
 
