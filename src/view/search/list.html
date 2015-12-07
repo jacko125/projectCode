@@ -18,8 +18,7 @@
       <div class="list-group listnav">
         <a class="list-group-item"
           ng-repeat="staff in searchCtrl.results track by staff.EmployeeId"           
-          ng-click="searchCtrl.staffButtonClick(staff.EmployeeId)"
-          ui-sref="search.profile">
+          ui-sref="profile({ profile: staff })">
           <div class="media">
             <div class="media-left  media-middle">
               <div class="profile-container">
