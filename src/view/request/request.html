@@ -35,7 +35,9 @@
               ng-controller="requestProfileController as reqProfileCtrl" ng-init="init(request.sender)">          
                
               <div class="media-left">
-                <img class="media-object request-img" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{reqProfileCtrl.user.EmployeeId}}.jpg">
+                <div class="profile-container">
+                  <img class="media-object profile-image" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{reqProfileCtrl.user.EmployeeId}}.jpg">
+                </div>
               </div>
                
               <div class="media-body">
@@ -64,7 +66,9 @@
               ng-controller="requestProfileController as reqProfileCtrl" ng-init="init(response.sender)">          
                
               <div class="media-left">
-                <img class="media-object request-img" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{reqProfileCtrl.user.EmployeeId}}.jpg">
+                <div class="profile-container">
+                  <img class="media-object profile-image" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{reqProfileCtrl.user.EmployeeId}}.jpg">
+                </div>
               </div>
                
               <div class="media-body">
@@ -77,7 +81,7 @@
                   <a class="btn btn-success" 
                     ui-sref="map({ action: 'view-response', target: response })">View</a>
                     &nbsp;
-                  <a class="btn btn-danger"
+                  <a class="btn btn-warning"
                     ng-click="requestCtrl.removeResponseButtonClick(response)">Remove</a>
                 </div>
               </div>                                          

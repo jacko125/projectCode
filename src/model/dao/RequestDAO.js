@@ -19,9 +19,7 @@ module.exports = {
     
     getAllRequests: mongoCommand(getAllRequests),
     
-    deleteAllRequests: mongoCommand(deleteAllRequests),
-    
-    deleteRequest: mongoCommand(deleteRequest)
+    deleteAllRequests: mongoCommand(deleteAllRequests),        
     
 }
 

@@ -20,16 +20,12 @@ miaApp.controller('requestController', [
             }            
         })
         
-        self.ignoreRequestButtonClick = function(request) {
-            console.log('incoming req');
-            console.log(request);
-            requestService.removeRequest(requestService, request.sender);
+        self.ignoreRequestButtonClick = function(request) {            
             wsService.removeRequest(request);
             $scope.$emit('request-ignore', request.sender);            
         }
             
-        self.removeResponseButtonClick = function(response) {            
-            requestService.removeResponse(requestService, response.sender);
+        self.removeResponseButtonClick = function(response) {                        
             wsService.removeResponse(response);
             $scope.$emit('response-remove', response.sender);
         }        

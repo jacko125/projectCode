@@ -1,30 +1,14 @@
-L.Map = L.Map.extend({
-    openPopup: function (popup, latlng, options) { 
-        if (!(popup instanceof L.Popup)) {
-            var content = popup;
-
-            popup = new L.Popup(options).setContent(content);
-        }
-
-        if (latlng) {
-            popup.setLatLng(latlng);
-        }
-
-        if (this.hasLayer(popup)) {
-            return this;
-        }
-
-        // NOTE THIS LINE : COMMENTING OUT THE CLOSEPOPUP CALL
-        //this.closePopup(); 
-        this._popup = popup;
-        return this.addLayer(popup);        
-    }
-});
-
-miaApp.controller('mapController', ['$rootScope', '$scope', '$state', '$stateParams',
+miaApp.controller('mapController', [
+    '$rootScope', '$scope', '$state', '$stateParams', '$location',
     'ngToast', 'requestService', 'wsService',
-    function($rootScope, $scope, $state, $stateParams, ngToast, requestService, wsService) { 
+    function(
+        $rootScope, $scope, $state, $stateParams,
+        $location, ngToast, requestService, wsService) { 
+        
         var self = this;
+                
+        $scope.action = $stateParams.action;
+        $scope.target = $stateParams.target;
                                 
         var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 1' };
         self.currentLocation = ($rootScope.user) ? getUserLocation($rootScope.user) : defaultLocation;                   
@@ -38,32 +22,31 @@ miaApp.controller('mapController', ['$rootScope', '$scope', '$state', '$statePar
             self.allBuildings.push(self.allLocations[i].building);                
         self.allLevels = getBuildingLevels(self.currentLocation.building, self.allLocations);  // Get levels of the current building                      
         
-        self.changeBuilding = function () {                  
+        self.changeBuilding = function () { 
             self.allLevels = getBuildingLevels(self.currentLocation.building, self.allLocations);                        
-            self.currentLocation.level = self.allLevels[0];
+            self.currentLocation.level = self.allLevels[0]; // Defaults floor to first level
             self.changeLevel(); // Based in mapFunctions
             checkUnsupportedMap(self);            
         }
         
         // TODO When logged out, reset allLocations         
         
-        var userMarker = L.marker(L.latLng(0,0), { draggable: true });       
+        var userMarker = L.marker(L.latLng(0,0), { draggable: ($scope.action !== 'view-response') });       
         
         mapFunctions(self, {
+            $location: $location,
             userMarker: userMarker
         });
         
-        $scope.action = $stateParams.action;
-        $scope.target = $stateParams.target;
         
-        if ($stateParams.action === 'view-response') {
+        if ($stateParams.action === 'view-response') {            
+            var response = $stateParams.target;                        
             
-            var response = $stateParams.target;            
-            console.log(response);
-            self.currentLocation.building = response.location.building;
+            // Assume response location is valid (and maps exist)
+            self.currentLocation.building = response.location.building;                        
             self.currentLocation.level = response.location.level;
-            userMarker.setLatLng(L.latLng(response.location.latLng.lat, response.location.latLng.lng));
-            self.changeBuilding();
+            self.changeLevel();
+            userMarker.setLatLng(L.latLng(response.location.latLng.lat, response.location.latLng.lng));                        
         }
              
         requestFunctions(self, {            
@@ -87,10 +70,12 @@ function mapFunctions(self, dep) {
     
     var southWest = L.latLng(-500, -250),
             northEast = L.latLng(500, 250),
-            bounds = L.latLngBounds(southWest, northEast);
-                   
-    var map = new L.map('map').setView([50, -50], 1);        
-    var tileLayer = L.tileLayer('http://localhost:3000/maps/' + getLocationFolder(self.currentLocation) + '/{z}/{x}/{y}.png',
+            bounds = L.latLngBounds(southWest, northEast);                   
+    var map = new L.map('map').setView([50, -50], 1); // View starts here
+        
+    var urlBase = 'http://' + dep.$location.host() + ':' + dep.$location.port();
+    var locFolder = getLocationFolder(self.currentLocation);
+    var tileLayer = L.tileLayer(urlBase + '/maps/' + locFolder + '/{z}/{x}/{y}.png',
     {                                       
         maxZoom: 3,
         minZoom: 1,
@@ -98,8 +83,7 @@ function mapFunctions(self, dep) {
         noWrap: true,                    
     }).addTo(map);                                
     map.setMaxBounds(bounds);
-    
-    //L.marker(L.latLng(0,0)).addTo(map);        
+        
     dep.userMarker.addTo(map);
     map.on('click', function(e) {            
         console.log(e.latlng);
@@ -111,9 +95,8 @@ function mapFunctions(self, dep) {
     });        
     
     self.changeLevel = function () { // Change floor map when level is changed
-        tileLayer.setUrl('http://localhost:3000/maps/' + getLocationFolder(self.currentLocation) + '/{z}/{x}/{y}.png');                        
-        checkUnsupportedMap(self);
-        
+        tileLayer.setUrl('http://' + dep.$location.host() + ':' + dep.$location.port() + '/maps/' + getLocationFolder(self.currentLocation) + '/{z}/{x}/{y}.png');                        
+        checkUnsupportedMap(self);        
         //TODO Change markers
     }
     
@@ -141,7 +124,7 @@ function requestFunctions(self, dep) {
     };            
     
     self.sendLocationButtonClick = function(request) {        
-        dep.wsService.sendResponse(dep.$rootScope.user.Shortname, request.sender, {
+        dep.wsService.sendResponse(dep.$rootScope.user.Shortname, request, {
             building: self.currentLocation.building,
             level: self.currentLocation.level,
             latLng: dep.userMarker.getLatLng()

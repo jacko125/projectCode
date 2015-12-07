@@ -13,16 +13,14 @@ module.exports = {
     
 	createResponse: mongoCommand(createResponse),
     
-    deleteRequest: mongoCommand(deleteResponse),
+    deleteResponse: mongoCommand(deleteResponse),
           
     getResponsesForUser: mongoCommand(getResponsesForUser),
     
     getAllResponses: mongoCommand(getAllResponses),
     
-    deleteAllResponses: mongoCommand(deleteAllResponses),
-    
-    deleteResponse: mongoCommand(deleteResponse)
-    
+    deleteAllResponses: mongoCommand(deleteAllResponses)
+            
 }
 
 // Wrapper for mongoDB calls
@@ -49,7 +47,7 @@ function deleteResponse(db, params) {
 
     db.collection('responses').removeOne(params, function(err, r) {
         if (r.result.n > 0) {
-            console.log('Deleted existing request (' + params.sender + ':' + params.recipient + ')');
+            console.log('Deleted existing response (' + params.sender + ':' + params.recipient + ')');
         }        
         db.close();
         params.callback();

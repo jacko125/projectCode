@@ -7,7 +7,8 @@ miaApp.factory('requestService', [function() {
         
         removeRequest: function(requestService, sender) {            
             var indexToRemove = -1;
-            for (var i = 0; i < requestService.requests.length; i++) {        
+            for (var i = 0; i < requestService.requests.length; i++) {
+                console.log('iterated req' + requestService.requests[i].sender);
                 if (requestService.requests[i].sender === sender) {
                     indexToRemove = i;               
                 }
@@ -16,6 +17,7 @@ miaApp.factory('requestService', [function() {
                 requestService.requests.splice(indexToRemove, 1);
             }            
         },        
+        
         //Static function
         removeResponse: function removeResponse(requestService, sender) {            
             var indexToRemove = -1;
