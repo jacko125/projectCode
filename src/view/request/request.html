@@ -1,0 +1,94 @@
+<script src="/js/request.js"></script>
+
+<div class="container" ng-controller="requestController as requestCtrl">
+
+  <div class="container-request">  
+        
+      <div ng-if="action === 'requests'">
+        <h2>Pending requests</h2>
+        <br>
+        <div ng-if="requests.length == 0">
+          <p class="lead">You have no outstanding requests</p>          
+          <p>Click <b><a ui-sref="home">here</a></b> to go back</p>
+       </div>
+      </div>
+      
+      <div ng-if="action === 'responses'">
+        <h2>Received responses</h2>
+        <br>
+        <div ng-if="responses.length == 0">
+          <p class="lead">There are no recent responses</p>        
+          <p>Click <b><a ui-sref="home">here</a></b> to go back</p>
+        </div>
+      </div>
+      
+      
+      <!-- List area -->
+      <div class="row" ng-if="(action == 'responses' && responses.length > 0) || (action == 'requests' && requests.length > 0)">
+        <div class="col-sm-6 col-sm-offset-3">      
+          <div class="panel panel-default panel-body  ">
+          
+            <!-- Requests -->
+            <div class="media media-middle text-left"              
+              ng-if="action === 'requests' && requests.length > 0"               
+              ng-repeat="request in requests track by request.sender"
+              ng-controller="requestProfileController as reqProfileCtrl" ng-init="init(request.sender)">          
+               
+              <div class="media-left">
+                <img class="media-object request-img" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{reqProfileCtrl.user.EmployeeId}}.jpg">
+              </div>
+               
+              <div class="media-body">
+                <div class="list-group-item-heading">
+                  <b>{{reqProfileCtrl.user.Description}}</b> ({{reqProfileCtrl.user.Group}}, {{reqProfileCtrl.user.Division}})
+                </div>
+                <div class="list-group-item-text">                
+                  Requested <b>{{request.datetime | timeSince }}</b> ago 
+                  <br><br>
+                  
+                  <!-- ng-click="requestCtrl.acceptRequestButtonClick(request.sender)" -->
+                  <a class="btn btn-success" 
+                    ui-sref="map({ action: 'send-response', target: request })">Accept</a>
+                    &nbsp;
+                  <a class="btn btn-warning"
+                    ui-sref="home"
+                    ng-click="requestCtrl.ignoreRequestButtonClick(request)">Ignore</a>
+                </div>
+              </div>                                          
+            </div>
+            
+            <!-- Responses -->
+            <div class="media media-middle text-left"
+              ng-if="action === 'responses' && responses.length > 0"
+              ng-repeat="response in responses track by response.sender"
+              ng-controller="requestProfileController as reqProfileCtrl" ng-init="init(response.sender)">          
+               
+              <div class="media-left">
+                <img class="media-object request-img" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{reqProfileCtrl.user.EmployeeId}}.jpg">
+              </div>
+               
+              <div class="media-body">
+                <div class="list-group-item-heading">
+                  <b>{{reqProfileCtrl.user.Description}}</b> ({{reqProfileCtrl.user.Group}}, {{reqProfileCtrl.user.Division}})
+                </div>
+                <div class="list-group-item-text">                
+                  Requested <b>{{response.datetime | timeSince }}</b> ago 
+                  <br><br>
+                  <a class="btn btn-success" 
+                    ui-sref="map({ action: 'view-response', target: response })">View</a>
+                    &nbsp;
+                  <a class="btn btn-danger"
+                    ng-click="requestCtrl.removeResponseButtonClick(response)">Remove</a>
+                </div>
+              </div>                                          
+            </div>  
+            
+            
+          </div>            
+        </div>  
+      </div>
+        
+  </div>
+
+  
+</div> <!-- /.container -->

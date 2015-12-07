@@ -1,6 +1,6 @@
 {
   "name": "MIA",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Macquarie Interactive App",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "angular-loading-bar": "^0.8.0",
+    "angular-ui-router": "^0.2.15",
     "body-parser": "^1.14.1",
     "bootstrap": "^3.3.5",
     "express": "^4.13.3",
