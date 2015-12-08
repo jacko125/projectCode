@@ -8,9 +8,9 @@
         </div>
   </div>
     <div class="media-body container-search-profile" style="padding-left: 20px; padding-bottom: 20px;">
-  <h2 ng-bind="searchCtrl.profile.Description"></h2>
+  <h2>{{searchCtrl.profile.Description}} - {{searchCtrl.profile.BusinessTitle}}</h2>
 
-  <p class="lead">{{searchCtrl.profile.Group}}, {{searchCtrl.profile.Division}}</p>
+  <h4>{{searchCtrl.profile.Group}} - {{searchCtrl.profile.Division}}</h4>
       <div><p>Team: {{searchCtrl.profile.Department}}</p>
         <p>Email Address: {{searchCtrl.profile.EmailAddress}}</p>
         <p>Contact Number: {{searchCtrl.profile.FullTelephoneNumber}}</p>
