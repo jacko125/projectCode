@@ -57,14 +57,14 @@ miaApp.factory('wsService', ['$location', 'requestService',
         }));
     };
 
-    var sendResponse = function(sender, recipient, location) {        
-        requestService.removeRequest(requestService, sender);        
-        notifyObservers('ws-sent-response', recipient);
+    var sendResponse = function(user, request, location) {                
+        removeRequest(request);        
+        notifyObservers('ws-sent-response', request.sender);
         self.webSocket.send(JSON.stringify({
             type: "respond-location",
             response: JSON.stringify({
-                sender: sender,
-                recipient: recipient,
+                sender: user,
+                recipient: request.sender,
                 location: location, //building, floor, coords
                 datetime: new Date()
             })
@@ -72,6 +72,7 @@ miaApp.factory('wsService', ['$location', 'requestService',
     };
     
     var removeRequest = function(request) {
+        requestService.removeRequest(requestService, request.sender);
         self.webSocket.send(JSON.stringify({
             type: 'remove-request',
             request: JSON.stringify(request)
@@ -79,6 +80,7 @@ miaApp.factory('wsService', ['$location', 'requestService',
     }
     
     var removeResponse = function(response) {
+        requestService.removeResponse(requestService, response.sender);
         self.webSocket.send(JSON.stringify({
             type: 'remove-response',
             response: JSON.stringify(response)
@@ -123,12 +125,12 @@ function msgHandler(self, dep) {
                 dep.notifyObservers('ws-receive-request', request);                
                 break;
                                 
-            case 'response':
-                console.log('Received response at service level, sender: ' + message.sender);
+            case 'response':                
                 var response = JSON.parse(message.response);
+                console.log('Received response at service level, sender: ' + response.sender);
                 response.location = JSON.parse(response.location);
                 console.log(response);                
-                dep.requestService.responses.push(response);
+                addResponse(dep.requestService, response);
                 dep.notifyObservers('ws-receive-response', response);
                 break;
                 
@@ -151,3 +153,15 @@ function addRequest(requestService, newRequest) {
     }
 }
 
+function addResponse(requestService, newResponse) {
+    var updated = false;
+    for (var i = 0; i < requestService.responses.length; i++) {
+        if (requestService.responses[i].sender === newResponse.sender) {
+            requestService.responses[i].datetime = newResponse.datetime;
+            updated = true;
+        }
+    }
+    if (!updated) {
+        requestService.responses.push(newResponse);
+    }    
+}

@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var bump = require('gulp-bump');
 var git = require('gulp-git');
-var sequence = require('gulp-sequence');
 var exec = require('child_process').exec;
 
 gulp.task('default', function() {

@@ -22,13 +22,14 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider',
         $stateProvider
             .state('search', {
                 url: '/search',
-                templateUrl: 'view/search/_search.html',
+                templateUrl: 'view/search/list.html',
                 controller: 'searchController as searchCtrl'
             })
-            .state('search.profile', {
+            .state('profile', {
                 url: '/profile',
                 templateUrl: 'view/search/profile.html',
-                controller: 'searchController as searchCtrl'
+                controller: 'searchController as searchCtrl',
+                params: { profile: null }
             });
                    
         $stateProvider

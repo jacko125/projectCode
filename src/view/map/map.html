@@ -7,11 +7,13 @@
           <div class="panel-heading">            
             <select ng-options="building for building in mapCtrl.allBuildings"
                     ng-model="mapCtrl.currentLocation.building"
-                    ng-change="mapCtrl.changeBuilding()">              
+                    ng-change="mapCtrl.changeBuilding()"
+                    ng-disabled="action === 'view-response'">              
             </select>            
             <select ng-options="level for level in mapCtrl.allLevels"
                     ng-model="mapCtrl.currentLocation.level"
-                    ng-change="mapCtrl.changeLevel()">
+                    ng-change="mapCtrl.changeLevel()"
+                    ng-disabled="action === 'view-response'">
             </select>
           </div>          
         </div>        
