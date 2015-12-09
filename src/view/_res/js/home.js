@@ -9,10 +9,11 @@ miaApp.controller('homeController', [
         self.loginForm = { username: "" };        
         
         self.loginSubmit = function() {                      
+                
             staffSearchService.getStaffProfileByShortname(self.loginForm.username)
-            .then(function success(response) {                                                                    
-                if (response.data.d.length > 0) {                    
-                    $rootScope.user = processUserDetails(response.data.d[0]);  // Save user as object
+            .then(function success(response) {                                
+                if (response.data.length > 0) {                    
+                    $rootScope.user = processUserDetails(response.data[0]);  // Save user as object
                     $http.post('/login', self.loginForm)
                     .then(function success(response) {                                           
                         $window.sessionStorage.token = response.data.token;
@@ -27,10 +28,11 @@ miaApp.controller('homeController', [
                         
                 } else {
                     // Handle erroneous login                        
-                }
+                }                                             
+                
             }, function error(response) {
                 // Handle Staff Search service down
-        });       
+            });       
     }                   
 }]);
     

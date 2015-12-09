@@ -7,10 +7,11 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
 
     var getStaffList = function(staffSearchParams) {
         var params = {
+            'callback': 'JSON_CALLBACK',
             'name': staffSearchParams.name
         };
 
-        return $http.get(self.staffSearchURL + '/FindADProfileByName', {
+        return $http.jsonp(self.staffSearchURL + '/FindADProfileByName', {
             'params': params
         });
     };
@@ -21,18 +22,20 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
     
     var getStaffProfile = function(employeeID) {
         var params = {
+            'callback': 'JSON_CALLBACK',
             'employeeID': employeeID
         }
-        return $http.get(self.staffSearchURL + '/FindADProfileByEmployeeID', {
+        return $http.jsonp(self.staffSearchURL + '/FindADProfileByEmployeeID', {
            'params' : params 
         });
     }
 
     var getStaffProfileByShortname = function(shortname) {        
         var params = {
+            'callback': 'JSON_CALLBACK',
             'shortname': shortname
         }        
-        return $http.get(self.staffSearchURL + '/FindADProfileByShortname', {
+        return $http.jsonp(self.staffSearchURL + '/FindADProfileByShortname', {
             'params' : params            
         });
     }
@@ -40,25 +43,28 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
     
     var getStaffListTest = function(staffSearch) {
         var params = {
+            'callback': 'JSON_CALLBACK',
             'name': staffSearch.name
         };
 
-        return $http.get('/testGetStaffList', {
+        return $http.jsonp('/testGetStaffList', {
             'params': params
         });
     }
     
     var getStaffProfileByShortnameTest = function(shortname) {        
-        return $http.get('/testGetStaffProfile', {
+        return $http.jsonp('/testGetStaffProfile', {
             params: {
+                'callback': 'JSON_CALLBACK',
                 username: shortname
             }
         });
     }
     
     var getStaffProfileTest = function(shortname) {        
-        return $http.get('/testGetStaffProfile', {
+        return $http.jsonp('/testGetStaffProfile', {
             params: {
+                'callback': 'JSON_CALLBACK',
                 username: shortname
             }
         });       

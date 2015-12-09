@@ -39,7 +39,7 @@ miaApp.controller('requestProfileController', ['$scope', 'staffSearchService', f
     $scope.init = function(shortname) {
         staffSearchService.getStaffProfileByShortname(shortname)
             .then(function success(response) {
-                self.user = response.data.d[0];             
+                self.user = response.data[0];             
                 
             }, function error(response) {
                 

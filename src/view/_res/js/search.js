@@ -11,8 +11,8 @@ miaApp.controller('searchController', [
         self.results = staffSearchService.results;
         self.loadStaffList = function() {           
             staffSearchService.getStaffList(self.searchParams).then(function(results) {
-                staffSearchService.results = results.data.d;
-                self.results = results.data.d;
+                staffSearchService.results = results.data;
+                self.results = results.data;
             });
         };
         self.profile = $stateParams.profile;
