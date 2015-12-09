@@ -5,9 +5,9 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
     
     self.staffSearchURL = 'http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc'
 
-    var getStaffList = function(staffSearch) {
+    var getStaffList = function(staffSearchParams) {
         var params = {
-            'name': staffSearch.name
+            'name': staffSearchParams.name
         };
 
         return $http.get(self.staffSearchURL + '/FindADProfileByName', {

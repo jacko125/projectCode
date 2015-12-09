@@ -4,9 +4,9 @@
   
     <div class="col-sm-4 col-sm-offset-4">
       <input type="text" class="form-control" 
-        placeholder="Search staff..."
+        placeholder="Search staff by name..."
         ng-model="searchCtrl.searchParams.name"
-        ng-model-options="{ debounce: 300 }"
+        ng-model-options="{ debounce: 350 }"
         ng-change="searchCtrl.loadStaffList(searchCtrl.searchParams.name)"/>
       <p class="lead">
         {{searchCtrl.staff.name}}
@@ -21,19 +21,19 @@
           ui-sref="profile({ profile: staff })">
           <div class="media">
             <div class="media-left  media-middle">
-              <div class="profile-container">
-                <img class="media-object profile-image" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/util/profileImages/profile-placeholder.png'">
-              </div>
-            </div>
-            <div class="media-body" style="padding-left: 5px;">
-            <h4 class="media-heading" ng-bind="staff.Description"></h4>
-              <p> {{staff.Group}}</p>
-              <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
-              <p>{{staff.postalAddress}} - {{staff.Country}}</p>
+          <div class="profile-container">
+          <img class="media-object profile-image" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
             </div>
           </div>
-           <!--<p class="list-group-item-text">This is some text</p>-->
-          <!-- <p class="list-group-item-text">This is some text</p> -->
+            <div class="media-body" style="padding-left: 5px;">
+            <h4 class="media-heading">{{staff.Description}}</h4>
+              <p> {{staff.Group}}</p>
+              <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
+              <p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{staff.postalAddress}} - {{staff.Country}}</p>
+              <button class="btn btn-success"
+                      ng-click="searchCtrl.requestLocationButtonClick(staff.Shortname)">Request location</button>
+            </div>
+          </div>
         </a>
       </div>
     </div>
