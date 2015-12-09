@@ -10,7 +10,8 @@ miaApp.controller('searchController', [
                 
         self.results = staffSearchService.results;
         self.loadStaffList = function() {           
-            staffSearchService.getStaffList(self.searchParams).then(function(results) {
+            staffSearchService.getStaffListTest(self.searchParams).then(function(results) {
+                console.log(results);
                 staffSearchService.results = results.data;
                 self.results = results.data;
             });

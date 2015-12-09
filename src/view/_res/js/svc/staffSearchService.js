@@ -43,28 +43,25 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
     
     var getStaffListTest = function(staffSearch) {
         var params = {
-            'callback': 'JSON_CALLBACK',
             'name': staffSearch.name
         };
 
-        return $http.jsonp('/testGetStaffList', {
+        return $http.get('/testGetStaffList', {
             'params': params
         });
     }
     
     var getStaffProfileByShortnameTest = function(shortname) {        
-        return $http.jsonp('/testGetStaffProfile', {
-            params: {
-                'callback': 'JSON_CALLBACK',
+        return $http.get('/testGetStaffProfile', {
+            params: {                
                 username: shortname
             }
         });
     }
     
     var getStaffProfileTest = function(shortname) {        
-        return $http.jsonp('/testGetStaffProfile', {
-            params: {
-                'callback': 'JSON_CALLBACK',
+        return $http.get('/testGetStaffProfile', {
+            params: {                
                 username: shortname
             }
         });       

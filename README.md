@@ -9,32 +9,38 @@
 ## Installation
 
 ```
-Clone the repository and go to the folder.
-Note: Set autocrlf to 'true' before making any changes.
+Before cloning from Git
+Set autocrlf to 'true' before making any changes (for consistency)
 $ git config --global core.autocrlf true
+Set sslVerify to 'false' (Git throws an error when cloning over HTTPS otherwise)
+$ git config --global http.sslVerify false
+
+Clone the repo
 
 Install required packages (it reads from from package.json)
 $ npm install
 
-Start the server
-$ node index.js
+Start the HTTP server
+$ start node index.js
+
+Start the websocket server
+$ start node ws-servier.js
+
+Install gulp globally and start the mongoDB server
+$ npm install -g gulp
+$ gulp start-mongo
 
 View the web app at http://localhost:3000
-The controller/module/DAO test function can be found at http://localhost:3000/test
-
 ```
 
 ## Advanced features
 
 ```
-There is a gulp.js file that has automated some of the commands. To use this, install Gulp with
-$ npm install -g gulp (Requires external network)
-To view a list of available commands:
+There is a gulp.js file that has automated some of the commands.
 $ gulp
 
-For auto-refreshing the server when files are changed, use Supervisor
+For auto-refreshing the server when files are changed, use Supervisor.
 $ npm install -g supervisor
-To use Supervisor instead of 'gulp start-app' or 'node index.js', use:
 $ supervisor -e html,css,js -w src index.js
 
 For modifying and compiling Bootstrap CSS:
