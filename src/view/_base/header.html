@@ -29,7 +29,8 @@
       <ul class="nav navbar-nav navbar-right" ng-if="loggedIn">
         <li>
           <div class="btn-nav">
-            <a class="btn btn-info navbar-btn"
+            <a class="btn navbar-btn"
+              ng-class="parentCtrl.notificationButtonClass()"
               ng-click="parentCtrl.notificationsButtonClick()"
               data-toggle="collapse" data-target=".navbar-collapse.in">
               Notifications <span class="badge" ng-bind="notifyCount"></span>

@@ -1,12 +1,38 @@
-.container-home-main {
-  text-align: center;  
+.container-home {  
+  text-align: center;    
+  margin-bottom:10%;
 }
 
-.home-item {  
-  padding-left:40px;
-  padding-right:40px;
-  padding-top:10px;
-  padding-bottom:10px;
-  margin-top:10px;
-  margin-bottom:10px;
+.home-icon {
+  font-size: 4em;
+}
+
+.tile-wrapper {
+  display: inline-block;
+}
+
+.tile-home-item-sm {
+  height: 150px;
+  width: 180px;
+  display: table;
+  color: white;
+}
+.tile-home-item-xs {    
+  height:110px;
+  width:125px;
+  display: table;
+  color: white;
+}
+
+.tile-home-item-contents {
+  display: table-cell;
+  vertical-align: middle;  
+  color: white;
+}
+
+/* Override tile-hover (keep color white) */
+.tile-home-item-contents:hover {
+  display: table-cell;
+  vertical-align: middle;  
+  color: white;  
 }

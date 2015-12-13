@@ -1,36 +1,84 @@
-<div class="container-home-main">
+<div class="container-home">
 
-    <h1>MIA</h1>
-    <p class="lead">The Macquarie Interactive App</p>
-    <div class="row">
-      <div class="col-sm-8 col-sm-offset-2">
-        <div class="row">
-          <div class="col-sm-6">
-            <a class="btn btn-success home-item" ui-sref="search">
-              <b>Search staff</b><br>
-              Looking for someone?
+  <h1>MIA</h1>
+  <p class="lead">The Macquarie Interactive App</p>         
+  <div class="row">
+    <div ng-class="homeCtrl.homeItemClass()">           
+      <div class="tile-wrapper"> <!-- For centering tiles within the column -->
+        <div class="thumbnail tile tile-success tile-home-item-sm hidden-xs">
+            <a ui-sref="search" class="tile-home-item-contents">
+              <i class="fa fa-search fa-4x"></i><br><br>
+              <b>Search staff</b> 
             </a>
-          </div>
-          <div class="col-sm-6">
-            <button class="btn btn-warning home-item" href="#">
-              <b>Find a meeting room</b><br>
-              Looking for a room?       
-            </button>
-          </div>
-          <div class="col-sm-6">
-            <button class="btn btn-info home-item" ui-sref="map">
-              <b>View a map</b><br>
-              Find your way around.        
-            </button>
-          </div>        
-          <div class="col-sm-6" ng-if="loggedIn == false">                    
-            <button class="btn btn-primary home-item" ui-sref="login">
-              <b>Log in</b><br>
-              Who's looking for you?
-            </button>
-          </div>
+        </div>
       </div>
-    </div><!-- /.row -->
- 
+      <div class="pull-right">
+        <div class="thumbnail tile tile-success tile-home-item-xs
+                    hidden-sm hidden-md hidden-lg">
+            <a ui-sref="search" class="tile-home-item-contents">
+              <i class="fa fa-search fa-2x"></i><br><br>
+              <b>Search staff</b> 
+            </a>
+        </div>                        
+      </div>
+    </div>
+    <div ng-class="homeCtrl.homeItemClass()">    
+      <div class="tile-wrapper">
+        <div class="thumbnail tile tile-warning tile-home-item-sm hidden-xs">
+            <a href="#" class="tile-home-item-contents">
+              <i class="fa fa-users fa-4x"></i><br><br>
+              <b>Find a room</b> 
+            </a>
+        </div>          
+      </div>
+      <div class="pull-left">
+        <div class="thumbnail tile tile-warning tile-home-item-xs 
+                    hidden-sm hidden-md hidden-lg">
+            <a href="#" class="tile-home-item-contents">
+              <i class="fa fa-users fa-2x"></i><br><br>
+              <b>Find rooms</b> 
+            </a>
+        </div>                        
+      </div>
+    </div>  
     
+    <div ng-class="homeCtrl.homeItemClass()">      
+      <div class="tile-wrapper">
+        <div class="thumbnail tile tile-info tile-home-item-sm hidden-xs">
+            <a ui-sref="map" class="tile-home-item-contents">
+              <i class="fa fa-map fa-4x"></i><br><br>
+              <b>View a floor map</b> 
+            </a>
+        </div>
+      </div>
+      <div class="pull-right">
+        <div class="thumbnail tile tile-info tile-home-item-xs 
+                    hidden-sm hidden-md hidden-lg">
+            <a ui-sref="map" class="tile-home-item-contents">
+              <i class="fa fa-map fa-2x"></i><br><br>
+              <b>View map</b> 
+            </a>
+        </div>        
+      </div>
+    </div>    
+    <div ng-class="homeCtrl.homeItemClass()" ng-if="loggedIn == false">              
+      <div class="tile-wrapper">
+        <div class="thumbnail tile tile-alt tile-home-item-sm hidden-xs">
+            <a ui-sref="login" class="tile-home-item-contents">
+              <i class="fa fa-user fa-4x"></i><br><br>
+              <b>Log into MIA</b> 
+            </a>
+        </div>          
+      </div>
+      <div class="pull-left">
+        <div class="thumbnail tile tile-alt tile-home-item-xs 
+                    hidden-sm hidden-md hidden-lg">
+            <a ui-sref="login" class="tile-home-item-contents">
+              <i class="fa fa-user fa-2x"></i><br><br>
+              <b>Log in</b> 
+            </a>
+        </div>        
+      </div>
+    </div>                    
+  </div>
 </div>

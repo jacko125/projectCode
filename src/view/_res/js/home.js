@@ -6,7 +6,7 @@ miaApp.controller('homeController', [
         var self = this;
         
         if ('login' in $stateParams && $rootScope.loggedIn)
-            $state.go('home');
+            $state.go('home');               
 
         self.loginForm = { username: "" };        
         
@@ -20,6 +20,7 @@ miaApp.controller('homeController', [
                     .then(function success(response) {                                           
                         $window.sessionStorage.token = response.data.token;
                         wsService.connect($scope, self.loginForm.username, response.data.token);
+                        $scope.loggedIn = $rootScope.loggedIn;
                         $scope.$emit('logged_in', $rootScope.user);
                         $state.go('home');
                         
@@ -35,7 +36,16 @@ miaApp.controller('homeController', [
             }, function error(response) {
                 // Handle Staff Search service down
             });       
-    }                   
+        }
+
+        self.homeItemClass = function() {
+            return {
+                'col-xs-6': true,
+                'col-sm-3': !$scope.loggedIn,
+                'col-sm-offset-0': !$scope.loggedIn,
+                'col-sm-4': $scope.loggedIn
+            }
+        }        
 }]);
     
     

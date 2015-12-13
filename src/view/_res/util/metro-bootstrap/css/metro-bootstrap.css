@@ -2584,6 +2584,63 @@ fieldset[disabled] .btn-danger.focus {
   color: #ac1e2d;
   background-color: #ffffff;
 }
+.btn-alt {
+  color: #ffffff;
+  background-color: #9e9fa1;
+  border-color: #9e9fa1;
+}
+.btn-alt:focus,
+.btn-alt.focus {
+  color: #ffffff;
+  background-color: #848588;
+  border-color: #5e5f61;
+}
+.btn-alt:hover {
+  color: #ffffff;
+  background-color: #848588;
+  border-color: #7f8083;
+}
+.btn-alt:active,
+.btn-alt.active,
+.open > .dropdown-toggle.btn-alt {
+  color: #ffffff;
+  background-color: #848588;
+  border-color: #7f8083;
+}
+.btn-alt:active:hover,
+.btn-alt.active:hover,
+.open > .dropdown-toggle.btn-alt:hover,
+.btn-alt:active:focus,
+.btn-alt.active:focus,
+.open > .dropdown-toggle.btn-alt:focus,
+.btn-alt:active.focus,
+.btn-alt.active.focus,
+.open > .dropdown-toggle.btn-alt.focus {
+  color: #ffffff;
+  background-color: #727476;
+  border-color: #5e5f61;
+}
+.btn-alt:active,
+.btn-alt.active,
+.open > .dropdown-toggle.btn-alt {
+  background-image: none;
+}
+.btn-alt.disabled:hover,
+.btn-alt[disabled]:hover,
+fieldset[disabled] .btn-alt:hover,
+.btn-alt.disabled:focus,
+.btn-alt[disabled]:focus,
+fieldset[disabled] .btn-alt:focus,
+.btn-alt.disabled.focus,
+.btn-alt[disabled].focus,
+fieldset[disabled] .btn-alt.focus {
+  background-color: #9e9fa1;
+  border-color: #9e9fa1;
+}
+.btn-alt .badge {
+  color: #9e9fa1;
+  background-color: #ffffff;
+}
 .btn-link {
   color: #000000;
   font-weight: normal;
@@ -6711,7 +6768,7 @@ button.close {
   min-width: 75px;
   min-height: 75px;
   text-align: center;
-  opacity: 0.75;
+  opacity: 1;
   background-color: #2e8bcc;
   z-index: 1;
   border: 4px #ffffff solid;
@@ -6759,7 +6816,7 @@ button.close {
   border: 0;
 }
 .tile:hover {
-  opacity: 1;
+  opacity: 0.85;
 }
 .tile .tile-label {
   position: absolute;
@@ -6879,6 +6936,12 @@ button.close {
 }
 .tile.tile-asbestos {
   background-color: #c3a572;
+}
+.tile.tile-primary {
+  background-color: #000000;
+}
+.tile.tile-alt {
+  background-color: #9e9fa1;
 }
 .tile.tile-info {
   background-color: #00a1e0;

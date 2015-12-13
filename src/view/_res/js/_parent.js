@@ -36,10 +36,21 @@ miaApp.controller('parentController', [
                     break;
             }            
         });
-                
+        
+        self.notificationButtonClass = function() {
+            return {
+                'btn': true,
+                'navbar-btn': true,
+                'btn-info': ($scope.notifyCount > 0),
+                'btn-alt': ($scope.notifyCount == 0)                
+            }
+        }
+        
         self.notificationsButtonClick = function() {
             $state.go('notifications');
         }               
+        
+        
          
         // Login functions
         loginFunctions(self, {
@@ -63,8 +74,7 @@ function loginFunctions(self, dep) {
 
     dep.$scope.loggedIn = false;
         
-    dep.$scope.$on('logged_in', function(event, data) {                
-        
+    dep.$scope.$on('logged_in', function(event, data) {                        
         dep.$scope.username = data.Shortname;        
         dep.$scope.loggedIn = true;                
     });
