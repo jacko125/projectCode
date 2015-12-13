@@ -1,18 +1,18 @@
 miaApp.controller('mapController', [
     '$rootScope', '$scope', '$state', '$stateParams', '$location',
     'ngToast', 'requestService', 'wsService',
-    function(
+    function(                  
         $rootScope, $scope, $state, $stateParams,
         $location, ngToast, requestService, wsService) { 
         
         var self = this;
-                
+        
+        // stateParams action: "send-response"|"view-response"               
         $scope.action = $stateParams.action;
         $scope.target = $stateParams.target;
                                 
         var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 1' };
-        self.currentLocation = ($rootScope.user) ? getUserLocation($rootScope.user) : defaultLocation;                   
-        checkUnsupportedMap(self);
+        self.currentLocation = ($rootScope.user) ? getUserLocation($rootScope.user) : defaultLocation;                           
                 
         // TODO When logged in, set allLocations
                 
@@ -31,22 +31,22 @@ miaApp.controller('mapController', [
         
         // TODO When logged out, reset allLocations         
         
-        var userMarker = L.marker(L.latLng(0,0), { draggable: ($scope.action !== 'view-response') });       
-        
+        var userMarker = L.marker(L.latLng(0,0), { draggable: ($scope.action !== 'view-response') });               
         mapFunctions(self, {
             $location: $location,
+            $stateParams: $stateParams,
             userMarker: userMarker
-        });
+        });        
+        self.changeLevel() // Refreshes map
         
-        
+        // Assume response location is valid (and maps exist)
         if ($stateParams.action === 'view-response') {            
-            var response = $stateParams.target;                        
-            
-            // Assume response location is valid (and maps exist)
+            var response = $stateParams.target;                    
             self.currentLocation.building = response.location.building;                        
-            self.currentLocation.level = response.location.level;
+            self.changeBuilding();            
+            self.currentLocation.level = response.location.level;            
             self.changeLevel();
-            userMarker.setLatLng(L.latLng(response.location.latLng.lat, response.location.latLng.lng));                        
+            userMarker.setLatLng(L.latLng(response.location.latLng.lat, response.location.latLng.lng));                                                            
         }
              
         requestFunctions(self, {            
@@ -56,12 +56,12 @@ miaApp.controller('mapController', [
             userMarker: userMarker
         });
         
-        self.removeResponseButtonClick = function(response) {
-            console.log('remove response');
-            console.log(response);
-            requestService.removeResponse(requestService, response.sender);
-            wsService.removeResponse(response);
-        }
+        // self.removeResponseButtonClick = function(response) {
+            // console.log('remove response');
+            // console.log(response);
+            // requestService.removeResponse(requestService, response.sender);
+            // wsService.removeResponse(response);
+        // }
         
         
 }]);   
@@ -86,31 +86,43 @@ function mapFunctions(self, dep) {
         
     dep.userMarker.addTo(map);
     map.on('click', function(e) {            
-        console.log(e.latlng);
-        
-        if (self.isChoosingLocation) {                       
+        console.log(e.latlng);        
+        if (dep.$stateParams.action == 'send-response') {                       
             dep.userMarker.setLatLng(e.latlng);
-            dep.userMarker.addTo(map);               
+            dep.userMarker.addTo(map);            
         }                              
     });        
     
     self.changeLevel = function () { // Change floor map when level is changed
         tileLayer.setUrl('http://' + dep.$location.host() + ':' + dep.$location.port() + '/maps/' + getLocationFolder(self.currentLocation) + '/{z}/{x}/{y}.png');                        
-        checkUnsupportedMap(self);        
+        checkUnsupportedMap(self);
+        if (self.unsupportedMap)
+            map.removeLayer(dep.userMarker);
+        else
+            dep.userMarker.addTo(map);
+            
         //TODO Change markers
+    }
+    
+    self.isMapSupportedClass = function() {
+        return {
+            'map-disabled': self.unsupportedMap
+        }
     }
     
     //Get current position
     navigator.geolocation.getCurrentPosition(
-            function(pos) {
-                console.log('get current position');
-                console.log(pos);
-                //L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map);
-            },
-            function(err) {
-                console.log(err);
-            }
+        function(pos) {
+            console.log('get current position');
+            console.log(pos);
+            //L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map);
+        },
+        function(err) {
+            console.log(err);
+        }
     );
+    
+    
 }
 
 function requestFunctions(self, dep) {
@@ -123,8 +135,8 @@ function requestFunctions(self, dep) {
         };
     };            
     
-    self.sendLocationButtonClick = function(request) {        
-        dep.wsService.sendResponse(dep.$rootScope.user.Shortname, request, {
+    self.sendLocationButtonClick = function(request) {
+        dep.wsService.sendResponse(dep.$rootScope.user, request, {
             building: self.currentLocation.building,
             level: self.currentLocation.level,
             latLng: dep.userMarker.getLatLng()

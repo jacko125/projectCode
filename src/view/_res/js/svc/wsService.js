@@ -45,47 +45,45 @@ miaApp.factory('wsService', ['$location', 'requestService',
         self.webSocket.close();
     };
     
-    var requestLocation = function(sender, recipient) {
+    var requestLocation = function(user, recipient) {
         console.log('Requesting location for ' + recipient);
         self.webSocket.send(JSON.stringify({
             type: 'request-location',
             request: JSON.stringify({
-                sender: sender,
+                type: 'request',
+                sender: user.Shortname,
                 recipient: recipient,
-                datetime: new Date()                
+                datetime: new Date(),
+                senderName: user.Description
             })
         }));
     };
 
     var sendResponse = function(user, request, location) {                
-        removeRequest(request);        
+        removeMessage(request);            
         notifyObservers('ws-sent-response', request.sender);
         self.webSocket.send(JSON.stringify({
             type: "respond-location",
             response: JSON.stringify({
-                sender: user,
+                type: 'response',
+                sender: user.Shortname,                
                 recipient: request.sender,
-                location: location, //building, floor, coords
-                datetime: new Date()
+                location: location, //building, floor, latLng
+                datetime: new Date(),
+                senderName: user.Description
             })
         }));
-    };
+    };   
     
-    var removeRequest = function(request) {
-        requestService.removeRequest(requestService, request.sender);
+    var removeMessage = function(message) {
+        console.log('removing message')
+        console.log(message);
+        requestService.removeMessage(requestService, message);
         self.webSocket.send(JSON.stringify({
-            type: 'remove-request',
-            request: JSON.stringify(request)
+            type: 'remove-message',
+            message: JSON.stringify(message)
         }));
-    }
-    
-    var removeResponse = function(response) {
-        requestService.removeResponse(requestService, response.sender);
-        self.webSocket.send(JSON.stringify({
-            type: 'remove-response',
-            response: JSON.stringify(response)
-        }));
-    }
+    }    
     
     return {         
         registerObserverCallback: registerObserverCallback,
@@ -94,43 +92,41 @@ miaApp.factory('wsService', ['$location', 'requestService',
         
         requestLocation: requestLocation,
         sendResponse: sendResponse,      
-
-        removeRequest: removeRequest,
-        removeResponse: removeResponse
+        
+        removeMessage: removeMessage
+        // removeRequest: removeRequest,
+        // removeResponse: removeResponse
     };
 }]);
 
 function msgHandler(self, dep) {                               
-    return function(event) {        
-        var message = JSON.parse(event.data);
+    return function(event) {                
+        var message = JSON.parse(event.data);                
     
-        switch (message.type) {                            
-            case 'response-list':                
-                dep.requestService.responses = message.responses;
-                console.log('Received response-list at service level, count: ' + dep.requestService.responses.length);                                
-                dep.notifyObservers('ws-receive-response-list', dep.requestService.responses);
-                break;  
+        switch (message.type) {
 
-            case 'request-list':                                
-                dep.requestService.requests = message.requests;                
-                console.log('Received request-list at service level, count: ' + dep.requestService.requests.length);                                
-                dep.notifyObservers('ws-receive-request-list', message.requests);
-                break;                
+            case 'message-list':
+                dep.requestService.messages = message.messages;
+                console.log('Received message-list, count: ' + dep.requestService.messages.length)
+                console.log(dep.requestService.messages)
+                dep.notifyObservers('ws-receive-message-list', dep.requestService.messages)
+                break;
                 
-            case 'request-location':                
-                var request = JSON.parse(message.request);                                
+            case 'request':                
+                var request = message;
                 console.log('Received request for location at service level, sender: ' + request.sender);
                 console.log(request);
-                addRequest(dep.requestService, request);
+                dep.requestService.removeMessage(dep.requestService, request)
+                dep.requestService.messages.push(request)                
                 dep.notifyObservers('ws-receive-request', request);                
                 break;
                                 
-            case 'response':                
-                var response = JSON.parse(message.response);
-                console.log('Received response at service level, sender: ' + response.sender);
-                response.location = JSON.parse(response.location);
-                console.log(response);                
-                addResponse(dep.requestService, response);
+            case 'response':                              
+                var response = message;                               
+                console.log('Received response at service level, sender: ' + response.sender);                
+                console.log(response);     
+                dep.requestService.removeMessage(dep.requestService, response)
+                dep.requestService.messages.push(response) // Only one response from someone at any given time                
                 dep.notifyObservers('ws-receive-response', response);
                 break;
                 
@@ -140,28 +136,26 @@ function msgHandler(self, dep) {
         }
     };
 }
-function addRequest(requestService, newRequest) {            
-    var updated = false;
-    for (var i = 0; i < requestService.requests.length; i++) {
-        if (requestService.requests[i].sender === newRequest.sender) {
-            requestService.requests[i].datetime = newRequest.datetime;
-            updated = true;
-        }
-    }
-    if (!updated) {
-        requestService.requests.push(newRequest);
+
+/*
+Request {
+    sender: ''
+    recipient: ''
+    datetime: ''    
+}
+
+Response {
+    sender: ''
+    recipient: ''
+    datetime: ''
+    location: {
+        building: '',
+        level: '',
+        latLng: {
+            lat: ''
+            lng: ''
+        }        
     }
 }
 
-function addResponse(requestService, newResponse) {
-    var updated = false;
-    for (var i = 0; i < requestService.responses.length; i++) {
-        if (requestService.responses[i].sender === newResponse.sender) {
-            requestService.responses[i].datetime = newResponse.datetime;
-            updated = true;
-        }
-    }
-    if (!updated) {
-        requestService.responses.push(newResponse);
-    }    
-}
+*/

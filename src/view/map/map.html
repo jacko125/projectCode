@@ -2,9 +2,10 @@
   
     <div class="row">
       <div class="col-sm-6 col-sm-offset-3">      
-        <div ng-if="action === 'send-response'" class="alert alert-info">Place a pin at your location</div>
+        <div ng-if="action == 'send-response'" class="alert alert-info">Place the pin at your location.</div>
         <div class="panel panel-default">
-          <div class="panel-heading">            
+          <div class="panel-heading">
+            Displaying: 
             <select ng-options="building for building in mapCtrl.allBuildings"
                     ng-model="mapCtrl.currentLocation.building"
                     ng-change="mapCtrl.changeBuilding()"
@@ -17,18 +18,18 @@
             </select>
           </div>          
         </div>        
-        <div id="map"></div>
-        <div ng-if="mapCtrl.unsupportedMap" class="alert alert-warning">This map is not supported. Please select another</div>
+        <div id="map" ng-class="mapCtrl.isMapSupportedClass()"></div>
+        <div ng-if="mapCtrl.unsupportedMap" class="alert alert-warning">This map is not supported. Please select another map.</div>
         <br>
         <div ng-if="action === 'send-response'">
           <a ng-class="mapCtrl.sendLocationButtonClass()"
                   ng-click="mapCtrl.sendLocationButtonClick(target)"
                   ui-sref="home">Send location</a>
           &nbsp;
-          <a class="btn btn-default" ui-sref="requests({ action: 'requests'})">Back to list</a>
+          <a class="btn btn-default" ui-sref="notifications">Back to list</a>
         </div>
         <div ng-if="action === 'view-response'">
-          <a class="btn btn-default" ui-sref="requests({ action: 'responses' })">Back to list</a>
+          <a class="btn btn-default" ui-sref="notifications">Back to list</a>
         </div>
       </div>
     </div>    

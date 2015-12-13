@@ -1,8 +1,8 @@
 // Declare the app module
 var miaApp = angular.module('mia', ['ui.router', 'angular-loading-bar', 'ngToast']);
-
-miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 
-    function($httpProvider, $stateProvider, $urlRouterProvider) { 
+    
+miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToastProvider', 
+    function($httpProvider, $stateProvider, $urlRouterProvider, ngToastProvider) { 
         $httpProvider.interceptors.push('authInterceptor');        
         
         $urlRouterProvider.otherwise("/home");
@@ -15,8 +15,10 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider',
                 controller: homeCtrl
             })
             .state('login', {                
+                url: '/login',
                 templateUrl: 'view/home/login.html',
-                controller: homeCtrl
+                controller: homeCtrl,
+                params: { login: null }
             });
                         
         $stateProvider
@@ -29,7 +31,7 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider',
                 url: '/profile',
                 templateUrl: 'view/search/profile.html',
                 controller: 'searchController as searchCtrl',
-                params: { profile: null }
+                params: { action: 'profile', profile: null }
             });
                    
         $stateProvider
@@ -40,11 +42,18 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider',
                 params: { action: null, target: null }
             });
         $stateProvider
-            .state('requests', {
-                templateUrl: 'view/request/request.html',
-                controller: 'requestController as requestCtrl',
+            .state('notifications', {
+                templateUrl: 'view/notification/list.html',
+                controller: 'notificationController as notifyCtrl',
                 params: { action: null }
             });
+            
+        ngToastProvider.configure({            
+            horizontalPosition: 'right',            
+            animation: 'fade',
+            maxNumber: 3,
+            timeout: 2500,
+        });
 }]);
 
 miaApp.factory('authInterceptor', ['$q', '$window', function($q, $window) {

@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');        
 var util = require('util');
 
-var hostname = 'localhost';
+var hostname = '127.0.0.1';
 if (process.env.ENVIRONMENT == 'prod') {
     hostname = 'ntsydv1946';
 }             

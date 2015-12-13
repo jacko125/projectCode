@@ -25,42 +25,51 @@ module.exports = {
                     type: 'connect',
                     username: message.sender
                     });
-                    
-                    
-                 RequestModule.getRequestsForUser(message.sender, function(requests) {
-                   var response = {
-                       type: 'request-list',
-                       requests: requests
-                   }                   
-                   sendToClient(wss, ws, message.sender, response);                   
-                });
                 
-                ResponseModule.getResponsesForUser(message.sender, function(responses) {
-                   var response = {
-                       type: 'response-list',
-                       responses: responses
-                   }                                      
-                   sendToClient(wss, ws, message.sender, response);                   
-                });    
+                // Get all messages for user, sort by datetime and send.
+                RequestModule.getRequestsForUser(message.sender, function(requests) {
+                    requests.forEach(function(req) { req.type = 'request'; }); // Attach type                     
+                    
+                    ResponseModule.getResponsesForUser(message.sender, function(responses) {
+                        responses.forEach(function(rep) { rep.type = 'response'; }); //Attach type                        
+                        //Sort by datetime and send.
+                        var messages = requests.concat(responses);
+                        messages.sort(function(a, b) {
+                           return a.datetime > b.datetime
+                        });
+                        sendToClient(wss, ws, message.sender, {
+                            type: 'message-list',
+                            messages: messages
+                        });
+                    });
+                });
+                    
+                // RequestModule.getRequestsForUser(message.sender, function(requests) {
+                   // var response = {
+                       // type: 'request-list',
+                       // requests: requests
+                   // }                   
+                   // sendToClient(wss, ws, message.sender, response);                   
+                // });
+                
+                // ResponseModule.getResponsesForUser(message.sender, function(responses) {
+                   // var response = {
+                       // type: 'response-list',
+                       // responses: responses
+                   // }                                      
+                   // sendToClient(wss, ws, message.sender, response);                   
+                // });    
                 
                 break;            
                 
             // "sender","recipient","datetime"
-            case 'request-location':                
-                
+            case 'request-location':                                
                 var request = JSON.parse(message.request);                                               
                 console.log('Received request for ' + request.recipient + '\'s location');
                 RequestModule.deleteRequest(request.sender, request.recipient, function () {
-                    RequestModule.createRequest(new Request(request.sender, request.recipient, request.datetime));                                                     
+                    RequestModule.createRequest(request);                                                     
                 });                                
-                sendToClient(wss, ws, request.recipient, {
-                    type: 'request-location',
-                    request: JSON.stringify({
-                        sender: request.sender,
-                        recipient: request.recipient,
-                        datetime: request.datetime                                            
-                    })                    
-                });     
+                sendToClient(wss, ws, request.recipient, request);     
                 console.log('Sending request to ' + request.recipient);                                
                 break;                                      
 
@@ -69,18 +78,20 @@ module.exports = {
                 var response = JSON.parse(message.response);
                 console.log('Received response to ' + response.recipient + '\'s request for ' + response.sender + '\'s location');
                 ResponseModule.deleteResponse(response.sender, response.recipient, function() {
-                    ResponseModule.createResponse(new Response(response.sender, response.recipient, response.location, response.datetime));                                    
-                });                
-                sendToClient(wss, ws, response.recipient, { // Attempt to send response to recipient
-                    type: 'response',
-                    response: JSON.stringify({
-                        sender: response.sender,
-                        recipient: response.recipient,
-                        location: JSON.stringify(response.location),
-                        datetime: response.datetime
-                    })
-                });                
+                    ResponseModule.createResponse(response);                                    
+                });
+                console.log(response);
+                sendToClient(wss, ws, response.recipient, response);                
                 break;
+                
+            case 'remove-message':
+                var msg = JSON.parse(message.message);
+                console.log('Received remove-request ' + msg.sender + ':' + msg.recipient);
+                if (msg.type == 'request')
+                    RequestModule.deleteRequest(msg.sender, msg.recipient, function() {}); 
+                else if (msg.type == 'response')
+                    ResponseModule.deleteResponse(msg.sender, msg.recipient, function () {});                
+                break;                
                 
             case 'remove-request':
                 var request = JSON.parse(message.request);

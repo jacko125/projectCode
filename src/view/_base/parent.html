@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="/css/map.css">
     <link rel="stylesheet" href="/css/search.css">
     <link rel="stylesheet" href="/css/meeting.css">
-    <link rel="stylesheet" href="/css/request.css">
+    <link rel="stylesheet" href="/css/notification.css">
     
     <link rel="stylesheet" href="/css/example.css">
     
@@ -28,10 +28,10 @@
 </head>
 <body ng-controller='parentController as parentCtrl'>
     
-	{% include '_base/header.html' %}
+	{% include '_base/header.html' %}    
+  
     <toast></toast>
-    <div class="container" ui-view>        
-    
+    <div class="container" ui-view>              
     </div>    
     
 	{% include '_base/footer.html' %}
@@ -51,7 +51,7 @@
     <script src="/js/home.js"></script>
     <Script src="/js/search.js"></script>
     <Script src="/js/map.js"></script>
-    <Script src="/js/request.js"></script>
+    <Script src="/js/notification.js"></script>
     <Script src="/js/meeting.js"></script>
     
     <script src="/js/svc/requestService.js"></script>

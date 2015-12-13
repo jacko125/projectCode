@@ -1,0 +1,56 @@
+<div class="container container-notification" ng-controller="notificationController as notifyCtrl">                       
+  <!-- List area -->
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">      
+      <h2>Notifications</h2>        
+      <div ng-if="messages.length == 0">
+        <br>
+        <p class="lead">You have no new notifications.</p>          
+        <p>Click <b><a ui-sref="home">here</a></b> to go back</p>
+      </div>      
+        
+      <div class="panel panel-default panel-body"
+           ng-if="messages.length > 0">
+      
+        <!-- Requests -->
+        <div class="media media-middle text-left"                            
+          ng-repeat="message in messages"
+          ng-controller="messageProfileController as msgProfileCtrl" ng-init="init(message.sender)">          
+           
+          <div class="media-left">
+            <div class="profile-container">
+              <img class="media-object profile-image" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{msgProfileCtrl.user.EmployeeId}}.jpg">
+            </div>
+          </div>
+           
+          <div class="media-body">
+            <div class="list-group-item-heading">
+              <b>{{message.senderName}}</b> 
+              <span ng-switch="message.type">
+                <span ng-switch-when="request">requested your location</span>
+                <span ng-switch-when="response">responded to your request</span>
+                <span ng-switch-when="broadcast">sent their location to you</span>
+              </span>
+              <b>{{message.datetime | timeSince }}</b> ago 
+            </div>
+                            
+            <div class="list-group-item-text">
+              <span ng-switch="message.type">
+                <a ng-switch-when="request" 
+                   class="btn btn-success" 
+                   ui-sref="map({ action: 'send-response', target: message })">Accept</a>                       
+                <a ng-switch-when="response"
+                   class="btn btn-success"
+                   ui-sref="map({ action: 'view-response', target: message })">View</a>
+              </span>
+                &nbsp;
+              <a class="btn btn-warning" href="#" 
+                 ng-click="notifyCtrl.removeMessageButtonClick(message)">Remove</a>
+            </div>                                                
+          </div> <!-- ./media-body -->
+        </div> <!-- ./media -->
+        
+      </div> <!-- ./panel -->
+    </div> <!-- ./col -->
+  </div> <!-- ./row -->        
+</div> <!-- ./container -->

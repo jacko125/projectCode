@@ -24,27 +24,18 @@
         <li ui-sref-active="active">
           <a ui-sref="map"
              data-toggle="collapse" data-target=".navbar-collapse.in">Map</a>
-        </li>
-      </ul>
+        </li>        
+      </ul>                 
       <ul class="nav navbar-nav navbar-right" ng-if="loggedIn">
         <li>
           <div class="btn-nav">
-            <a class="btn btn-info navbar-btn"              
-              ng-click="parentCtrl.requestsButtonClick()"
+            <a class="btn btn-info navbar-btn"
+              ng-click="parentCtrl.notificationsButtonClick()"
               data-toggle="collapse" data-target=".navbar-collapse.in">
-              Requests <span class="badge" ng-bind="requestCount"></span>
+              Notifications <span class="badge" ng-bind="notifyCount"></span>
             </a>
           </div>          
-        </li>
-        <li>
-          <div class="btn-nav">
-            <a class="btn btn-success navbar-btn"
-              ng-click="parentCtrl.responsesButtonClick()"
-              data-toggle="collapse" data-target=".navbar-collapse.in">
-              Responses <span class="badge" ng-bind="responseCount  "></span>
-            </a>
-          </div>          
-        </li>
+        </li>        
         <li>
           <div class="btn-nav">
             <a class="btn btn-default navbar-btn" href="#" 

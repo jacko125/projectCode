@@ -1,13 +1,20 @@
-.container-search {    
+.search-list {
     margin-top: 20px;    
     margin-bottom: 80px;    
 }
 
+.profile {
+    margin-top: 3%;
+    margin-bottom:10%;
+}
 .container-search-profile {
     margin-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
     background: #eee;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
+
 
 .listnav{
     max-height: 80vh;

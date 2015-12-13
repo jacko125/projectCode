@@ -1,35 +1,28 @@
 miaApp.factory('requestService', [function() {
+               
+    var messages = [];                   
     
-    var requests = [];    
-    var responses = [];
+    var removeMessage = 
+        function(requestService, message) {
+            var indexToRemove = -1;
+            // Remove duplicate messages based on type/sender 
+            for (var i = 0; i < requestService.messages.length; i++) {                
+                var currentMsg = requestService.messages[i]
+                console.log('iterating...');
+                console.log(currentMsg);     
+                console.log(message);
+                if (currentMsg.type == message.type && currentMsg.sender == message.sender) {
+                    indexToRemove = i;       
+                    console.log('found and removing');
+                }
+            }
+            if (indexToRemove != -1) {
+                requestService.messages.splice(indexToRemove, 1);
+            }            
+        }       
     
     return {
-        
-        removeRequest: function(requestService, sender) {            
-            var indexToRemove = -1;
-            for (var i = 0; i < requestService.requests.length; i++) {
-                console.log('iterated req' + requestService.requests[i].sender);
-                if (requestService.requests[i].sender === sender) {
-                    indexToRemove = i;               
-                }
-            }
-            if (indexToRemove != -1) {
-                requestService.requests.splice(indexToRemove, 1);
-            }            
-        },        
-        
-        //Static function
-        removeResponse: function removeResponse(requestService, sender) {            
-            var indexToRemove = -1;
-            for (var i = 0; i < requestService.responses.length; i++) {        
-                if (requestService.responses[i].sender === sender) {
-                    indexToRemove = i;          
-                }
-            }
-            if (indexToRemove != -1) {
-                requestService.responses.splice(indexToRemove, 1);
-            }            
-        }
+        removeMessage: removeMessage, // static        
         
     };
     

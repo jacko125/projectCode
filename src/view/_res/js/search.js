@@ -1,7 +1,7 @@
 miaApp.controller('searchController', [
-    '$scope', '$rootScope', '$stateParams',
+    '$scope', '$rootScope', '$state', '$stateParams',
     'ngToast','staffSearchService','wsService', 
-    function($scope, $rootScope, $stateParams, ngToast, staffSearchService, wsService) {
+    function($scope, $rootScope, $state, $stateParams, ngToast, staffSearchService, wsService) {
         var self = this;        
         
         self.searchParams = {
@@ -26,6 +26,11 @@ miaApp.controller('searchController', [
                 content: '<div class="toast">' + toastMsg + '</div>',
                 horizontalPosition: 'left'
             });
-            wsService.requestLocation($rootScope.user.Shortname, recipient);            
+            wsService.requestLocation($rootScope.user, recipient);            
+        }
+        
+        // Return to search if profile page accessed directly
+        if ('profile' in $stateParams && $stateParams.profile == null) {
+            $state.go('search');
         }
     }]);

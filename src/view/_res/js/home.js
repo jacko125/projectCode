@@ -1,10 +1,12 @@
 miaApp.controller('homeController', [
-    '$http', '$window', '$scope','$rootScope', '$state', 
+    '$http', '$window', '$scope','$rootScope', '$state', '$stateParams',
     'wsService', 'staffSearchService', 
-    function($http, $window, $scope, $rootScope, $state, wsService, staffSearchService) {   
+    function($http, $window, $scope, $rootScope, $state, $stateParams,
+             wsService, staffSearchService) {   
         var self = this;
         
-        self.loginButtonClick = function() { $state.go('login'); };
+        if ('login' in $stateParams && $rootScope.loggedIn)
+            $state.go('home');
 
         self.loginForm = { username: "" };        
         

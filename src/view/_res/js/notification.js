@@ -1,38 +1,26 @@
-miaApp.controller('requestController', [
+miaApp.controller('notificationController', [
     '$rootScope', '$scope', '$stateParams',
     'wsService', 'staffSearchService', 'requestService', 
     function($rootScope, $scope, $stateParams, wsService, staffSearchService, requestService) { 
-        var self = this;
-        
-        $scope.action = $stateParams.action;
-        
-        $scope.requests = requestService.requests;
-        $scope.responses = requestService.responses;                                             
+        var self = this;                
+
+        $scope.messages = requestService.messages;
         
         wsService.registerObserverCallback(function(event, data) {
             switch (event) {                
-                case 'ws-receive-request-list':                    
-                    $scope.requests = requestService.requests;           
-                    break;                    
-                case 'ws-receive-request':    
-                    $scope.requests = requestService.requests;
-                    break;                            
+                case 'ws-receive-message-list':
+                    $scope.messages = requestService.messages;
+                    break;
             }            
-        })
+        });                
         
-        self.ignoreRequestButtonClick = function(request) {            
-            wsService.removeRequest(request);
-            $scope.$emit('request-ignore', request.sender);            
-        }
-            
-        self.removeResponseButtonClick = function(response) {                        
-            wsService.removeResponse(response);
-            $scope.$emit('response-remove', response.sender);
-        }        
-        
+        self.removeMessageButtonClick = function(message) {
+            wsService.removeMessage(message);      
+            $scope.$emit('message-remove', message)
+        }                   
 }]);
 
-miaApp.controller('requestProfileController', ['$scope', 'staffSearchService', function($scope, staffSearchService) {
+miaApp.controller('messageProfileController', ['$scope', 'staffSearchService', function($scope, staffSearchService) {
     var self = this;
     self.user = {};
     
@@ -54,7 +42,6 @@ miaApp.filter('timeSince', [function() {
     }
 }]);
 
-
 function timeSince(date) {
 
     var seconds = Math.floor((new Date() - date) / 1000);
@@ -63,22 +50,32 @@ function timeSince(date) {
 
     if (interval > 1) {
         return interval + " years";
+    } else if (interval == 1) {
+        return "1 year";
     }
     interval = Math.floor(seconds / 2592000);
     if (interval > 1) {
         return interval + " months";
+    } else if (interval == 1) {
+        return "1 month";
     }
     interval = Math.floor(seconds / 86400);
     if (interval > 1) {
         return interval + " days";
+    } else if (interval == 1) {
+        return "1 day";
     }
     interval = Math.floor(seconds / 3600);
     if (interval > 1) {
         return interval + " hours";
+    } else if (interval == 1) {
+        return "1 hour";
     }
     interval = Math.floor(seconds / 60);
     if (interval > 1) {
         return interval + " minutes";
+    } else if (interval == 1) {
+        return "1 minute"
     }
     return Math.floor(seconds) + " seconds";
 }
