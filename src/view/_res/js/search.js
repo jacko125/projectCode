@@ -8,12 +8,12 @@ miaApp.controller('searchController', [
             name: ''
         };       
                 
-        self.results = staffSearchService.results;
+        $scope.results = staffSearchService.results;
         self.loadStaffList = function() {           
             staffSearchService.getStaffListTest(self.searchParams).then(function(results) {
                 console.log(results);
                 staffSearchService.results = results.data;
-                self.results = results.data;
+                $scope.results = results.data;
             });
         };
         self.profile = $stateParams.profile;
