@@ -17,7 +17,7 @@
 
 .listnav{
     max-height: 80vh;
-    overflow-y: scroll;
+    overflow: auto;
 }
 
 .profile-container{
@@ -50,3 +50,6 @@
     width: 140px;
 }
 
+.gi-2x{
+    font-size: 1.5em;
+}

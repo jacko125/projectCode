@@ -15,28 +15,32 @@
   
   <div class="row">
     
-    <div class="col-sm-6 col-sm-offset-3">
-      <p class="alert alert-info" role="alert" style="padding: 15px;" ng-if="searchCtrl.results.length <= 0"> No matching staff profile found!</p>
+    <div class="col-sm-7 col-sm-offset-3">
+      <p class="alert alert-info" role="alert" style="padding: 15px;" ng-if="results.length <= 0"> No matching staff profile found!</p>
       <div class="list-group listnav">
-        <a class="list-group-item"
-          ng-repeat="staff in searchCtrl.results track by staff.EmployeeId"           
-          ui-sref="profile({ profile: staff })">
+        <ul>
+        <li class="list-group-item"
+          ng-repeat="staff in results track by staff.EmployeeId">
+          <!--ui-sref="profile({ profile: staff })">-->
           <div class="media">
             <div class="media-left  media-middle">
           <div class="profile-container">
-          <img class="media-object profile-image" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
+          <a ui-sref="profile({ profile: staff })"><img class="media-object profile-image" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'"></a>
             </div>
           </div>
-            <div class="media-body" style="padding-left: 5px;">
-            <h4 class="media-heading">{{staff.Description}}</h4>
+            <div class="media-body" style="padding-left: 5%;">
+              <a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>
               <p> {{staff.Group}}</p>
               <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
               <p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{staff.postalAddress}} - {{staff.Country}}</p>
-              <button class="btn btn-success"
-                      ng-click="searchCtrl.requestLocationButtonClick(staff.Shortname)">Request location</button>
+            </div>
+            <div class="media-right">
+              <button data-toggle="tooltip" data-placement="bottom" title="Request their Location" class="btn btn-success"
+                      ng-click="searchCtrl.requestLocationButtonClick(staff.Shortname)"><span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true"></span></button>
             </div>
           </div>
-        </a>
+        </li>
+        </ul>
       </div>
     </div>
   </div>
