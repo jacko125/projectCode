@@ -23,6 +23,18 @@ miaApp.controller('searchController', [
         });
 
         self.requestLocationButtonClick = function(recipient) {
+            console.log('button clicked');
+            console.log(recipient);
+            
+            if (!('profile' in $stateParams)) {
+                $scope.results.forEach(function(currentProfile) {
+                    console.log('iterating');
+                    console.log(currentProfile);
+                    if (currentProfile.Shortname == recipient) {
+                        self.profile = currentProfile;          
+                    }                        
+                });
+            }
             var toastMsg = 'You have requested ' + self.profile.Description + '\'s location';
             ngToast.create({
                 className: 'info',
@@ -38,3 +50,9 @@ miaApp.controller('searchController', [
             $state.go('search');
         }
     }]);
+    
+    
+function getProfileFromResults(results, shortname) {
+
+    
+}
