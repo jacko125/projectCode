@@ -17,7 +17,11 @@ miaApp.controller('searchController', [
             });
         };
         self.profile = $stateParams.profile;
-        
+
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
         self.requestLocationButtonClick = function(recipient) {
             var toastMsg = 'You have requested ' + self.profile.Description + '\'s location';
             ngToast.create({
