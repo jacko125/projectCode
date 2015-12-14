@@ -1,28 +1,26 @@
 <div class="profile">
   <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">
-      <div class="media media-profile">
-        <div class="media-left media-top">
-          <div class="profile-container-large">
-            <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{searchCtrl.profile.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
-          </div>
+    <div class="col-sm-3 col-sm-offset-1">
+      <div class="profile-container-large">
+        <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{searchCtrl.profile.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
+      </div>
+    </div>
+    <div class="col-sm-7">      
+      <div class="media-body container-search-profile">
+        <h2>{{searchCtrl.profile.Description}} - {{searchCtrl.profile.BusinessTitle}}</h2>
+        <h4>{{searchCtrl.profile.Group}} - {{searchCtrl.profile.Division}}</h4>
+        <div>
+          <p>Team: {{searchCtrl.profile.Department}}</p>
+          <p>Email Address: {{searchCtrl.profile.EmailAddress}}</p>
+          <p>Contact Number: {{searchCtrl.profile.FullTelephoneNumber}}</p>
+          <p>Address: {{searchCtrl.profile.postalAddress}} <br/> {{searchCtrl.profile.Office}} </p>
         </div>
-        <div class="media-body container-search-profile">
-          <h2>{{searchCtrl.profile.Description}} - {{searchCtrl.profile.BusinessTitle}}</h2>
-          <h4>{{searchCtrl.profile.Group}} - {{searchCtrl.profile.Division}}</h4>
-          <div>
-            <p>Team: {{searchCtrl.profile.Department}}</p>
-            <p>Email Address: {{searchCtrl.profile.EmailAddress}}</p>
-            <p>Contact Number: {{searchCtrl.profile.FullTelephoneNumber}}</p>
-            <p>Address: {{searchCtrl.profile.postalAddress}} <br/> {{searchCtrl.profile.Office}} </p>
-          </div>
-          <button class="btn btn-success"
-                  ng-click="searchCtrl.requestLocationButtonClick(searchCtrl.profile.Shortname)">Request location</button>
-                  <br><br>
-          <button class="btn btn-default"
-                  ui-sref="search">Back to results</button>
-        </div> <!-- ./media-body -->
-      </div> <!-- ./media profile-media -->
+        <button class="btn btn-success"
+                ng-click="searchCtrl.requestLocationButtonClick(searchCtrl.profile.Shortname)">Request location</button>
+                <br><br>
+        <button class="btn btn-default"
+                ui-sref="search">Back to results</button>
+      </div> <!-- ./media-body -->
       
     </div> <!-- ./col -->
   </div> <!-- ./row -->

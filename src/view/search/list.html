@@ -1,7 +1,8 @@
 <div class="search-list">
 
   <div class="row">
-    <div class="col-sm-4 col-sm-offset-4">
+    <div class="col-md-6 col-md-offset-3
+                col-sm-6 col-sm-offset-3">
       <input type="text" class="form-control" 
         placeholder="Search staff by name..."
         ng-model="searchCtrl.searchParams.name"
@@ -15,7 +16,7 @@
   
   <div class="row">
     
-    <div class="col-sm-7 col-sm-offset-3">
+    <div class="col-md-8 col-md-offset-2">
       <p class="alert alert-info" role="alert" style="padding: 15px;" ng-if="results.length <= 0"> No matching staff profile found!</p>
       <div class="list-group listnav">
         <ul>
@@ -23,12 +24,16 @@
           ng-repeat="staff in results track by staff.EmployeeId">
           <!--ui-sref="profile({ profile: staff })">-->
           <div class="media">
-            <div class="media-left  media-middle">
-          <div class="profile-container">
-          <a ui-sref="profile({ profile: staff })"><img class="media-object profile-image" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'"></a>
+            <div class="media-left media-middle">
+              <div class="test">
+                <a class="profile-container" 
+                   ui-sref="profile({ profile: staff })">
+                  <img class="media-object profile-image"
+                       ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
+                </a>
+              </div>
             </div>
-          </div>
-            <div class="media-body" style="padding-left: 5%;">
+            <div class="media-body">
               <a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>
               <p> {{staff.Group}}</p>
               <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
