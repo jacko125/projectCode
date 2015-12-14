@@ -3,9 +3,14 @@
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+        <span ng-if="notifyCount == 0 || !loggedIn">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>        
+        </span>
+        <span ng-if="loggedIn && notifyCount > 0">
+          <span ng-class="parentCtrl.notificationIconClass()" ng-bind="notifyCount"></span>        
+        </span>
       </button>
       <a class="navbar-brand" ui-sref="home">
         <img class="logo" src="/img/macquarie_personal_logo.gif">

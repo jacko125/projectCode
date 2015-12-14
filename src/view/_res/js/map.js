@@ -95,11 +95,11 @@ function mapFunctions(self, dep) {
     
     self.changeLevel = function () { // Change floor map when level is changed
         tileLayer.setUrl('http://' + dep.$location.host() + ':' + dep.$location.port() + '/maps/' + getLocationFolder(self.currentLocation) + '/{z}/{x}/{y}.png');                        
-        checkUnsupportedMap(self);
-        if (self.unsupportedMap || dep.$stateParams.action != 'send-response')
-            map.removeLayer(dep.userMarker);
+        checkUnsupportedMap(self);                           
+        if (dep.$stateParams.action == 'view-response' || dep.$stateParams.action == 'send-response')
+            dep.userMarker.addTo(map);                                       
         else
-            dep.userMarker.addTo(map);
+            map.removeLayer(dep.userMarker);   
             
         //TODO Change markers
     }

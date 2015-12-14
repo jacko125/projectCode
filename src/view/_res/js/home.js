@@ -12,7 +12,7 @@ miaApp.controller('homeController', [
         
         self.loginSubmit = function() {                      
                 
-            staffSearchService.getStaffProfileByShortnameTest(self.loginForm.username)
+            staffSearchService.getStaffProfileByShortname(self.loginForm.username)
             .then(function success(response) {                                
                 if (response.data.length > 0) {                    
                     $rootScope.user = processUserDetails(response.data[0]);  // Save user as object
@@ -38,14 +38,30 @@ miaApp.controller('homeController', [
             });       
         }
 
-        self.homeItemClass = function() {
-            return {
-                'col-xs-6': true,
-                'col-sm-3': !$scope.loggedIn,
-                'col-sm-offset-0': !$scope.loggedIn,
-                'col-sm-4': $scope.loggedIn
+        self.homeItemClass = function(item) {
+            if ($scope.loggedIn && item == 'map') {
+                return {                
+                    'col-xs-12': true,
+                    'col-sm-3': !$scope.loggedIn,
+                    'col-sm-offset-0': !$scope.loggedIn,
+                    'col-sm-4': $scope.loggedIn
+                }                                
+            } else {
+                return {                
+                    'col-xs-6': true,
+                    'col-sm-3': !$scope.loggedIn,
+                    'col-sm-offset-0': !$scope.loggedIn,
+                    'col-sm-4': $scope.loggedIn
+                }
+            }            
+        }    
+        self.mapItemSubClass = function() {
+            return {                
+                'pull-right': !$scope.loggedIn,
+                'tile-wrapper': $scope.loggedIn
             }
-        }        
+        }
+        
 }]);
     
     

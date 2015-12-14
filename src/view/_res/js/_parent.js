@@ -1,13 +1,14 @@
 miaApp.controller('parentController', [
-    '$scope', '$rootScope', '$window', '$state',
+    '$scope', '$rootScope', '$window', '$state', '$stateParams',
     'ngToast', 'wsService', 'requestService',
-    function($scope, $rootScope, $window, $state, ngToast, wsService, requestService) {
+    function($scope, $rootScope, $window, $state, $stateParams, ngToast, wsService, requestService) {
 
         var self = this;
         $scope.notifyCount = 0;
         
         wsService.registerObserverCallback(function(event, data) {
-            console.log(event);            
+            console.log(event);
+            console.log('logging state');      
             switch (event) {                           
                 case 'ws-receive-message-list':
                     $scope.notifyCount = requestService.messages.length;                        
@@ -26,7 +27,7 @@ miaApp.controller('parentController', [
                 case 'ws-receive-request':                        
                     $scope.notifyCount = requestService.messages.length;
                     var toastMsg = data.senderName + ' has requested your location';
-                    showToast(ngToast, toastMsg, 'info');        
+                    showToast(ngToast, toastMsg, 'info');                            
                     break;                                                                
                     
                 case 'ws-receive-response':
@@ -35,7 +36,14 @@ miaApp.controller('parentController', [
                     showToast(ngToast, toastMsg, 'success');                     
                     break;
             }            
+            $state.transitionTo($state.current, $stateParams, {
+                reload: true,
+                inherit: false,
+                notify: true
+            });
         });
+        
+        
         
         self.notificationButtonClass = function() {
             return {
@@ -45,12 +53,18 @@ miaApp.controller('parentController', [
                 'btn-alt': ($scope.notifyCount == 0)                
             }
         }
+        self.notificationIconClass = function() {
+            return {
+                'visible-xs-inline': true,
+                'badge-custom': true,
+                'badge-active': ($scope.notifyCount > 0),
+                'badge-inactive': ($scope.notifyCount == 0)
+            }
+        }
         
         self.notificationsButtonClick = function() {
             $state.go('notifications');
-        }               
-        
-        
+        }                               
          
         // Login functions
         loginFunctions(self, {
@@ -93,4 +107,13 @@ function showToast(ngToast, message, type) {
         className: type,        
         content: '<div>' + message + '</div>',        
     });    
+}
+
+function refreshState($state, $stateParams) {
+    var currentState = $state.current;
+    if (currentState.name == 'home')
+        $state.go('search');
+    else 
+        $state.go('home');
+    $state.go(currentState.name, $stateParams, { reload: true });
 }

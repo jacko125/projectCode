@@ -8,7 +8,7 @@ body {
 }
 
 body > .container {
-  padding: 60px 15px 0;
+  padding: 80px 15px 0;
 }
 
 .logo {
@@ -29,6 +29,29 @@ body > .container {
   margin-left: 10px;
   margin-right: 10px;
 }
+
+.badge-active {
+  background-color: #00A1E0;
+}
+
+.badge-inactive {
+  background-color: #777;
+}
+
+.badge-custom {
+  display: inline-block;
+  min-width: 10px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;  
+  border-radius: 0px;
+}
+
 
 footer .container .footer-content {
   margin: 20px 0;
