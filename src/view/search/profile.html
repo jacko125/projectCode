@@ -8,13 +8,13 @@
           </div>
         </div>
         <div class="media-body container-search-profile">
-          <h2>{{searchCtrl.profile.Description}} - {{searchCtrl.profile.BusinessTitle}}</h2>
-          <h4>{{searchCtrl.profile.Group}} - {{searchCtrl.profile.Division}}</h4>
+          <h2>{{::searchCtrl.profile.Description}} - {{::searchCtrl.profile.BusinessTitle}}</h2>
+          <h4>{{::searchCtrl.profile.Group}} - {{::searchCtrl.profile.Division}}</h4>
           <div>
-            <p>Team: {{searchCtrl.profile.Department}}</p>
-            <p>Email Address: {{searchCtrl.profile.EmailAddress}}</p>
-            <p>Contact Number: {{searchCtrl.profile.FullTelephoneNumber}}</p>
-            <p>Address: {{searchCtrl.profile.postalAddress}} <br/> {{searchCtrl.profile.Office}} </p>
+            <p>Team: {{::searchCtrl.profile.Department}}</p>
+            <p>Email Address: {{::searchCtrl.profile.EmailAddress}}</p>
+            <p>Contact Number: {{::searchCtrl.profile.FullTelephoneNumber}}</p>
+            <p>Address: {{::searchCtrl.profile.postalAddress}} <br/> {{::searchCtrl.profile.Office}} </p>
           </div>
           <button class="btn btn-success"
                   ng-click="searchCtrl.requestLocationButtonClick(searchCtrl.profile.Shortname)">Request location</button>

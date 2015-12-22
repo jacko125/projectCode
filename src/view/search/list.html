@@ -8,7 +8,7 @@
         ng-model-options="{ debounce: 350 }"
         ng-change="searchCtrl.loadStaffList(searchCtrl.searchParams.name)"/>
       <p class="lead">
-        {{searchCtrl.staff.name}}
+        {{::searchCtrl.staff.name}}
       </p>
     </div>
   </div>
@@ -29,10 +29,10 @@
             </div>
           </div>
             <div class="media-body" style="padding-left: 5%;">
-              <a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>
-              <p> {{staff.Group}}</p>
-              <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
-              <p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{staff.postalAddress}} - {{staff.Country}}</p>
+              <a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{::staff.Description}}</h4></a>
+              <p> {{::staff.Group}}</p>
+              <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{::staff.Office}}</p> </div>
+              <p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{::staff.postalAddress}} - {{::staff.Country}}</p>
             </div>
             <div class="media-right">
               <button data-toggle="tooltip" data-placement="bottom" title="Request their Location" class="btn btn-success"
