@@ -19,11 +19,6 @@
     overflow: auto;
 }
 
-.test {
-    width: 100%;
-    text-align: center;        
-}
-
 .profile-container{
     display: inline-block;
     width: 75px;
