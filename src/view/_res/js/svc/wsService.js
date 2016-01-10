@@ -47,31 +47,34 @@ miaApp.factory('wsService', ['$location', 'requestService',
     
     var requestLocation = function(user, recipient) {
         console.log('Requesting location for ' + recipient);
-        self.webSocket.send(JSON.stringify({
-            type: 'request-location',
-            request: JSON.stringify({
-                type: 'request',
-                sender: user.Shortname,
-                recipient: recipient,
-                datetime: new Date(),
-                senderName: user.Description
+        self.webSocket.send(JSON.stringify({                
+            type: 'request',
+            sender: user.Shortname,
+            recipient: recipient,
+            datetime: new Date(),
+            data: JSON.stringify({
+                senderName: user.Description                            
             })
         }));
     };
 
     var sendResponse = function(user, request, location) {                
         removeMessage(request);            
-        notifyObservers('ws-sent-response', request.sender);
+        notifyObservers('ws-sent-response', request);         
+        
         self.webSocket.send(JSON.stringify({
-            type: "respond-location",
-            response: JSON.stringify({
-                type: 'response',
-                sender: user.Shortname,                
-                recipient: request.sender,
-                location: location, //building, floor, latLng
-                datetime: new Date(),
-                senderName: user.Description
-            })
+            type: "response",                            
+            sender: user.Shortname,                
+            recipient: request.sender,            
+            datetime: new Date(),
+            data: JSON.stringify({
+                senderName: user.Description,          
+                location: JSON.stringify({
+                    building: location.building,
+                    level: location.level,
+                    latLng: JSON.stringify(location.latLng)
+                })
+            })            
         }));
     };   
     

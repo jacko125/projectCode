@@ -1,7 +1,6 @@
 // Modules this controller depends on.
 var UserModule = require('../model/module/UserModule.js');
-var RequestModule = require('../model/module/RequestModule.js');
-var ResponseModule = require('../model/module/ResponseModule.js');
+var MessageModule = require('../model/module/MessageModule.js');
 
 var http = require('http');
 var jwt = require('jsonwebtoken');
@@ -40,28 +39,33 @@ module.exports = {
         else            
             res.json(require('../../resources/test/testGetStaffProfileB.json'));
     },        
-    
-    actionDumpRequests: function (req,res) {
-        RequestModule.getAllRequests(function(requests) {
-            res.json(requests);
+            
+    actionDumpMessages: function (req,res) {        
+        MessageModule.getAllMessages(function(messages) {
+            res.json(messages);
         });        
     },
     
-    actionDumpResponses: function (req,res) {
-        ResponseModule.getAllResponses(function(responses) {
-            res.json(responses);
-        });        
+    actionDeleteAllMessages: function (req,res) {        
+        MessageModule.deleteAllMessages();
+        res.send('<h3>Deleted all messages.</h3>');
     },
     
-    actionDeleteAllRequests: function (req,res) {        
-        RequestModule.deleteAllRequests();
-        res.send('<h3>Deleted all requests.</h3>');
-    },
+    // actionDumpResponses: function (req,res) {
+        // ResponseModule.getAllResponses(function(responses) {
+            // res.json(responses);
+        // });        
+    // },
     
-    actionDeleteAllResponses: function (req,res) {        
-        ResponseModule.deleteAllResponses();
-        res.send('<h3>Deleted all responses.</h3>');
-    },
+    // actionDeleteAllRequests: function (req,res) {        
+        // RequestModule.deleteAllRequests();
+        // res.send('<h3>Deleted all requests.</h3>');
+    // },
+    
+    // actionDeleteAllResponses: function (req,res) {        
+        // ResponseModule.deleteAllResponses();
+        // res.send('<h3>Deleted all responses.</h3>');
+    // },
         
 	
     // Example handler that "creates" and "gets" a User.

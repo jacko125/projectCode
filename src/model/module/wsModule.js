@@ -2,12 +2,12 @@
 var http = require('http');
 var util = require('util');
 
-
-var RequestModule = require('./RequestModule.js');
-var Request = require('../Request.js');
-
-var ResponseModule = require('./ResponseModule.js');
-var Response = require('../Response.js');
+var Message = require('../Message.js');
+var MessageModule = require('./MessageModule.js');
+var MessageType = {
+    REQUEST: 'request',
+    RESPONSE: 'response'
+};
 
 module.exports = {
 	
@@ -24,73 +24,58 @@ module.exports = {
                 sendToClient(wss, ws, message.sender, {
                     type: 'connect',
                     username: message.sender
-                    });
+                    });                
                 
                 // Get all messages for user, sort by datetime and send.
-                RequestModule.getRequestsForUser(message.sender, function(requests) {
-                    requests.forEach(function(req) { req.type = 'request'; }); // Attach type                     
-                    
-                    ResponseModule.getResponsesForUser(message.sender, function(responses) {
-                        responses.forEach(function(rep) { rep.type = 'response'; }); //Attach type                        
-                        //Sort by datetime and send.
-                        var messages = requests.concat(responses);
-                        messages.sort(function(a, b) {
-                           return a.datetime > b.datetime
-                        });
-                        sendToClient(wss, ws, message.sender, {
-                            type: 'message-list',
-                            messages: messages
-                        });
+                MessageModule.getMessagesForUser(message.sender, function(messages) {                                                                                                                   
+                    messages.sort(function(a, b) {
+                       return a.datetime > b.datetime;
                     });
-                });
-                    
-                // RequestModule.getRequestsForUser(message.sender, function(requests) {
-                   // var response = {
-                       // type: 'request-list',
-                       // requests: requests
-                   // }                   
-                   // sendToClient(wss, ws, message.sender, response);                   
-                // });
-                
-                // ResponseModule.getResponsesForUser(message.sender, function(responses) {
-                   // var response = {
-                       // type: 'response-list',
-                       // responses: responses
-                   // }                                      
-                   // sendToClient(wss, ws, message.sender, response);                   
-                // });    
-                
+                    sendToClient(wss, ws, message.sender, {
+                        type: 'message-list',
+                        messages: messages
+                    });                    
+                });                                    
                 break;            
                 
-            // "sender","recipient","datetime"
-            case 'request-location':                                
-                var request = JSON.parse(message.request);                                               
-                console.log('Received request for ' + request.recipient + '\'s location');
-                RequestModule.deleteRequest(request.sender, request.recipient, function () {
-                    RequestModule.createRequest(request);                                                     
-                });                                
+            // data: senderName
+            case 'request':                                                
+                var request = message;
+                request.data = JSON.parse(request.data);
+                console.log('Received request for ' + request.recipient + '\'s location');                                
+                MessageModule.deleteMessage({
+                    type: MessageType.REQUEST,
+                    sender: request.sender,
+                    recipient: request.recipient
+                }, function () {
+                    MessageModule.createMessage(new Message(request));
+                })
                 sendToClient(wss, ws, request.recipient, request);     
-                console.log('Sending request to ' + request.recipient);                                
+                console.log ('Sending request to ' + request.recipient);                                                
                 break;                                      
 
-            // "sender", "recipient", "location (building, level, latLng)", "datetime"
-            case 'respond-location':                      
-                var response = JSON.parse(message.response);
-                console.log('Received response to ' + response.recipient + '\'s request for ' + response.sender + '\'s location');
-                ResponseModule.deleteResponse(response.sender, response.recipient, function() {
-                    ResponseModule.createResponse(response);                                    
-                });
-                console.log(response);
+            // data: senderName, location (building, level, latLng)
+            case 'response':                      
+                var response = message;                
+                response.data = JSON.parse(response.data);
+                response.data.location = JSON.parse(response.data.location);                
+                response.data.location.latLng = JSON.parse(response.data.location.latLng);                         
+                console.log('Received response to ' + response.recipient + '\'s request for ' + response.sender + '\'s location');                
+                MessageModule.deleteMessage({
+                    type: 'response',
+                    sender: response.sender,
+                    recipient: response.recipient,
+                }, function() {
+                    MessageModule.createMessage(response);                                    
+                });                
                 sendToClient(wss, ws, response.recipient, response);                
                 break;
                 
             case 'remove-message':
                 var msg = JSON.parse(message.message);
                 console.log('Received remove-request ' + msg.sender + ':' + msg.recipient);
-                if (msg.type == 'request')
-                    RequestModule.deleteRequest(msg.sender, msg.recipient, function() {}); 
-                else if (msg.type == 'response')
-                    ResponseModule.deleteResponse(msg.sender, msg.recipient, function () {});                
+                console.log(util.inspect(msg));
+                MessageModule.deleteMessage(msg, function() {}); 
                 break;                
                 
             case 'remove-request':

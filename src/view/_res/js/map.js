@@ -42,11 +42,11 @@ miaApp.controller('mapController', [
         // Assume response location is valid (and maps exist)
         if ($stateParams.action === 'view-response') {            
             var response = $stateParams.target;                    
-            self.currentLocation.building = response.location.building;                        
+            self.currentLocation.building = response.data.location.building;                        
             self.changeBuilding();            
-            self.currentLocation.level = response.location.level;            
+            self.currentLocation.level = response.data.location.level;            
             self.changeLevel();
-            userMarker.setLatLng(L.latLng(response.location.latLng.lat, response.location.latLng.lng));                                                            
+            userMarker.setLatLng(L.latLng(response.data.location.latLng.lat, response.data.location.latLng.lng));                                                            
         }
              
         requestFunctions(self, {            
