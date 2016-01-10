@@ -50,23 +50,6 @@ module.exports = {
         MessageModule.deleteAllMessages();
         res.send('<h3>Deleted all messages.</h3>');
     },
-    
-    // actionDumpResponses: function (req,res) {
-        // ResponseModule.getAllResponses(function(responses) {
-            // res.json(responses);
-        // });        
-    // },
-    
-    // actionDeleteAllRequests: function (req,res) {        
-        // RequestModule.deleteAllRequests();
-        // res.send('<h3>Deleted all requests.</h3>');
-    // },
-    
-    // actionDeleteAllResponses: function (req,res) {        
-        // ResponseModule.deleteAllResponses();
-        // res.send('<h3>Deleted all responses.</h3>');
-    // },
-        
 	
     // Example handler that "creates" and "gets" a User.
 	testGetUser: function (req, res) {        

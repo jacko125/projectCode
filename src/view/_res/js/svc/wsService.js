@@ -94,11 +94,8 @@ miaApp.factory('wsService', ['$location', 'requestService',
         disconnect: disconnect,
         
         requestLocation: requestLocation,
-        sendResponse: sendResponse,      
-        
+        sendResponse: sendResponse,              
         removeMessage: removeMessage
-        // removeRequest: removeRequest,
-        // removeResponse: removeResponse
     };
 }]);
 
@@ -139,26 +136,3 @@ function msgHandler(self, dep) {
         }
     };
 }
-
-/*
-Request {
-    sender: ''
-    recipient: ''
-    datetime: ''    
-}
-
-Response {
-    sender: ''
-    recipient: ''
-    datetime: ''
-    location: {
-        building: '',
-        level: '',
-        latLng: {
-            lat: ''
-            lng: ''
-        }        
-    }
-}
-
-*/

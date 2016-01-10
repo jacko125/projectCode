@@ -76,19 +76,7 @@ module.exports = {
                 console.log('Received remove-request ' + msg.sender + ':' + msg.recipient);
                 console.log(util.inspect(msg));
                 MessageModule.deleteMessage(msg, function() {}); 
-                break;                
-                
-            case 'remove-request':
-                var request = JSON.parse(message.request);
-                console.log('Received remove-request ' + request.sender + ':' + request.recipient);
-                RequestModule.deleteRequest(request.sender, request.recipient, function() {});                
-                break;
-                
-            case 'remove-response':
-                var response = JSON.parse(message.response);
-                console.log('Received remove-response ' + response.sender + ':' + response.recipient);
-                ResponseModule.deleteResponse(response.sender, response.recipient, function() {});                
-                break;                                
+                break;                                                         
         }
        
     }	
