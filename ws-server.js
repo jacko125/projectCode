@@ -7,7 +7,7 @@ var util = require('util');
 
 var wss = new WebSocketServer(
 {
-    port: config.ws-port,
+    port: config.ws.port,
     verifyClient: function(info) {          
         console.log('verifying client...');   
         console.log(util.inspect(info.req.headers));                                

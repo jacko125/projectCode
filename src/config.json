@@ -1,11 +1,16 @@
 {
-  "db-host": "ntsydv1946",
-  "db-port": "27017",
-  "db-name": "mia",
-  "db-url": "mongodb://" + db-host + ":" + db-port + "/" + db-name,
-  "mia-host": "ntsydv1946",
-  "mia-port": "5000",
-  "ss-url": "http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc",
-  "ws-host": "ntsydv1946",
-  "ws-port": "5001"
+  "db": {
+	"host": "ntsydv1946",
+	"port": "27017",
+	"name": "mia"
+  },
+  "mia": {
+	"host": "ntsydv1946",
+	"port": "5000"
+  },
+  "ws": {
+	"host": "ntsydv1946",
+	"port": "5001"
+  },
+  "searchUrl": "http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc"
 }

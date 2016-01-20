@@ -4,6 +4,7 @@ var config = require('./../../config.json');
 var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');        
 var util = require('util');
+var mongoURL = "mongodb://" + config.db.host + ":" + config.db.port + "/" + config.db.name;
 
 module.exports = {
     
@@ -22,7 +23,7 @@ module.exports = {
 // Wrapper for mongoDB calls
 function mongoCommand(command) {    
     return function (params) {
-        MongoClient.connect(config.db-url, function(err, db) {            
+        MongoClient.connect(mongoURL, function(err, db) {            
           assert.equal(null, err);
           
           //Execute command and get result          

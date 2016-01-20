@@ -1,8 +1,7 @@
-require('../../../../config.js');
-
 miaApp.factory('staffSearchService', ['$http', function($http) {
     var self = this;
-    
+    var config = require('./../../../../config.json');
+
     var results = []; // Used for caching staff results between profile pages.
     
     self.staffSearchURL = config.ss-url;
