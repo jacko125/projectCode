@@ -1,13 +1,9 @@
+require('../../config.js');
+
 // Storage-specific (MongoDB) interface for User objects.
 var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');        
 var util = require('util');
-
-var hostname = '127.0.0.1';
-if (process.env.ENVIRONMENT == 'prod') {
-    hostname = 'ntsydv1946';
-}             
-var mongoURL = 'mongodb://' + hostname +':27017/mia';
 
 module.exports = {
     
@@ -26,7 +22,7 @@ module.exports = {
 // Wrapper for mongoDB calls
 function mongoCommand(command) {    
     return function (params) {
-        MongoClient.connect(mongoURL, function(err, db) {            
+        MongoClient.connect(config.db-url, function(err, db) {            
           assert.equal(null, err);
           
           //Execute command and get result          

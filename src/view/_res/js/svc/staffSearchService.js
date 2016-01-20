@@ -1,9 +1,11 @@
+require('../../../../config.js');
+
 miaApp.factory('staffSearchService', ['$http', function($http) {
     var self = this;
     
     var results = []; // Used for caching staff results between profile pages.
     
-    self.staffSearchURL = 'http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc'
+    self.staffSearchURL = config.ss-url;
 
     var getStaffList = function(staffSearchParams) {
         var params = {
