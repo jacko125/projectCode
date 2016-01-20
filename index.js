@@ -1,4 +1,4 @@
-require('./src/config.js');
+var config = require('./src/config.js');
 var express = require('express');
 
 var nunjucks = require('nunjucks');

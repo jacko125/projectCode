@@ -1,4 +1,4 @@
-require('./src/config.js');
+var config = require('./src/config.js');
 var http = require('http');
 var WebSocketServer = require('ws').Server;
 var wsModule = require('./src/model/module/WsModule.js');

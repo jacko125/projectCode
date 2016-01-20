@@ -1,4 +1,4 @@
-var config = {
+{
   db-host: 'ntsydv1946',
   db-port: '27017'
   db-name: 'mia',

@@ -1,4 +1,4 @@
-require('../../config.js');
+var config = require('./../../config.js');
 
 // Storage-specific (MongoDB) interface for User objects.
 var MongoClient = require('mongodb').MongoClient
@@ -58,7 +58,6 @@ function getMessagesForUser(db, params) {
         params.callback(docs);
     });
 }
-
 
 function getAllMessages(db, params) {
     return db.collection('messages').find({}).toArray(function(err, docs) {
