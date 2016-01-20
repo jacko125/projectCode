@@ -1,4 +1,4 @@
-var config = require('./../../config.js');
+var config = require('./../../config.json');
 
 // Storage-specific (MongoDB) interface for User objects.
 var MongoClient = require('mongodb').MongoClient

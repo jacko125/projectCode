@@ -1,4 +1,4 @@
-var config = require('./../../../../config.js');
+var config = require('./../../../../config.json');
 
 miaApp.factory('wsService', ['$location', 'requestService', 
     function($location, requestService) {       
