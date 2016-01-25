@@ -1,10 +1,9 @@
 miaApp.factory('staffSearchService', ['$http', function($http) {
-    var self = this;
-    var config = require('./../../../../config.json');
+    var self = this;    
 
     var results = []; // Used for caching staff results between profile pages.
     
-    self.staffSearchURL = config.ss-url;
+    self.staffSearchUrl = config.searchUrl;    
 
     var getStaffList = function(staffSearchParams) {
         var params = {
@@ -12,7 +11,7 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
             'name': staffSearchParams.name
         };
 
-        return $http.jsonp(self.staffSearchURL + '/FindADProfileByName', {
+        return $http.jsonp(self.staffSearchUrl + '/FindADProfileByName', {
             'params': params
         });
     };
@@ -26,7 +25,7 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
             'callback': 'JSON_CALLBACK',
             'employeeID': employeeID
         }
-        return $http.jsonp(self.staffSearchURL + '/FindADProfileByEmployeeID', {
+        return $http.jsonp(self.staffSearchUrl + '/FindADProfileByEmployeeID', {
            'params' : params 
         });
     }
@@ -35,8 +34,8 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
         var params = {
             'callback': 'JSON_CALLBACK',
             'shortname': shortname
-        }        
-        return $http.jsonp(self.staffSearchURL + '/FindADProfileByShortname', {
+        }               
+        return $http.jsonp(self.staffSearchUrl + '/FindADProfileByShortname', {
             'params' : params            
         });
     }
