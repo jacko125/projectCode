@@ -38,8 +38,32 @@
               <p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{staff.postalAddress}} - {{staff.Country}}</p>
             </div>
             <div class="media-right">
-              <button data-toggle="tooltip" data-placement="bottom" title="Request their Location" class="btn btn-success"
-                      ng-click="searchCtrl.requestLocationButtonClick(staff.Shortname)"><span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true"></span></button>
+              <button data-toggle="tooltip" 
+                      data-placement="bottom"
+                      title="Request their Location"
+                      class="btn btn-success"
+                      ng-click="searchCtrl.requestLocationButtonClick(staff)">
+                      <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
+                      </span>
+              </button>              
+              <button 
+                      data-toggle="tooltip" 
+                      data-placement="bottom"
+                      title="Send my location"
+                      class="btn btn-info"
+                      ng-click="searchCtrl.sendLocationButtonClick(staff)">
+                      <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
+                      </span>
+              </button>              
+              <button 
+                      data-toggle="tooltip" 
+                      data-placement="bottom"
+                      title="Add to list"
+                      class="btn btn-alt"
+                      ng-click="searchCtrl.addToGroupButtonClick(staff)">
+                      <span class="glyphicon glyphicon-plus gi-2x text-center" aria-hidden="true">
+                      </span>
+              </button>              
             </div>
           </div>
         </li>
