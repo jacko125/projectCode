@@ -17,24 +17,17 @@ miaApp.controller('searchController', [
             });
         };
         self.profile = $stateParams.profile;
-
+        
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
         });
 
-        self.requestLocationButtonClick = function(recipient) {
-            console.log('button clicked');
-            console.log(recipient);
+        self.requestLocationButtonClick = function(recipient) {            
+            console.log(recipient);            
+            // Request button was clicked from search-list, so profile is not set yet.
+            if (!('profile' in $stateParams))
+                self.profile = recipient;
             
-            if (!('profile' in $stateParams)) {
-                $scope.results.forEach(function(currentProfile) {
-                    console.log('iterating');
-                    console.log(currentProfile);
-                    if (currentProfile.Shortname == recipient) {
-                        self.profile = currentProfile;          
-                    }                        
-                });
-            }
             var toastMsg = 'You have requested ' + self.profile.Description + '\'s location';
             ngToast.create({
                 className: 'info',
@@ -42,13 +35,21 @@ miaApp.controller('searchController', [
                 content: '<div class="toast">' + toastMsg + '</div>',
                 horizontalPosition: 'left'
             });
-            wsService.requestLocation($rootScope.user, recipient);            
+            wsService.requestLocation($rootScope.user, recipient.Shortname);            
+        }
+        
+        self.sendLocationButtonClick = function(recipient) {            
+            console.log("Send location button was clicked");
+        }
+        
+        self.addToGroupButtonClick = function(recipient) {
+            console.log("Add to group button was clicked");
         }
         
         // Return to search if profile page accessed directly
-        if ('profile' in $stateParams && $stateParams.profile == null) {
+        if ('profile' in $stateParams && $stateParams.profile == null)
             $state.go('search');
-        }
+        
     }]);
     
     
