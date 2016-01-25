@@ -41,14 +41,14 @@ miaApp.controller('searchController', [
         self.sendLocationButtonClick = function(recipient) {            
             console.log("Send location button was clicked");
         }
-        
-        self.addToGroupButtonClick = function(recipient) {
-            console.log("Add to group button was clicked");
-        }
 		
-		self.addToGroup = function(staff){
+		self.addToGroupButtonClick = function(staff){
 			console.log('add to group button clicked');
-			$scope.group.push(staff);
+			var contains = $.inArray(staff, $scope.group);
+		    if (contains == -1){
+				$scope.group.push(staff);
+			}
+			
 			console.log($scope.group)
 		}
         

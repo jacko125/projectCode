@@ -1,5 +1,30 @@
 <div class="search-list">
-
+    <div class="row">
+        <div class = "col-md-8 col-md-offset-2">
+			<div class="list-group listnav" ng-if="group.length > 0">
+			    <h2>Current Group</h2>
+				<ul>
+				<li class="list-group-item" ng-repeat="staff in group">
+					<!--ui-sref="profile({ profile: staff })">-->
+					<div class="media">
+						<div class="media-left media-middle">              
+							<a class="profile-container" 
+								  ui-sref="profile({ profile: staff })">
+								<img class="media-object profile-image"
+									  ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
+							</a>              
+						</div>
+						<div class="media-body">
+							<a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>
+							<p> {{staff.Group}}</p>
+							<div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
+							<p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{staff.postalAddress}} - {{staff.Country}}</p>
+						</div>
+					</div>
+				</li>
+			</div>
+	    </div>
+    </div>  
   <div class="row">
     <div class="col-md-6 col-md-offset-3
                 col-sm-6 col-sm-offset-3">
