@@ -1,13 +1,10 @@
+var config = require('./../../config.json');
+
 // Storage-specific (MongoDB) interface for User objects.
 var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');        
 var util = require('util');
-
-var hostname = '127.0.0.1';
-if (process.env.ENVIRONMENT == 'prod') {
-    hostname = 'ntsydv1946';
-}             
-var mongoURL = 'mongodb://' + hostname +':27017/mia';
+var mongoURL = "mongodb://" + config.db.host + ":" + config.db.port + "/" + config.db.name;
 
 module.exports = {
     
@@ -62,7 +59,6 @@ function getMessagesForUser(db, params) {
         params.callback(docs);
     });
 }
-
 
 function getAllMessages(db, params) {
     return db.collection('messages').find({}).toArray(function(err, docs) {

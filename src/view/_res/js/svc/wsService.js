@@ -1,7 +1,7 @@
 miaApp.factory('wsService', ['$location', 'requestService', 
     function($location, requestService) {       
-    var self = this;
-    
+    var self = this;	
+	
     self.webSocket = {};
     self.username = {};
     self.token = {};    
@@ -20,7 +20,7 @@ miaApp.factory('wsService', ['$location', 'requestService',
         self.token = token;
         self.username = username;
         
-        self.webSocket = new WebSocket('ws://' + $location.host() + ':3001', self.token); 
+        self.webSocket = new WebSocket('ws://' + $location.host() + ":" + config.ws.port, self.token); 
         self.webSocket.onopen = function(event) {            
             console.log('connection opened. sending connect packet...');
             self.webSocket.send(JSON.stringify({

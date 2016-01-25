@@ -28,6 +28,10 @@ module.exports = {
         res.status(200).send('Websocket client authenticated');        
     },
     
+    ajaxGetConfig: function (req, res) {
+        res.send("var config = " + JSON.stringify(require('../config.json')));
+    },
+        
     ajaxTestGetStaffList: function (req, res) {
         res.json(require('../../resources/test/testGetStaffList.json'));
     },

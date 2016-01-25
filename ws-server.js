@@ -1,3 +1,4 @@
+var config = require('./src/config.json');
 var http = require('http');
 var WebSocketServer = require('ws').Server;
 var wsModule = require('./src/model/module/WsModule.js');
@@ -6,7 +7,7 @@ var util = require('util');
 
 var wss = new WebSocketServer(
 {
-    port: 3001,
+    port: config.ws.port,
     verifyClient: function(info) {          
         console.log('verifying client...');   
         console.log(util.inspect(info.req.headers));                                

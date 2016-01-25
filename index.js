@@ -1,3 +1,4 @@
+var config = require('./src/config.json');
 var express = require('express');
 
 var nunjucks = require('nunjucks');
@@ -5,11 +6,6 @@ var bodyParser = require('body-parser');
 
 // Instantiate the app
 var app = express();
-
-// Configure production environment settings
-if (process.env.ENVIRONMENT === 'prod') {
-    console.log('Running in a production environment.'); 
-}
 
 // Configure the template engine and static resources
 nunjucks.configure('./src/view', {
@@ -28,8 +24,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 require('./src/route.js')(app);
 
 // Start HTTP server
-var server = app.listen(3000, function () {
+var server = app.listen(config.mia.port, function () {
   console.log('MIA listening at http://%s:%s', server.address().address, server.address().port);
 });
-
-
