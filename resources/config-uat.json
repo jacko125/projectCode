@@ -1,0 +1,16 @@
+{
+  "db": {
+	"host": "ntsydv1946",
+	"port": "27018",
+	"name": "mia"
+  },
+  "mia": {
+	"host": "ntsydv1946",
+	"port": "4000"
+  },
+  "ws": {
+	"host": "ntsydv1946",
+	"port": "4001"
+  },
+  "searchUrl": "http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc"
+}
