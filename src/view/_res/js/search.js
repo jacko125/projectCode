@@ -3,7 +3,7 @@ miaApp.controller('searchController', [
     'ngToast','staffSearchService','wsService', 
     function($scope, $rootScope, $state, $stateParams, ngToast, staffSearchService, wsService) {
         var self = this;        
-        
+        $scope.group = [];
         self.searchParams = {
             name: ''
         };       
@@ -44,6 +44,12 @@ miaApp.controller('searchController', [
             });
             wsService.requestLocation($rootScope.user, recipient);            
         }
+		
+		self.addToGroup = function(staff){
+			console.log('add to group button clicked');
+			$scope.group.push(staff);
+			console.log($scope.group)
+		}
         
         // Return to search if profile page accessed directly
         if ('profile' in $stateParams && $stateParams.profile == null) {
