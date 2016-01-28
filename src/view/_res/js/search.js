@@ -51,6 +51,25 @@ miaApp.controller('searchController', [
 			
 			console.log($scope.group)
 		}
+		
+		self.removeMember = function(staff){
+			console.log('removeMember button was clicked');
+			for (var i = 0; i < $scope.group.length; i++){
+				if ($scope.group[i] == staff) $scope.group.splice(i, 1);
+			}
+			console.log($scope.group);
+		}
+		
+		self.clearGroup = function(){
+			console.log('clear Group button was clicked');
+			$scope.group = [];
+			console.log($scope.group);
+		}
+		
+		self.sendLocationToGroup = function(){
+			// TO IMPLEMENT
+			console.log('Send location to Group button was clicked');
+		}
         
         // Return to search if profile page accessed directly
         if ('profile' in $stateParams && $stateParams.profile == null)
