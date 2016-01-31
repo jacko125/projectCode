@@ -1,9 +1,8 @@
 {
     "headers": {
-        "meetingRooms": ["name","pos","capacity","info"],
-        "lifts": "",
-        "toilets": "",
-        "stairs": ""
+        "meetingRooms": ["name","latLng","capacity","info"],
+        "lifts": ["lat","lng"],
+        "toilets": ["lat","lng","gender"] 
     },
     "data": [{ 
         "building": "1 MARTIN PLACE", 
@@ -13,9 +12,14 @@
                 ["1MP_1.11",[0,0], 8, ""],
                 ["1MP_1.12",[0,0], 8, ""]
             ],
-            "lifts": "",
-            "toilets": "",
-            "stairs": ""       
+            "lifts": [
+                [0,0],
+                [1,1]
+            ],
+            "toilets": [
+                [0,0,"male"],
+                [1,1,"female"]
+            ]              
         },
         {
             "name": "L 2",

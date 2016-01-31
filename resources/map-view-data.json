@@ -1,4 +1,20 @@
-[{ 
+[{
+    "building": "default",
+    "levels": ["default"],
+    "bounds": {
+        "SW": [-500,-500],
+        "NE": [500,500]
+    },
+    "origin": {
+        "zoom": 2,
+        "latLng": [0,0]        
+    },
+    "zoom": {
+        "min": 1,
+        "max": 3
+    }
+},
+{
     "building": "1 MARTIN PLACE", 
     "levels": ["L 1", "L 2", "L 3"],
     "bounds": {
@@ -6,17 +22,17 @@
         "NE": [500, 250]
     },
     "origin": {
-        "zoom": 1,
+        "zoom": 2,
         "latLng": [50,-50]
     },
     "zoom": {
-        "min": 1,
-        "max": 3
+        "min": 2,
+        "max": 4
     }        
 },
 {
-    "building": "1 SHELLEY STREET",
-    "levels": ["L 1", "L 2","L 3","L 4","L 5","L 6","L 7","L 8"],
+    "building": "1 SHELLEY ST",
+    "levels": ["L 1","L 2","L 3","L 4","L 5","L 6","L 7","L 8"],
     "bounds": {
         "SW": [-70, -250],
         "NE": [70, 250]

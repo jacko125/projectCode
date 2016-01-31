@@ -1,37 +1,63 @@
-<div class="container container-map">
+<div class="container container-map">  
+
+<!-- <div style="position:relative; margin-bottom:-50px; z-index:1;"> -->
+  <div ng-if="action == 'send-response'"
+      style="position:relative; margin-bottom:-45px; z-index:1;"
+      class="hidden-xs hidden-sm">  
+    <button class="btn btn-info">Place the pin at your location.       
+    </button>  
+  </div>
   
-    <div class="row">
-      <div class="col-sm-6 col-sm-offset-3">      
-        <div ng-if="action == 'send-response'" class="alert alert-info">Place the pin at your location.</div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            Displaying: 
-            <select ng-options="building for building in mapCtrl.allBuildings"
-                    ng-model="mapCtrl.currentLocation.building"
-                    ng-change="mapCtrl.changeBuilding()"
-                    ng-disabled="action === 'view-response'">              
-            </select>            
-            <select ng-options="level for level in mapCtrl.allLevels"
-                    ng-model="mapCtrl.currentLocation.level"
-                    ng-change="mapCtrl.changeLevel()"
-                    ng-disabled="action === 'view-response'">
-            </select>
-          </div>          
-        </div>        
-        <div id="map" ng-class="mapCtrl.isMapSupportedClass()"></div>
-        <div ng-if="mapCtrl.unsupportedMap" class="alert alert-warning">This map is not supported. Please select another map.</div>
-        <br>
-        <div ng-if="action === 'send-response'">
-          <a ng-class="mapCtrl.sendLocationButtonClass()"
-                  ng-click="mapCtrl.sendLocationButtonClick(target)"
-                  ui-sref="home">Send location</a>
-          &nbsp;
-          <a class="btn btn-default" ui-sref="notifications">Back to list</a>
-        </div>
-        <div ng-if="action === 'view-response'">
-          <a class="btn btn-default" ui-sref="notifications">Back to list</a>
-        </div>
-      </div>
-    </div>    
+  <div style="position:absolute; margin-left:50px; margin-top:10px; z-index:1;">
+    <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span ng-bind="mapCtrl.currentLocation.building"></span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">        
+        <li ng-repeat="building in mapCtrl.allBuildings">        
+          <a href="#" ng-click="mapCtrl.changeBuilding(building)" ng-bind="building"></a>
+        </li>                       
+      </ul>      
+    </div> 
+    <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span ng-bind="mapCtrl.currentLocation.level"></span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">        
+        <li ng-repeat="level in mapCtrl.allLevels">        
+          <a href="#" ng-click="mapCtrl.changeLevel(level)" ng-bind="level"></a>
+        </li>                       
+      </ul>      
+    </div>     
+  </div>
+  
+  <div id="map" ng-class="mapCtrl.isMapSupportedClass()"></div>    
+  
+  <div ng-if="mapCtrl.unsupportedMap" style="margin-top:25vh;">
+    <div class="alert alert-warning">
+      This map is not supported. Please select another map.
+    </div>        
+  </div>
+ 
+  <div style="position:relative; margin-top:-50px;"> 
+  
+    <div ng-if="action === 'view-response'">
+      <a class="btn btn-default" 
+         ui-sref="notifications">Back to list
+      </a>
+    </div>
+    
+    <div ng-if="action === 'send-response'
+              && !mapCtrl.unsupportedMap">
+    <a class="btn btn-success"
+       ng-click="mapCtrl.sendLocationButtonClick(target)"
+       ui-sref="home">Send location
+    </a>
+    <a class="btn btn-default" ui-sref="notifications">Back to list</a>
+
+    
+  </div>
 
 </div> <!-- /.container -->
