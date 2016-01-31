@@ -31,6 +31,13 @@ module.exports = {
     ajaxGetConfig: function (req, res) {
         res.send("var config = " + JSON.stringify(require('../../resources/config.json')));
     },
+    
+    ajaxGetMapViewData: function (req, res) {
+        res.send("var mapViewData = " + JSON.stringify(require('../../resources/map-view-data.json')));
+    },
+    ajaxGetMapItemData: function (req, res) {
+        res.send("var mapItemData = " + JSON.stringify(require('../../resources/map-item-data.json')));
+    },    
         
     ajaxTestGetStaffList: function (req, res) {
         res.json(require('../../resources/test/testGetStaffList.json'));

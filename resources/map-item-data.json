@@ -1,0 +1,84 @@
+{
+    "headers": {
+        "meetingRooms": ["name","pos","capacity","info"],
+        "lifts": "",
+        "toilets": "",
+        "stairs": ""
+    },
+    "data": [{ 
+        "building": "1 MARTIN PLACE", 
+        "levels": [{
+            "name": "L 1",
+            "meetingRooms": [
+                ["1MP_1.11",[0,0], 8, ""],
+                ["1MP_1.12",[0,0], 8, ""]
+            ],
+            "lifts": "",
+            "toilets": "",
+            "stairs": ""       
+        },
+        {
+            "name": "L 2",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        },
+        {
+            "name": "L 3",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        }]
+    },
+    {
+        "building": "1 SHELLEY STREET", 
+        "levels": [{
+            "name": "L 1",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        },
+        {
+            "name": "L 2",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        },
+        {
+            "name": "L 3",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        },
+        {
+            "name": "L 4",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        },
+        {
+            "name": "L 5",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        },
+        {
+            "name": "L 6",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        },
+        {
+            "name": "L 7",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        },
+        {
+            "name": "L 8",
+            "meetingRooms": "",
+            "lifts": "",
+            "toilets": ""
+        }]
+    }]
+}
