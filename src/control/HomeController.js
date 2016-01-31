@@ -29,7 +29,7 @@ module.exports = {
     },
     
     ajaxGetConfig: function (req, res) {
-        res.send("var config = " + JSON.stringify(require('../config.json')));
+        res.send("var config = " + JSON.stringify(require('../../resources/config.json')));
     },
         
     ajaxTestGetStaffList: function (req, res) {
