@@ -66,9 +66,21 @@ miaApp.controller('searchController', [
 			console.log($scope.group);
 		}
 		
-		self.sendLocationToGroup = function(){
-			// TO IMPLEMENT
+		self.requestLocationToGroup = function(){
 			console.log('Send location to Group button was clicked');
+            var toastMsg = 'You have requested the group\'s locations';
+            ngToast.create({
+                className: 'info',
+                animation: 'fade',
+                content: '<div class="toast">' + toastMsg + '</div>',
+                horizontalPosition: 'left'
+            });
+			for(var i = 0; i < $scope.group.length; i++){
+				var recipient = $scope.group[i];
+				console.log(recipient);
+				wsService.requestLocation($rootScope.user, recipient.Shortname); 
+			}
+            $scope.group = [];
 		}
         
         // Return to search if profile page accessed directly

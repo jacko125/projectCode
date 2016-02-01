@@ -2,12 +2,26 @@
     <div class="row">
         <div class = "col-md-8 col-md-offset-2">
 		    <!-- Show list of current group if it exists-->
-			<div class="list-group listnav" ng-if="group.length > 0">
+			<div class="list-group listnav group-container" ng-if="group.length > 0">
 			   <div class='media'>
-			      <div class='media-left media-middle'>
-					<h3>Current Group</h3>
-				  </div>
-				  <div class='media-right'>
+			      <div class='group-header'>
+					<h2>Current Group</h2>
+				    <button data-toggle="tooltip" 
+							  data-placement="bottom"
+							  title="Request their Location"
+							  class="btn btn-success"
+							  ng-click="searchCtrl.requestLocationToGroup()">
+						  <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
+						  </span>
+                    </button>               
+					<button data-toggle="tooltip" 
+                                  data-placement="bottom"
+                                  title="Send my location"
+                                  class="btn btn-info"
+                                  ng-click="searchCtrl.sendLocationToGroup()">
+                       <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
+                       </span>
+                    </button> 
 					<button data-toggle="tooltip" 
 								  data-placement="bottom"
 								  title="Clear list"
@@ -15,47 +29,35 @@
 								  ng-click="searchCtrl.clearGroup()">
 					   <span class="glyphicon glyphicon-trash gi-2x" aria-hidden="true">
 					   </span>
-					</button> 
-					<button 
-                      data-toggle="tooltip" 
-                      data-placement="bottom"
-                      title="Send my location"
-                      class="btn btn-info"
-                      ng-click="searchCtrl.sendLocationToGroup()">
-                      <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
-                      </span>
-                    </button>    
+					</button> 				
 				  </div>
 				</div>				
-				<ul>
-				<li class="list-group-item" ng-repeat="staff in group">
+				<ul class = 'col-md-offset-1'>
+				<li class="groupmember-container" ng-repeat="staff in group">
 					<!--ui-sref="profile({ profile: staff })">-->
-					<div class="media">
-						<div class="media-left media-middle">              
-							<a class="profile-container" 
-								  ui-sref="profile({ profile: staff })">
+
+
+								<a class="profile-container" 
+										  ui-sref="profile({ profile: staff })">
 								<img class="media-object profile-image"
-									  ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
-							</a>              
-						</div>
-						<div class="media-body">
-							<a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>
-							<p> {{staff.Group}}</p>
-							<div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
-							<p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{staff.postalAddress}} - {{staff.Country}}</p>
-						</div>
-						<div class="media-right">
-                          <button data-toggle="tooltip" 
-                              data-placement="bottom"
-                              title="Remove from list"
-                              class="btn btn-warning"
-                              ng-click="searchCtrl.removeMember(staff)">
-                           <span class="glyphicon glyphicon-minus gi-2x" aria-hidden="true">
-                           </span>
-                          </button>              
-                        </div>
-					</div>
+										  ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
+								</a>   
+
+								<button data-toggle="tooltip" 
+								  data-placement = "top"
+								  title="Remove from list"
+								  class="btn btn-alt"
+								  ng-click="searchCtrl.removeMember(staff)">
+									<span class="glyphicon glyphicon-minus gi-1x" aria-hidden="true">
+									</span>
+								</button>  
+
+							<a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>     
+
+
+
 				</li>
+				</ul>
 			</div>
 	    </div>
     </div>  
