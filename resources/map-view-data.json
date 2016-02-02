@@ -18,8 +18,8 @@
     "building": "1 MARTIN PLACE", 
     "levels": ["L 1", "L 2", "L 3"],
     "bounds": {
-        "SW": [-500, -250],
-        "NE": [500, 250]
+        "SW": [-150, -250],
+        "NE": [150, 250]
     },
     "origin": {
         "zoom": 2,
@@ -34,8 +34,24 @@
     "building": "1 SHELLEY ST",
     "levels": ["L 1","L 2","L 3","L 4","L 5","L 6","L 7","L 8"],
     "bounds": {
-        "SW": [-70, -250],
-        "NE": [70, 250]
+        "SW": [-100, -250],
+        "NE": [100, 250]
+    },
+    "origin": {
+        "zoom": 2,
+        "latLng": [50,-50]
+    },        
+    "zoom": {
+        "min": 2,
+        "max": 4
+    }
+},
+{
+    "building": "50 MARTIN PLACE",
+    "levels": ["L 1","L 2","L 3","L 4","L 5","L 6","L 7","L 8","L 9"],
+    "bounds": {
+        "SW": [-100, -250],
+        "NE": [100, 250]
     },
     "origin": {
         "zoom": 2,

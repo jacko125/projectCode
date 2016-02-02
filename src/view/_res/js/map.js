@@ -68,16 +68,15 @@ function mapFunctions(self, dep) {
     
     var map = L.map('map');
     var tileLayer = L.tileLayer("").addTo(map);
+    var itemLayer = L.layerGroup().addTo(map);
          
     self.updateMap = function () { // Change floor map when level is changed        
         var viewData = getMapViewData(self.mapViewData, self.currentLocation);                                       
         
         self.unsupportedMap = (viewData == null);
         if (self.unsupportedMap) {                        
-            viewData = getMapViewData(self.mapViewData, { building: "default", level: "default" });                                   
-            console.log("unsupported");
-        }       
-        console.log("supported");
+            viewData = getMapViewData(self.mapViewData, { building: "default", level: "default" });                                               
+        }               
         
         map.setView([viewData.origin.latLng[0], viewData.origin.latLng[1]], viewData.origin.zoom)                                                         
         var southWest = L.latLng(viewData.bounds.SW[0], viewData.bounds.SW[1]),
@@ -105,15 +104,55 @@ function mapFunctions(self, dep) {
             map.removeLayer(dep.userMarker);   
         }
         
-        var itemData = getMapItemData(self.mapItemData.data, self.currentLocation);        
-                        
+        map.removeLayer(itemLayer);
+        itemLayer = L.layerGroup().addTo(map);        
+        var itemData = getMapItemData(self.mapItemData, self.currentLocation);
+        
+        if (!self.unsupportedMap && itemData != null) {            
+            
+            var H = getMapItemDataHeaders(self.mapItemData);
+            var IconTypes = getIconTypes();
+            
+            var meetingRoomLayer = L.layerGroup().addTo(itemLayer);
+            itemData.meetingRooms.forEach(function(room) {                             
+                L.marker( [room[H.MEETING_ROOM.LATLNG][0], room[H.MEETING_ROOM.LATLNG][1]],
+                    { icon: createIcon(IconTypes.MEETING_ROOM) })
+                    .addTo(meetingRoomLayer)
+                    .bindPopup("");               
+            });
+            
+            var liftLayer = L.layerGroup().addTo(itemLayer);
+            itemData.lifts.forEach(function(lift) {                
+                L.marker( [lift[H.LIFT.LATLNG][0], lift[H.LIFT.LATLNG][1]],
+                    { icon: createIcon(IconTypes.LIFT(lift[H.LIFT.TYPE])) })
+                    .addTo(liftLayer)
+                    .bindPopup("");               
+            });
+            
+            var toiletLayer = L.layerGroup().addTo(itemLayer);
+            itemData.toilets.forEach(function(toilet) {
+                L.marker( [toilet[H.TOILET.LATLNG][0], toilet[H.TOILET.LATLNG][1]],
+                    { icon: createIcon(IconTypes.TOILET(toilet[H.TOILET.TYPE])) })
+                    .addTo(toiletLayer)
+                    .bindPopup("");                                               
+            });
+            
+            var otherLayer = L.layerGroup().addTo(itemLayer);
+            itemData.other.forEach(function(other) {
+                L.marker( [other[H.OTHER.LATLNG][0], other[H.OTHER.LATLNG][1]],
+                    { icon: createIcon(IconTypes.OTHER(other[H.OTHER.TYPE])) })
+                    .addTo(otherLayer)
+                    .bindPopup(other[H.OTHER.NAME]);                                               
+            });
+        }            
         //TODO Change markers
     }
     
     self.updateMap();
         
-    map.on('click', function(e) {            
-        console.log(e.latlng);        
+    map.on('click', function(e) {                    
+        console.log(e.latlng.lat.toFixed(4) + "," + e.latlng.lng.toFixed(4));
+        
         if (dep.$stateParams.action == 'send-response') {                       
             dep.userMarker.setLatLng(e.latlng);
             dep.userMarker.addTo(map);            
@@ -177,6 +216,7 @@ function getLocationFolder(currentLocation) {
     return locationFolder.replace(/\s/g, '_');           
 }
 
+// View data corresponds to map-specific view settings (origin, bounds, etc)
 function getMapViewData(allViewData, currentLocation) {
     var result = null;
     allViewData.forEach(function(location) {        
@@ -192,9 +232,11 @@ function getMapViewData(allViewData, currentLocation) {
     return result;
 }
 
+// Item data corresponds to the various POIs on a map (meeting rooms, lifts, etc)
 function getMapItemData(allItemData, currentLocation) {
+            
     var result = null;
-    allItemData.forEach(function(location) {
+    allItemData.data.forEach(function(location) {
         if (location.building == currentLocation.building) {            
             location.levels.forEach(function(level) {
                 if (level.name == currentLocation.level) {                           
@@ -207,20 +249,53 @@ function getMapItemData(allItemData, currentLocation) {
     return result;    
 }
 
-function createMeetingRoomIcon() {
-    return L.icon({
-        iconUrl: '/img/map-icons/meeting.png',        
-        iconSize:     [45, 45], // size of the icon        
-        iconAnchor:   [22.5, 22.5], // point of the icon which will correspond to marker's location        
-        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
-    });
+// Item data is stored without headers for compactness
+function getMapItemDataHeaders(allItemData) {
+    var headers = allItemData.headers;
+    return {
+        MEETING_ROOM: {
+            NAME: headers.meetingRoom.indexOf('name'),
+            LATLNG: headers.meetingRoom.indexOf('latlng'),
+            CAPACITY: headers.meetingRoom.indexOf('capacity'),
+            INFO: headers.meetingRoom.indexOf('info')        
+        },
+        LIFT: {
+            TYPE: headers.lift.indexOf('type'),
+            LATLNG: headers.lift.indexOf('latlng')
+        },    
+        TOILET: {
+            TYPE: headers.toilet.indexOf('type'),
+            LATLNG: headers.toilet.indexOf('latlng')
+        },
+        OTHER: {
+            TYPE: headers.other.indexOf('type'),
+            LATLNG: headers.other.indexOf('latlng')
+        }
+    }
+    
 }
 
-function createLiftIcon() {
+function getIconTypes() {
+    
+    return {
+        MEETING_ROOM:   { size: 30, url: 'meeting' },
+        LIFT: function(type) {
+            return { size: 30, url: type };
+        },
+        TOILET: function(type) {
+            return { size: 30, url: 'toilet-' + type };
+        },
+        OTHER: function(type) {
+            return { size: 30, url: type };
+        }
+    }
+    
+}
+function createIcon(iconType) {
     return L.icon({
-        iconUrl: '/img/map-icons/lift.png',        
-        iconSize:     [45, 45], // size of the icon        
-        iconAnchor:   [22.5, 22.5], // point of the icon which will correspond to marker's location        
-        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+        iconUrl:        '/img/map-icons/' + iconType.url + '.png',
+        iconSize:       [iconType.size, iconType.size],
+        iconAnchor:     [iconType.size/2, iconType.size/2],
+        popupAnchor:    [0,0] 
     });    
 }

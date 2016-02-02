@@ -1,88 +1,169 @@
 {
     "headers": {
-        "meetingRooms": ["name","latLng","capacity","info"],
-        "lifts": ["lat","lng"],
-        "toilets": ["lat","lng","gender"] 
+        "meetingRoom":  ["name","latlng","capacity","info"],
+        "lift":         ["latlng","type"],
+        "toilet":       ["latlng","type"],
+        "other":        ["name","latlng","type"]
     },
     "data": [{ 
         "building": "1 MARTIN PLACE", 
         "levels": [{
             "name": "L 1",
             "meetingRooms": [
-                ["1MP_1.11",[0,0], 8, ""],
-                ["1MP_1.12",[0,0], 8, ""]
+                ["",[78.5953,-102.7441], 0, ""],
+                ["",[78.5953,-76.9043], 0, ""],
+                ["",[50.7920,-27.5098], 0, ""],
+                ["",[50.7920,-7.9980], 0, ""],
+                ["",[50.7920,12.3926], 0, ""]                                
             ],
             "lifts": [
-                [0,0],
-                [1,1]
+                [[57.5158,43.4180],"lift"],
+                [[57.5158,62.9297],"lift"],
+                [[33.4314,43.4180],"lift"],
+                [[33.4314,62.9297],"lift"],
+                [[33.3174,14.0625],"fire-exit"]
             ],
             "toilets": [
-                [0,0,"male"],
-                [1,1,"female"]
-            ]              
+                [[70.4368,-3.8672],"male"],
+                [[-0.3516,-5.0977],"female"],
+                [[2.1089,16.5234],"disabled"]
+            ],
+            "other": [
+                ["", [58.6312,88.2422], "kitchen"],
+                ["Postmaster Cafe", [62.7547,119.0039], "cafe"]
+            ]
         },
         {
             "name": "L 2",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         },
         {
             "name": "L 3",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         }]
     },
     {
-        "building": "1 SHELLEY STREET", 
+        "building": "1 SHELLEY ST", 
         "levels": [{
             "name": "L 1",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         },
         {
             "name": "L 2",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         },
         {
             "name": "L 3",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         },
         {
             "name": "L 4",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         },
         {
             "name": "L 5",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         },
         {
             "name": "L 6",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         },
         {
             "name": "L 7",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         },
         {
             "name": "L 8",
-            "meetingRooms": "",
-            "lifts": "",
-            "toilets": ""
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
+        }]
+    },
+    {
+        "building": "50 MARTIN PLACE", 
+        "levels": [{
+            "name": "L 1",
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
+        },
+        {
+            "name": "L 2",
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
+        },
+        {
+            "name": "L 3",
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
+        },
+        {
+            "name": "L 4",
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
+        },
+        {
+            "name": "L 5",
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
+        },
+        {
+            "name": "L 6",
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
+        },
+        {
+            "name": "L 7",
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
+        },
+        {
+            "name": "L 8",
+            "meetingRooms": [],
+            "lifts": [],
+            "toilets": [],
+            "other": []
         }]
     }]
 }
