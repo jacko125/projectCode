@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 // Configure the template engine and static resources
-nunjucks.configure('./src/view', {
+nunjucks.configure(__dirname + '/src/view', {
     autoescape: true,
     express: app
 });

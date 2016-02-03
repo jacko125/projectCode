@@ -8,6 +8,7 @@
 */
 
 var Service = require('node-windows').Service;
+var config = require('../resources/config.json');
 
 if (process.argv.length != 3) {
     console.log('Usage: node httpd_windows_svc [install | uninstall]');
@@ -16,13 +17,13 @@ if (process.argv.length != 3) {
 
 // Create a new service object
 var svc = new Service({
-  name:'TGP_MIA_prod_httpd_service',
-  description: 'The Grad Project - MIA production HTTPD service',
-  script: 'D:\\TGP\\mia\\index.js',
+  name:'TGP_MIA_' + config.env + '_httpd_service',
+  description: 'The Grad Project - MIA ' + config.env + ' HTTPD service',
+  script: __dirname + "\\..\\index.js",
   env:
   {
 	  name: 'ENVIRONMENT',
-	  value: 'prod'
+	  value: config.env
   }
 });
 
