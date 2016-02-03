@@ -16,7 +16,7 @@
       </button>
       <ul class="dropdown-menu" role="menu">        
         <li ng-repeat="building in mapCtrl.allBuildings">        
-          <a href="#" ng-click="mapCtrl.changeBuilding(building)" ng-bind="building"></a>
+          <a ng-click="mapCtrl.changeBuilding(building)" ng-bind="building"></a>
         </li>                       
       </ul>      
     </div> 
@@ -27,7 +27,7 @@
       </button>
       <ul class="dropdown-menu" role="menu">        
         <li ng-repeat="level in mapCtrl.allLevels">        
-          <a href="#" ng-click="mapCtrl.changeLevel(level)" ng-bind="level"></a>
+          <a ng-click="mapCtrl.changeLevel(level)" ng-bind="level"></a>
         </li>                       
       </ul>      
     </div>     
