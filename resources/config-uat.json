@@ -1,4 +1,5 @@
 {
+  "env": "uat",
   "db": {
 	"host": "ntsydv1946",
 	"port": "27018",
