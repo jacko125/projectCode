@@ -194,6 +194,14 @@ function requestFunctions(self, dep) {
             latLng: dep.userMarker.getLatLng()
         }); // Parent is notified as observer from wsService (for toast)        
     }
+ 
+    self.sendBroadcastButtonClick = function(target) {
+        dep.wsService.sendBroadcast(dep.$rootScope.user, target, {
+            building: self.currentLocation.building,
+            level: self.currentLocation.level,
+            latLng: dep.userMarker.getLatLng()
+        }); // Parent is notified as observer from wsService (for toast)        
+    }
     
 }
 
