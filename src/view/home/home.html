@@ -3,7 +3,9 @@
   <h1>MIA</h1>
   <p class="lead">The Macquarie Interactive App</p>         
   <div class="container-home-item">
+  
     <div class="row">
+    
       <div ng-class="homeCtrl.homeItemClass('search')">           
         <div class="tile-wrapper"> <!-- For centering tiles within the column -->
           <div class="thumbnail tile tile-success tile-home-item-sm hidden-xs">
@@ -22,8 +24,11 @@
               </a>
           </div>                        
         </div>
-      </div>
-      <div ng-class="homeCtrl.homeItemClass('meeting')">    
+      </div> <!-- Search button -->
+            
+      <div ng-class="homeCtrl.homeItemClass('meeting')"
+           data-toggle="collapse"
+           data-target=".navbar-collapse.in">    
         <div class="tile-wrapper">
           <div class="thumbnail tile tile-warning tile-home-item-sm hidden-xs">
               <a href="#" class="tile-home-item-contents">
@@ -37,16 +42,18 @@
                       hidden-sm hidden-md hidden-lg">
               <a href="#" class="tile-home-item-contents">
                 <i class="fa fa-users fa-2x"></i><br><br>
-                <b>Find rooms</b> 
+                <b>Find a room</b> 
               </a>
           </div>                        
         </div>
-      </div>  
+      </div> <!-- Meeting room button -->
       
-      <div ng-class="homeCtrl.homeItemClass('map')">      
+      <div ng-class="homeCtrl.homeItemClass('map')"
+           data-toggle="collapse"
+           data-target=".navbar-collapse.in">      
         <div class="tile-wrapper">
           <div class="thumbnail tile tile-info tile-home-item-sm hidden-xs">
-              <a ui-sref="map" class="tile-home-item-contents">
+              <a class="tile-home-item-contents" ui-sref="map">
                 <i class="fa fa-map fa-4x"></i><br><br>
                 <b>View a floor map</b> 
               </a>
@@ -55,17 +62,25 @@
         <div ng-class="homeCtrl.mapItemSubClass()">
           <div class="thumbnail tile tile-info tile-home-item-xs 
                       hidden-sm hidden-md hidden-lg">
-              <a ui-sref="map" class="tile-home-item-contents">
+              <a ui-sref="map"
+                 class="tile-home-item-contents"
+                 data-toggle="collapse"
+                 data-target=".navbar-collapse.in">
                 <i class="fa fa-map fa-2x"></i><br><br>
                 <b>View map</b> 
               </a>
           </div>        
         </div>
-      </div>    
-      <div ng-class="homeCtrl.homeItemClass('login')" ng-if="loggedIn == false">              
+      </div> <!-- Map button -->
+      
+      <div ng-class="homeCtrl.homeItemClass('login')" 
+           ng-if="loggedIn == false"
+           data-toggle="collapse"
+           data-target=".navbar-collapse.in">              
         <div class="tile-wrapper">
           <div class="thumbnail tile tile-alt tile-home-item-sm hidden-xs">
-              <a ui-sref="login" class="tile-home-item-contents">
+              <a class="tile-home-item-contents"
+                 ui-sref="login">
                 <i class="fa fa-user fa-4x"></i><br><br>
                 <b>Log into MIA</b> 
               </a>
@@ -74,13 +89,16 @@
         <div class="pull-left">
           <div class="thumbnail tile tile-alt tile-home-item-xs 
                       hidden-sm hidden-md hidden-lg">
-              <a ui-sref="login" class="tile-home-item-contents">
+              <a class="tile-home-item-contents"
+                 ui-sref="login">
                 <i class="fa fa-user fa-2x"></i><br><br>
                 <b>Log in</b> 
               </a>
           </div>        
         </div>
-      </div>                    
-    </div>
-  </div>
-</div>
+      </div> <!-- Login button -->
+      
+    </div> <!-- /.row -->
+    
+  </div> <!-- /.container-home-item -->
+</div> <!-- /.container-home -->
