@@ -13,7 +13,7 @@ miaApp.controller('mapController', [
         
         // stateParams actions: "send-response","view-response"               
         $scope.action = $stateParams.action; // Action being taken
-        $scope.target = $stateParams.target; // Recipient of action
+        $scope.target = $stateParams.target; // Recipient of action                               
                                 
         var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 1' };
         self.currentLocation = ($rootScope.user) ? getUserLocation($rootScope.user) : defaultLocation;                                           
@@ -38,9 +38,16 @@ miaApp.controller('mapController', [
         self.changeLevel = function(level) {
             self.currentLocation.level = level;            
             self.updateMap();            
-        }               
+        }
         
-        var userMarker = L.marker(L.latLng(0,0), { draggable: ($scope.action !== 'view-response') });               
+        self.choosingLocation = function(action) {            
+            return (['send-broadcast','send-response'].indexOf(action) != -1);
+        };
+        self.viewingLocation = function(action) {
+            return (['view-broadcast','view-response'].indexOf(action) != -1);
+        };
+
+        var userMarker = L.marker(L.latLng(0,0), { draggable: self.choosingLocation($scope.action) });               
         mapFunctions(self, {
             $location: $location,
             $stateParams: $stateParams,
@@ -48,13 +55,13 @@ miaApp.controller('mapController', [
         });        
         self.updateMap() // Refreshes map
         
-        // Assume response location is valid (and maps exist)
-        if ($stateParams.action === 'view-response') {            
-            var response = $stateParams.target;                    
-            self.currentLocation = response.data.location;                     
+        // Assume received location is valid (and maps exist)
+        if (self.viewingLocation($stateParams.action)) {            
+            var message = $stateParams.target;            
+            self.currentLocation = message.data.location;                     
             self.updateMap();
-            userMarker.setLatLng(L.latLng(response.data.location.latLng.lat, response.data.location.latLng.lng));                                                            
-        }
+            userMarker.setLatLng(L.latLng(message.data.location.latLng.lat, message.data.location.latLng.lng));                                                            
+        } 
              
         requestFunctions(self, {            
             $scope: $scope,     
@@ -97,8 +104,8 @@ function mapFunctions(self, dep) {
             noWrap: true
         }).addTo(map);
                         
-        if (dep.$stateParams.action == 'view-response' 
-            || dep.$stateParams.action == 'send-response') {                
+        if (self.choosingLocation(dep.$stateParams.action) 
+            || self.viewingLocation(dep.$stateParams.action)) {                
             dep.userMarker.addTo(map);                                       
         } else {
             map.removeLayer(dep.userMarker);   
@@ -180,7 +187,7 @@ function mapFunctions(self, dep) {
 
 function requestFunctions(self, dep) {
 
-    self.sendLocationButtonClick = function(request) {
+    self.sendResponseButtonClick = function(request) {
         dep.wsService.sendResponse(dep.$rootScope.user, request, {
             building: self.currentLocation.building,
             level: self.currentLocation.level,
