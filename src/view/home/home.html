@@ -6,7 +6,7 @@
   
     <div class="row">
     
-      <div ng-class="homeCtrl.homeItemClass('search')">           
+      <div class="col-xs-6 col-sm-3 col-sm-offset-0">
         <div class="tile-wrapper"> <!-- For centering tiles within the column -->
           <div class="thumbnail tile tile-success tile-home-item-sm hidden-xs">
               <a ui-sref="search" class="tile-home-item-contents">
@@ -26,7 +26,7 @@
         </div>
       </div> <!-- Search button -->
             
-      <div ng-class="homeCtrl.homeItemClass('meeting')"
+      <div class="col-xs-6 col-sm-3 col-sm-offset-0"
            data-toggle="collapse"
            data-target=".navbar-collapse.in">    
         <div class="tile-wrapper">
@@ -48,7 +48,7 @@
         </div>
       </div> <!-- Meeting room button -->
       
-      <div ng-class="homeCtrl.homeItemClass('map')"
+      <div class="col-xs-6 col-sm-3 col-sm-offset-0"
            data-toggle="collapse"
            data-target=".navbar-collapse.in">      
         <div class="tile-wrapper">
@@ -59,7 +59,7 @@
               </a>
           </div>
         </div>
-        <div ng-class="homeCtrl.mapItemSubClass()">
+        <div class="pull-right">
           <div class="thumbnail tile tile-info tile-home-item-xs 
                       hidden-sm hidden-md hidden-lg">
               <a ui-sref="map"
@@ -73,29 +73,50 @@
         </div>
       </div> <!-- Map button -->
       
-      <div ng-class="homeCtrl.homeItemClass('login')" 
-           ng-if="loggedIn == false"
+      <div class="col-xs-6 col-sm-3 col-sm-offset-0"           
            data-toggle="collapse"
            data-target=".navbar-collapse.in">              
-        <div class="tile-wrapper">
-          <div class="thumbnail tile tile-alt tile-home-item-sm hidden-xs">
+
+        <div class="tile-wrapper">        
+          <div ng-if="!loggedIn"
+               class="thumbnail tile tile-alt tile-home-item-sm hidden-xs">
               <a class="tile-home-item-contents"
                  ui-sref="login">
                 <i class="fa fa-user fa-4x"></i><br><br>
                 <b>Log into MIA</b> 
               </a>
+          </div>
+          <div ng-if="loggedIn"
+               class="thumbnail tile tile-primary tile-home-item-sm hidden-xs">
+              <a class="tile-home-item-contents"
+                 ui-sref="user">
+                <i class="fa fa-user fa-4x"></i><br><br>
+                <b>View profile</b>
+              </a>
           </div>          
         </div>
-        <div class="pull-left">
-          <div class="thumbnail tile tile-alt tile-home-item-xs 
+        
+        <div class="pull-left">        
+          <div ng-if="!loggedIn"
+               class="thumbnail tile tile-alt tile-home-item-xs 
                       hidden-sm hidden-md hidden-lg">
               <a class="tile-home-item-contents"
                  ui-sref="login">
                 <i class="fa fa-user fa-2x"></i><br><br>
                 <b>Log in</b> 
               </a>
-          </div>        
+          </div>      
+          <div ng-if="loggedIn"
+               class="thumbnail tile tile-primary tile-home-item-xs 
+                      hidden-sm hidden-md hidden-lg">
+              <a class="tile-home-item-contents"
+                 ui-sref="user">
+                <i class="fa fa-user fa-2x"></i><br><br>
+                <b>View profile</b>
+              </a>
+          </div>                         
         </div>
+        
       </div> <!-- Login button -->
       
     </div> <!-- /.row -->
