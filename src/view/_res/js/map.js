@@ -125,7 +125,9 @@ function mapFunctions(self, dep) {
                 L.marker( [room[H.MEETING_ROOM.LATLNG][0], room[H.MEETING_ROOM.LATLNG][1]],
                     { icon: createIcon(IconTypes.MEETING_ROOM) })
                     .addTo(meetingRoomLayer)
-                    .bindPopup("");               
+                    .bindPopup("<b>Meeting room</b> " + room[H.MEETING_ROOM.NAME] + "<br>"
+                                + "Capacity: " + room[H.MEETING_ROOM.CAPACITY] + "<br>"
+                                + room[H.MEETING_ROOM.INFO]);               
             });
             
             var liftLayer = L.layerGroup().addTo(itemLayer);
@@ -133,7 +135,7 @@ function mapFunctions(self, dep) {
                 L.marker( [lift[H.LIFT.LATLNG][0], lift[H.LIFT.LATLNG][1]],
                     { icon: createIcon(IconTypes.LIFT(lift[H.LIFT.TYPE])) })
                     .addTo(liftLayer)
-                    .bindPopup("");               
+                    .bindPopup("<b>" + capitalise(lift[H.LIFT.TYPE]) + "</b>");               
             });
             
             var toiletLayer = L.layerGroup().addTo(itemLayer);
@@ -141,7 +143,7 @@ function mapFunctions(self, dep) {
                 L.marker( [toilet[H.TOILET.LATLNG][0], toilet[H.TOILET.LATLNG][1]],
                     { icon: createIcon(IconTypes.TOILET(toilet[H.TOILET.TYPE])) })
                     .addTo(toiletLayer)
-                    .bindPopup("");                                               
+                    .bindPopup("<b>Toilets</b><br>" + capitalise(toilet[H.TOILET.TYPE]));                                         
             });
             
             var otherLayer = L.layerGroup().addTo(itemLayer);
@@ -149,7 +151,8 @@ function mapFunctions(self, dep) {
                 L.marker( [other[H.OTHER.LATLNG][0], other[H.OTHER.LATLNG][1]],
                     { icon: createIcon(IconTypes.OTHER(other[H.OTHER.TYPE])) })
                     .addTo(otherLayer)
-                    .bindPopup(other[H.OTHER.NAME]);                                               
+                    .bindPopup("<b>" + capitalise(other[H.OTHER.TYPE]) + "</b><br>"
+                               + other[H.OTHER.NAME]);                                               
             });
         }            
         //TODO Change markers
@@ -313,4 +316,8 @@ function createIcon(iconType) {
         iconAnchor:     [iconType.size/2, iconType.size/2],
         popupAnchor:    [0,0] 
     });    
+}
+
+function capitalise(token) {
+      return token.charAt(0).toUpperCase() + token.slice(1);
 }
