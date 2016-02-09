@@ -45,7 +45,9 @@ miaApp.controller('parentController', [
                     $scope.notifyCount = requestService.messages.length;
                     var toastMsg = data.senderName + ' has sent you their location.';
                     showToast(ngToast, toastMsg, 'info');      
-                    break;                     
+                    break;
+                 
+                
                         
             }            
             $state.transitionTo($state.current, $stateParams, {
@@ -117,13 +119,4 @@ function showToast(ngToast, message, type) {
         className: type,        
         content: '<div>' + message + '</div>',        
     });    
-}
-
-function refreshState($state, $stateParams) {
-    var currentState = $state.current;
-    if (currentState.name == 'home')
-        $state.go('search');
-    else 
-        $state.go('home');
-    $state.go(currentState.name, $stateParams, { reload: true });
 }

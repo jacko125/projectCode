@@ -10,7 +10,7 @@
 							  data-placement="bottom"
 							  title="Request their Location"
 							  class="btn btn-success"
-							  ng-click="searchCtrl.requestLocationToGroup()">
+							  ng-click="searchCtrl.sendRequestToGroupButtonClick()">
 						  <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
 						  </span>
                     </button>               
@@ -18,7 +18,7 @@
                                   data-placement="bottom"
                                   title="Send my location"
                                   class="btn btn-info"
-                                  ng-click="searchCtrl.sendLocationToGroup()">
+                                  ui-sref="map({ action: 'send-broadcast-group', target: group})">
                        <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
                        </span>
                     </button> 

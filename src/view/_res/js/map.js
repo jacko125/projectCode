@@ -41,7 +41,7 @@ miaApp.controller('mapController', [
         }
         
         self.choosingLocation = function(action) {            
-            return (['send-broadcast','send-response'].indexOf(action) != -1);
+            return (['send-broadcast','send-broadcast-group','send-response'].indexOf(action) != -1);
         };
         self.viewingLocation = function(action) {
             return (['view-broadcast','view-response'].indexOf(action) != -1);
@@ -163,7 +163,7 @@ function mapFunctions(self, dep) {
     map.on('click', function(e) {                    
         console.log(e.latlng.lat.toFixed(4) + "," + e.latlng.lng.toFixed(4));
         
-        if (dep.$stateParams.action == 'send-response') {                       
+        if (self.choosingLocation(dep.$stateParams.action)) {                       
             dep.userMarker.setLatLng(e.latlng);
             dep.userMarker.addTo(map);            
         }                              
@@ -204,6 +204,16 @@ function requestFunctions(self, dep) {
             level: self.currentLocation.level,
             latLng: dep.userMarker.getLatLng()
         }); // Parent is notified as observer from wsService (for toast)        
+    }
+    
+    self.sendBroadcastToGroupButtonClick = function(group) {
+        group.forEach(function(staff) {
+            dep.wsService.sendBroadcast(dep.$rootScope.user, staff, {
+                building: self.currentLocation.building,
+                level: self.currentLocation.level,
+                latLng: dep.userMarker.getLatLng()
+            });                        
+        })
     }
     
 }

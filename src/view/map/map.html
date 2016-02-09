@@ -92,6 +92,16 @@
            ui-sref="search">Back to list
         </a>      
       </div>
+      
+      <div ng-if="action == 'send-broadcast-group'">
+        <a ng-click="mapCtrl.sendBroadcastToGroupButtonClick(target)"
+           ui-sref="home"
+           class="btn btn-success">Send to group
+        </a>
+        <a class="btn btn-default"
+           ui-sref="search">Back to list
+        </a>      
+      </div>      
         
     </div> <!-- / choosingLocation buttons -->
     
