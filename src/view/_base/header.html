@@ -12,7 +12,10 @@
           <span ng-class="parentCtrl.notificationIconClass()" ng-bind="notifyCount"></span>        
         </span>
       </button>
-      <a class="navbar-brand" ui-sref="home">
+      <a class="navbar-brand"
+         data-toggle="collapse" 
+         data-target=".navbar-collapse.in" 
+         ui-sref="home">
         <img class="logo" src="/img/macquarie_personal_logo.gif">
       </a>
     </div>
@@ -30,6 +33,10 @@
           <a ui-sref="map"
              data-toggle="collapse" data-target=".navbar-collapse.in">Map</a>
         </li>        
+        <li ui-sref-active="active" ng-if="loggedIn">
+          <a ui-sref="user"
+             data-toggle="collapse" data-target=".navbar-collapse.in">Profile</a>
+        </li>          
       </ul>                 
       <ul class="nav navbar-nav navbar-right" ng-if="loggedIn">
         <li>

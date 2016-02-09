@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-3 col-sm-offset-1">
       <div class="profile-container-large">
-        <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{searchCtrl.profile.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
+        <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{searchCtrl.profile.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profile-images/profile-placeholder.png'">
       </div>
     </div>
     <div class="col-sm-7">      
@@ -16,7 +16,7 @@
           <p>Address: {{searchCtrl.profile.postalAddress}} <br/> {{searchCtrl.profile.Office}} </p>
         </div>
         <button class="btn btn-success"
-                ng-click="searchCtrl.requestLocationButtonClick(searchCtrl.profile.Shortname)">Request location</button>
+                ng-click="searchCtrl.sendRequestButtonClick(searchCtrl.profile)">Request location</button>
                 <br><br>
         <button class="btn btn-default"
                 ui-sref="search">Back to results</button>

@@ -89,7 +89,7 @@
               <a class="profile-container" 
                  ui-sref="profile({ profile: staff })">
                 <img class="media-object profile-image"
-                     ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
+                     ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profile-images/profile-placeholder.png'">
               </a>              
             </div>
             <div class="media-body">
@@ -103,7 +103,7 @@
                       data-placement="bottom"
                       title="Request their Location"
                       class="btn btn-success"
-                      ng-click="searchCtrl.requestLocationButtonClick(staff)">
+                      ng-click="searchCtrl.sendRequestButtonClick(staff)">
                       <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
                       </span>
               </button>              
@@ -112,10 +112,10 @@
                       data-placement="bottom"
                       title="Send my location"
                       class="btn btn-info"
-                      ng-click="searchCtrl.sendLocationButtonClick(staff)">
+                      ui-sref="map({ action:'send-broadcast', target:staff })">      
                       <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
                       </span>
-              </button>              
+              </button>               
               <button 
                       data-toggle="tooltip" 
                       data-placement="bottom"

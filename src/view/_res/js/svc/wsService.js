@@ -45,7 +45,7 @@ miaApp.factory('wsService', ['$location', 'requestService',
         self.webSocket.close();
     };
     
-    var requestLocation = function(user, recipient) {
+    var sendRequest = function(user, recipient) {
         console.log('Requesting location for ' + recipient);
         self.webSocket.send(JSON.stringify({                
             type: 'request',
@@ -59,6 +59,7 @@ miaApp.factory('wsService', ['$location', 'requestService',
     };
 
     var sendResponse = function(user, request, location) {                
+        // request is a Request Message object
         removeMessage(request);            
         notifyObservers('ws-sent-response', request);         
         
@@ -76,8 +77,29 @@ miaApp.factory('wsService', ['$location', 'requestService',
                 })
             })            
         }));
-    };   
-    
+    };
+        
+    var sendBroadcast = function(user, target, location) {
+        // target is a StaffSearch User object
+        notifyObservers('ws-sent-broadcast', target);
+        console.log('sending broadcast to');
+        console.log(target);
+        self.webSocket.send(JSON.stringify({
+            type: "broadcast",                            
+            sender: user.Shortname,                
+            recipient: target.Shortname,            
+            datetime: new Date(),
+            data: JSON.stringify({
+                senderName: user.Description,          
+                location: JSON.stringify({
+                    building: location.building,
+                    level: location.level,
+                    latLng: JSON.stringify(location.latLng)
+                })
+            })            
+        }));                
+    }
+   
     var removeMessage = function(message) {
         console.log('removing message')
         console.log(message);
@@ -93,8 +115,9 @@ miaApp.factory('wsService', ['$location', 'requestService',
         connect: connect,
         disconnect: disconnect,
         
-        requestLocation: requestLocation,
-        sendResponse: sendResponse,              
+        sendRequest: sendRequest,
+        sendResponse: sendResponse, 
+        sendBroadcast: sendBroadcast,
         removeMessage: removeMessage
     };
 }]);
@@ -129,7 +152,15 @@ function msgHandler(self, dep) {
                 dep.requestService.messages.push(response) // Only one response from someone at any given time                
                 dep.notifyObservers('ws-receive-response', response);
                 break;
-                
+            
+            case 'broadcast':
+                var broadcast = message;
+                console.log('Received broadcast at service level, sender: ' + broadcast.sender);                
+                console.log(broadcast);     
+                dep.requestService.removeMessage(dep.requestService, broadcast)
+                dep.requestService.messages.push(broadcast) // Only one broadcast from someone at any given time                
+                dep.notifyObservers('ws-receive-broadcast', broadcast.data);
+                                                
             default:
                 console.log('Received unknown message');        
                 console.log(message);

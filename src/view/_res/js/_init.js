@@ -47,6 +47,12 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToast
                 controller: 'notificationController as notifyCtrl',
                 params: { action: null }
             });
+        $stateProvider
+            .state('user', {
+                url: '/user',
+                templateUrl: 'view/user/profile.html',
+                controller: 'userController as userCtrl'                
+            });            
             
         ngToastProvider.configure({            
             horizontalPosition: 'right',            

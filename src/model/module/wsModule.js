@@ -71,6 +71,23 @@ module.exports = {
                 sendToClient(wss, ws, response.recipient, response);                
                 break;
                 
+            case 'broadcast':
+                var broadcast = message;                
+                broadcast.data = JSON.parse(broadcast.data);
+                broadcast.data.location = JSON.parse(broadcast.data.location);                
+                broadcast.data.location.latLng = JSON.parse(broadcast.data.location.latLng);                         
+                console.log('Received location broadcast from ' + broadcast.sender + ' to ' + broadcast.recipient);                
+                MessageModule.deleteMessage({
+                    type: 'broadcast',
+                    sender: broadcast.sender,
+                    recipient: broadcast.recipient,
+                }, function() {
+                    MessageModule.createMessage(broadcast);                                    
+                });                
+                sendToClient(wss, ws, broadcast.recipient, broadcast);                
+                break;                        
+            
+                
             case 'remove-message':
                 var msg = JSON.parse(message.message);
                 console.log('Received remove-request ' + msg.sender + ':' + msg.recipient);

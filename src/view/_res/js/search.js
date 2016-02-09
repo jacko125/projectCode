@@ -22,8 +22,7 @@ miaApp.controller('searchController', [
             $('[data-toggle="tooltip"]').tooltip();
         });
 
-        self.requestLocationButtonClick = function(recipient) {            
-            console.log(recipient);            
+        self.sendRequestButtonClick = function(recipient) {                        
             // Request button was clicked from search-list, so profile is not set yet.
             if (!('profile' in $stateParams))
                 self.profile = recipient;
@@ -35,7 +34,7 @@ miaApp.controller('searchController', [
                 content: '<div class="toast">' + toastMsg + '</div>',
                 horizontalPosition: 'left'
             });
-            wsService.requestLocation($rootScope.user, recipient.Shortname);            
+            wsService.sendRequest($rootScope.user, recipient.Shortname);            
         }
         
         self.sendLocationButtonClick = function(recipient) {            

@@ -14,6 +14,10 @@ module.exports = function(app) {
     
     app.get('/config', homeController.ajaxGetConfig);
     
+    app.get('/mapViewData', homeController.ajaxGetMapViewData);
+    
+    app.get('/mapItemData', homeController.ajaxGetMapItemData);
+    
     app.get('/testGetStaffList', homeController.ajaxTestGetStaffList);
     
     app.get('/testGetStaffProfile', homeController.ajaxTestGetStaffProfile);        
