@@ -1,15 +1,16 @@
 miaApp.controller('searchController', [
     '$scope', '$rootScope', '$state', '$stateParams',
-    'ngToast','staffSearchService','wsService', 
+    'ngToast','staffSearchService','wsService',
     function($scope, $rootScope, $state, $stateParams, ngToast, staffSearchService, wsService) {
-        var self = this;        
-        
+        var self = this;
+
         self.searchParams = {
             name: ''
-        };       
-                
+        };
+        $scope.requestUserLocation = '';
+
         $scope.results = staffSearchService.results;
-        self.loadStaffList = function() {           
+        self.loadStaffList = function() {
             staffSearchService.getStaffList(self.searchParams).then(function(results) {
                 console.log(results);
                 staffSearchService.results = results.data;
@@ -18,9 +19,15 @@ miaApp.controller('searchController', [
         };
         self.profile = $stateParams.profile;
 
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();
-        });
+        $scope.initialise = function () {
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        };
+
+        $scope.removeRequestConfirmation = function() {
+            $scope.requestUserLocation = null;
+        };
 
         self.requestLocationButtonClick = function(recipient) {
             console.log(recipient);
@@ -36,7 +43,12 @@ miaApp.controller('searchController', [
                 horizontalPosition: 'left'
             });
             wsService.requestLocation($rootScope.user, recipient.Shortname);
+            $scope.requestUserLocation = null;
         }
+
+        self.showRequestConfirmation = function(staffShortName) {
+            $scope.requestUserLocation = staffShortName;
+        };
 
         self.sendLocationButtonClick = function(recipient) {
             console.log("Send location button was clicked");
@@ -45,7 +57,7 @@ miaApp.controller('searchController', [
         self.addToGroupButtonClick = function(recipient) {
             console.log("Add to group button was clicked");
         }
-        
+
         // Return to search if profile page accessed directly
         if ('profile' in $stateParams && $stateParams.profile == null)
             $state.go('search');

@@ -1,9 +1,4 @@
-<script>
-  $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-  });
-</script>
-<div class="search-list">
+<div class="search-list" ng-init="initialise()">
 
   <div class="row">
     <div class="col-md-6 col-md-offset-3
@@ -44,16 +39,16 @@
             </div>
             <div class="media-right">
               <button data-toggle="tooltip"
-                      data-placement="bottom"
+                      data-placement="left"
                       title="Request their Location"
                       class="btn btn-success"
-                      ng-click="searchCtrl.requestLocationButtonClick(staff)">
-                      <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
+                      ng-click="searchCtrl.showRequestConfirmation(staff.Shortname)">
+              <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
                       </span>
               </button>
               <button
                       data-toggle="tooltip"
-                      data-placement="bottom"
+                      data-placement="left"
                       title="Send my location"
                       class="btn btn-info"
                       ng-click="searchCtrl.sendLocationButtonClick(staff)">
@@ -62,7 +57,7 @@
               </button>
               <button
                       data-toggle="tooltip"
-                      data-placement="bottom"
+                      data-placement="left"
                       title="Add to list"
                       class="btn btn-alt"
                       ng-click="searchCtrl.addToGroupButtonClick(staff)">
@@ -71,6 +66,21 @@
               </button>
             </div>
           </div>
+            <div class="alert alert-info" style="margin-bottom: 0px; margin-top: 5px; padding: 10px;" role="alert" ng-if="requestUserLocation === staff.Shortname">
+              <div>
+                <div>
+                  Please confirm you wish to request {{staff.Description}}'s location.
+                </div>
+                <div class="text-right">
+                  <button class="btn btn-default" value="cancel" ng-click="removeRequestConfirmation()">
+                    Cancel
+                  </button>
+                  <button class="btn btn-warning" value="confirm" ng-click="searchCtrl.requestLocationButtonClick(staff)">
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
         </li>
         </ul>
       </div>
