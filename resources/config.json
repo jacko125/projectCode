@@ -1,17 +1,17 @@
 {
-  "env": "dev",
+  "env": "uat",
   "db": {
-	"host": "127.0.0.1",
-	"port": "27017",
+	"host": "ntsydv1946",
+	"port": "27018",
 	"name": "mia"
   },
   "mia": {
-	"host": "127.0.0.1",
-	"port": "3000"
+	"host": "ntsydv1946",
+	"port": "4000"
   },
   "ws": {
-	"host": "127.0.0.1",
-	"port": "3001"
+	"host": "ntsydv1946",
+	"port": "4001"
   },
   "searchUrl": "http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc"
 }

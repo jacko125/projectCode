@@ -2,13 +2,12 @@
     <div class="row">
         <div class = "col-md-8 col-md-offset-2">
 		    <!-- Show list of current group if it exists-->
-			<div class="list-group listnav group-container" ng-if="group.length > 0">
+			<div class="group-container" ng-if="group.length > 0">
 			   <div class='media'>
 			      <div class='group-header'>
-					<h2>Current Group</h2>
 				    <button data-toggle="tooltip" 
 							  data-placement="bottom"
-							  title="Request their Location"
+							  title="Request group's location"
 							  class="btn btn-success"
 							  ng-click="searchCtrl.sendRequestToGroupButtonClick()">
 						  <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
@@ -16,7 +15,7 @@
                     </button>               
 					<button data-toggle="tooltip" 
                                   data-placement="bottom"
-                                  title="Send my location"
+                                  title="Send my location to group"
                                   class="btn btn-info"
                                   ui-sref="map({ action: 'send-broadcast-group', target: group})">
                        <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
@@ -35,24 +34,17 @@
 				<ul class = 'col-md-offset-1'>
 				<li class="groupmember-container" ng-repeat="staff in group">
 					<!--ui-sref="profile({ profile: staff })">-->
-
-
-								<a class="profile-container" 
-										  ui-sref="profile({ profile: staff })">
-								<img class="media-object profile-image"
-										  ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
-								</a>   
-
+					
 								<button data-toggle="tooltip" 
-								  data-placement = "top"
+								  data-placement = "right"
 								  title="Remove from list"
-								  class="btn btn-alt"
+								  class="btn btn-warning pos-right"
 								  ng-click="searchCtrl.removeMember(staff)">
-									<span class="glyphicon glyphicon-minus gi-1x" aria-hidden="true">
+									<span class="glyphicon glyphicon-remove gi-1x" aria-hidden="true">
 									</span>
 								</button>  
 
-							<a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>     
+							<a ui-sref="profile({ profile: staff })">{{staff.Description}}</a>     
 
 
 
