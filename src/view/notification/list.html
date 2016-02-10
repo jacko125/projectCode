@@ -25,7 +25,7 @@
            
           <div class="media-body">
             <div class="list-group-item-heading">
-              <b>{{message.senderName}}</b> 
+              <b>{{message.data.senderName}}</b> 
               <span ng-switch="message.type">
                 <span ng-switch-when="request">requested your location</span>
                 <span ng-switch-when="response">responded to your request</span>

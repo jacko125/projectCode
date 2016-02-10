@@ -1,0 +1,17 @@
+{
+  "env": "dev",
+  "db": {
+	"host": "localhost",
+	"port": "27017",
+	"name": "mia"
+  },
+  "mia": {
+	"host": "localhost",
+	"port": "3000"
+  },
+  "ws": {
+	"host": "localhost",
+	"port": "3001"
+  },
+  "searchUrl": "http://employeesearch-uat.pc.internal.macquarie.com/EmployeeSearchService.svc"
+}

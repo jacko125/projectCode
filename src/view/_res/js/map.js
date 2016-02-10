@@ -7,29 +7,38 @@ miaApp.controller('mapController', [
         
         var self = this;
         
-        // stateParams action: "send-response"|"view-response"               
-        $scope.action = $stateParams.action;
-        $scope.target = $stateParams.target;
+        // Loaded from server on parent.html
+        self.mapViewData = mapViewData; 
+        self.mapItemData = mapItemData;                
+        
+        // stateParams actions: "send-response","view-response"               
+        $scope.action = $stateParams.action; // Action being taken
+        $scope.target = $stateParams.target; // Recipient of action
                                 
         var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 1' };
-        self.currentLocation = ($rootScope.user) ? getUserLocation($rootScope.user) : defaultLocation;                           
+        self.currentLocation = ($rootScope.user) ? getUserLocation($rootScope.user) : defaultLocation;                                           
+ 
+        self.allLocations = [];
+        self.allLocations = self.allLocations.concat(self.mapViewData);                        
+        self.allLocations.shift(); // Remove default map from list        
                 
-        // TODO When logged in, set allLocations
-                
-        self.allLocations = getAllLocations(self.currentLocation); // Get all locations (including the user's)                                        
+        self.unsupportedMap = (getMapViewData(self.allLocations, self.currentLocation) == null)
+        
         self.allBuildings = []; // Get all buildings
         for (var i = 0; i < self.allLocations.length; i++) 
             self.allBuildings.push(self.allLocations[i].building);                
         self.allLevels = getBuildingLevels(self.currentLocation.building, self.allLocations);  // Get levels of the current building                      
-        
-        self.changeBuilding = function () { 
-            self.allLevels = getBuildingLevels(self.currentLocation.building, self.allLocations);                        
-            self.currentLocation.level = self.allLevels[0]; // Defaults floor to first level
-            self.changeLevel(); // Based in mapFunctions
-            checkUnsupportedMap(self);            
+                
+        self.changeBuilding = function (building) { 
+            self.currentLocation.building = building;
+            self.allLevels = getBuildingLevels(self.currentLocation.building, self.allLocations);  // Get levels of the current building                      
+            self.currentLocation.level = self.allLevels[0]; // Defaults floor to first level                        
+            self.updateMap(); // Based in mapFunctions            
         }
-        
-        // TODO When logged out, reset allLocations         
+        self.changeLevel = function(level) {
+            self.currentLocation.level = level;            
+            self.updateMap();            
+        }               
         
         var userMarker = L.marker(L.latLng(0,0), { draggable: ($scope.action !== 'view-response') });               
         mapFunctions(self, {
@@ -37,16 +46,14 @@ miaApp.controller('mapController', [
             $stateParams: $stateParams,
             userMarker: userMarker
         });        
-        self.changeLevel() // Refreshes map
+        self.updateMap() // Refreshes map
         
         // Assume response location is valid (and maps exist)
         if ($stateParams.action === 'view-response') {            
             var response = $stateParams.target;                    
-            self.currentLocation.building = response.location.building;                        
-            self.changeBuilding();            
-            self.currentLocation.level = response.location.level;            
-            self.changeLevel();
-            userMarker.setLatLng(L.latLng(response.location.latLng.lat, response.location.latLng.lng));                                                            
+            self.currentLocation = response.data.location;                     
+            self.updateMap();
+            userMarker.setLatLng(L.latLng(response.data.location.latLng.lat, response.data.location.latLng.lng));                                                            
         }
              
         requestFunctions(self, {            
@@ -54,55 +61,103 @@ miaApp.controller('mapController', [
             $rootScope: $rootScope,
             wsService: wsService,
             userMarker: userMarker
-        });
-        
-        // self.removeResponseButtonClick = function(response) {
-            // console.log('remove response');
-            // console.log(response);
-            // requestService.removeResponse(requestService, response.sender);
-            // wsService.removeResponse(response);
-        // }
-        
-        
+        });        
 }]);   
 
 function mapFunctions(self, dep) {
     
-    var southWest = L.latLng(-500, -250),
-            northEast = L.latLng(500, 250),
-            bounds = L.latLngBounds(southWest, northEast);                   
-    var map = new L.map('map').setView([50, -50], 1); // View starts here
+    var map = L.map('map');
+    var tileLayer = L.tileLayer("").addTo(map);
+    var itemLayer = L.layerGroup().addTo(map);
+         
+    self.updateMap = function () { // Change floor map when level is changed        
+        var viewData = getMapViewData(self.mapViewData, self.currentLocation);                                       
         
-    var urlBase = 'http://' + dep.$location.host() + ':' + dep.$location.port();
-    var locFolder = getLocationFolder(self.currentLocation);
-    var tileLayer = L.tileLayer(urlBase + '/maps/' + locFolder + '/{z}/{x}/{y}.png',
-    {                                       
-        maxZoom: 3,
-        minZoom: 1,
-        continuousWorld: false,        
-        noWrap: true,                    
-    }).addTo(map);                                
-    map.setMaxBounds(bounds);
+        self.unsupportedMap = (viewData == null);
+        if (self.unsupportedMap) {                        
+            viewData = getMapViewData(self.mapViewData, { building: "default", level: "default" });                                               
+        }               
         
-    dep.userMarker.addTo(map);
-    map.on('click', function(e) {            
-        console.log(e.latlng);        
+        map.setView([viewData.origin.latLng[0], viewData.origin.latLng[1]], viewData.origin.zoom)                                                         
+        var southWest = L.latLng(viewData.bounds.SW[0], viewData.bounds.SW[1]),
+            northEast = L.latLng(viewData.bounds.NE[0], viewData.bounds.NE[1]),
+            bounds = L.latLngBounds(southWest, northEast);
+        map.setMaxBounds(bounds);   
+       
+        map.removeLayer(tileLayer);
+        var url = 'http://' + dep.$location.host() 
+                    + ':' + dep.$location.port() 
+                    + '/maps/' + getLocationFolder(self.currentLocation) 
+                    + '/{z}/{x}/{y}.png';
+        
+        tileLayer = L.tileLayer(url, {
+            maxZoom: viewData.zoom.max,
+            minZoom: viewData.zoom.min,
+            continuousWorld: false,
+            noWrap: true
+        }).addTo(map);
+                        
+        if (dep.$stateParams.action == 'view-response' 
+            || dep.$stateParams.action == 'send-response') {                
+            dep.userMarker.addTo(map);                                       
+        } else {
+            map.removeLayer(dep.userMarker);   
+        }
+        
+        map.removeLayer(itemLayer);
+        itemLayer = L.layerGroup().addTo(map);        
+        var itemData = getMapItemData(self.mapItemData, self.currentLocation);
+        
+        if (!self.unsupportedMap && itemData != null) {            
+            
+            var H = getMapItemDataHeaders(self.mapItemData);
+            var IconTypes = getIconTypes();
+            
+            var meetingRoomLayer = L.layerGroup().addTo(itemLayer);
+            itemData.meetingRooms.forEach(function(room) {                             
+                L.marker( [room[H.MEETING_ROOM.LATLNG][0], room[H.MEETING_ROOM.LATLNG][1]],
+                    { icon: createIcon(IconTypes.MEETING_ROOM) })
+                    .addTo(meetingRoomLayer)
+                    .bindPopup("");               
+            });
+            
+            var liftLayer = L.layerGroup().addTo(itemLayer);
+            itemData.lifts.forEach(function(lift) {                
+                L.marker( [lift[H.LIFT.LATLNG][0], lift[H.LIFT.LATLNG][1]],
+                    { icon: createIcon(IconTypes.LIFT(lift[H.LIFT.TYPE])) })
+                    .addTo(liftLayer)
+                    .bindPopup("");               
+            });
+            
+            var toiletLayer = L.layerGroup().addTo(itemLayer);
+            itemData.toilets.forEach(function(toilet) {
+                L.marker( [toilet[H.TOILET.LATLNG][0], toilet[H.TOILET.LATLNG][1]],
+                    { icon: createIcon(IconTypes.TOILET(toilet[H.TOILET.TYPE])) })
+                    .addTo(toiletLayer)
+                    .bindPopup("");                                               
+            });
+            
+            var otherLayer = L.layerGroup().addTo(itemLayer);
+            itemData.other.forEach(function(other) {
+                L.marker( [other[H.OTHER.LATLNG][0], other[H.OTHER.LATLNG][1]],
+                    { icon: createIcon(IconTypes.OTHER(other[H.OTHER.TYPE])) })
+                    .addTo(otherLayer)
+                    .bindPopup(other[H.OTHER.NAME]);                                               
+            });
+        }            
+        //TODO Change markers
+    }
+    
+    self.updateMap();
+        
+    map.on('click', function(e) {                    
+        console.log(e.latlng.lat.toFixed(4) + "," + e.latlng.lng.toFixed(4));
+        
         if (dep.$stateParams.action == 'send-response') {                       
             dep.userMarker.setLatLng(e.latlng);
             dep.userMarker.addTo(map);            
         }                              
-    });        
-    
-    self.changeLevel = function () { // Change floor map when level is changed
-        tileLayer.setUrl('http://' + dep.$location.host() + ':' + dep.$location.port() + '/maps/' + getLocationFolder(self.currentLocation) + '/{z}/{x}/{y}.png');                        
-        checkUnsupportedMap(self);                           
-        if (dep.$stateParams.action == 'view-response' || dep.$stateParams.action == 'send-response')
-            dep.userMarker.addTo(map);                                       
-        else
-            map.removeLayer(dep.userMarker);   
-            
-        //TODO Change markers
-    }
+    });
     
     self.isMapSupportedClass = function() {
         return {
@@ -110,7 +165,7 @@ function mapFunctions(self, dep) {
         }
     }
     
-    //Get current position
+    //Get current position (Only for mobile devices)
     navigator.geolocation.getCurrentPosition(
         function(pos) {
             console.log('get current position');
@@ -120,21 +175,11 @@ function mapFunctions(self, dep) {
         function(err) {
             console.log(err);
         }
-    );
-    
-    
+    );   
 }
 
 function requestFunctions(self, dep) {
 
-    self.sendLocationButtonClass = function() {
-        return {
-            'btn': true,
-            'btn-success': true,
-            'disabled': self.unsupportedMap
-        };
-    };            
-    
     self.sendLocationButtonClick = function(request) {
         dep.wsService.sendResponse(dep.$rootScope.user, request, {
             building: self.currentLocation.building,
@@ -142,37 +187,15 @@ function requestFunctions(self, dep) {
             latLng: dep.userMarker.getLatLng()
         }); // Parent is notified as observer from wsService (for toast)        
     }
-}
-
-function getAllLocations(userLocation) {
-    var allLocations = [ 
-        { building: '1 MARTIN PLACE', levels:['L 1','L 2','L 3'] } 
-    ];
     
-    var locationExists = false;    
-    for (var i = 0; i < allLocations.length; i++) {                                
-        if (allLocations[i].building == userLocation.building) {            
-            for (var j = 0; j < allLocations[i].levels.length; j++) {                
-                if (allLocations[i].levels[j] == userLocation.level) {
-                    locationExists = true;
-                    break;
-                }
-            }
-        }
-    }   
-
-    if (!locationExists)
-        allLocations.push({ building: userLocation.building, levels: [userLocation.level]});        
-    
-    return allLocations;
 }
 
 // Get user's location from Macnet profile "postalAddress"
 function getUserLocation(user) {    
-    // Handle NON-MACQUARIE BUILDING    
+    // TODO: Handle NON-MACQUARIE BUILDING    
     var regex = /(L\s\d)\s(.*)/
     var locFields = user.postalAddress.match(regex);
-    console.log('Building: ' + locFields[2] + ' Floor: ' + locFields[1]);    
+    console.log('Building: ' + locFields[2] + ' Level: ' + locFields[1]);    
     return {
         building: locFields[2],
         level: locFields[1]
@@ -193,7 +216,86 @@ function getLocationFolder(currentLocation) {
     return locationFolder.replace(/\s/g, '_');           
 }
 
-function checkUnsupportedMap(self) {        
-    self.unsupportedMap = !(self.currentLocation.building == '1 MARTIN PLACE' && $.inArray(self.currentLocation.level, ['L 1', 'L 2', 'L 3']) >= 0);       
+// View data corresponds to map-specific view settings (origin, bounds, etc)
+function getMapViewData(allViewData, currentLocation) {
+    var result = null;
+    allViewData.forEach(function(location) {        
+        if (location.building == currentLocation.building) {
+            location.levels.forEach(function(level) {                 
+                if (level == currentLocation.level) {
+                    result = location;                    
+                    return;
+                }
+            });
+        }        
+    });        
+    return result;
 }
 
+// Item data corresponds to the various POIs on a map (meeting rooms, lifts, etc)
+function getMapItemData(allItemData, currentLocation) {
+            
+    var result = null;
+    allItemData.data.forEach(function(location) {
+        if (location.building == currentLocation.building) {            
+            location.levels.forEach(function(level) {
+                if (level.name == currentLocation.level) {                           
+                    result = level;
+                    return;
+                }
+            });
+        }
+    });
+    return result;    
+}
+
+// Item data is stored without headers for compactness
+function getMapItemDataHeaders(allItemData) {
+    var headers = allItemData.headers;
+    return {
+        MEETING_ROOM: {
+            NAME: headers.meetingRoom.indexOf('name'),
+            LATLNG: headers.meetingRoom.indexOf('latlng'),
+            CAPACITY: headers.meetingRoom.indexOf('capacity'),
+            INFO: headers.meetingRoom.indexOf('info')        
+        },
+        LIFT: {
+            TYPE: headers.lift.indexOf('type'),
+            LATLNG: headers.lift.indexOf('latlng')
+        },    
+        TOILET: {
+            TYPE: headers.toilet.indexOf('type'),
+            LATLNG: headers.toilet.indexOf('latlng')
+        },
+        OTHER: {
+            TYPE: headers.other.indexOf('type'),
+            LATLNG: headers.other.indexOf('latlng')
+        }
+    }
+    
+}
+
+function getIconTypes() {
+    
+    return {
+        MEETING_ROOM:   { size: 30, url: 'meeting' },
+        LIFT: function(type) {
+            return { size: 30, url: type };
+        },
+        TOILET: function(type) {
+            return { size: 30, url: 'toilet-' + type };
+        },
+        OTHER: function(type) {
+            return { size: 30, url: type };
+        }
+    }
+    
+}
+function createIcon(iconType) {
+    return L.icon({
+        iconUrl:        '/img/map-icons/' + iconType.url + '.png',
+        iconSize:       [iconType.size, iconType.size],
+        iconAnchor:     [iconType.size/2, iconType.size/2],
+        popupAnchor:    [0,0] 
+    });    
+}

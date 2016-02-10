@@ -12,17 +12,25 @@ module.exports = function(app) {
         
     app.get('/wsauth', expressJwt({secret: jwtSecret}), homeController.ajaxWsAuth);
     
+    app.get('/config', homeController.ajaxGetConfig);
+    
+    app.get('/mapViewData', homeController.ajaxGetMapViewData);
+    
+    app.get('/mapItemData', homeController.ajaxGetMapItemData);
+    
     app.get('/testGetStaffList', homeController.ajaxTestGetStaffList);
     
     app.get('/testGetStaffProfile', homeController.ajaxTestGetStaffProfile);        
     
-    app.get('/deleteAllRequests', homeController.actionDeleteAllRequests);
+    app.get('/dumpMessages', homeController.actionDumpMessages);
     
-    app.get('/dumpResponses', homeController.actionDumpResponses);
+    app.get('/deleteAllMessages', homeController.actionDeleteAllMessages);
     
-    app.get('/dumpRequests', homeController.actionDumpRequests);
+    //app.get('/dumpResponses', homeController.actionDumpResponses);
     
-    app.get('/deleteAllResponses', homeController.actionDeleteAllResponses);
+    //app.get('/dumpRequests', homeController.actionDumpRequests);
+    
+    //app.get('/deleteAllResponses', homeController.actionDeleteAllResponses);
     
 	app.get('/test', homeController.testGetUser);
     

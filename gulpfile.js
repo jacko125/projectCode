@@ -2,13 +2,17 @@ var gulp = require('gulp');
 var bump = require('gulp-bump');
 var git = require('gulp-git');
 var exec = require('child_process').exec;
+var fs = require('fs');
+
+
+var config = require('./resources/config.json');
 
 gulp.task('default', function() {
   console.log('Usage: gulp <command>\n'
 	+ 'Possible commands:\n'
 	+ 'start-app            Start NodeJS server\n'
 	+ 'start-mongo          Start the MongoDB server (Can cancel gulp-task after starting)\n' 
-	+ 'stop-mongo           Stop the MongoDB server)\n'
+	+ 'stop-mongo           Stop the MongoDB server\n'  
     + 'deploy-bootstrap     Compile bootstrap.css from variables.less and deploy\n'
     + 'Release tasks:\n'
     + 'release-bump         Bump package.json version x.x.Y\n'
@@ -22,10 +26,30 @@ gulp.task('default', function() {
 gulp.task('start-app', runCommand('node index.js'));
 
 // MongoDB tasks
-var mongo_dir = 'C:\\Program Files\\MongoDB\\Server\\3.0\\bin';
+var mongoBaseDir = 'C:\\Program Files\\MongoDB\\Server'
 gulp.task('init-mongo', runCommand('IF NOT EXIST data\\db ( mkdir data\\db )'));
-gulp.task('start-mongo', ['init-mongo'], runCommand('start "MongoDB" "' + mongo_dir + '\\mongod.exe" --dbpath="' + __dirname+ '\\data\\db"'));			
-gulp.task('stop-mongo', runCommand('"' + mongo_dir + '\\mongo.exe" admin --eval "db.shutdownServer();"'));
+gulp.task('start-mongo', ['init-mongo'], function (callback) {    
+    fs.readdir(mongoBaseDir, function (err, list) {                    
+        if (list.length == 0) {                                 
+            console.log("MongoDB is not installed on this machine");
+            return;
+        }                   
+        var mongoDir = mongoBaseDir + "\\" + list[0] + "\\bin";
+        runCommandSync('start "MongoDB" "' + mongoDir + '\\mongod.exe" ' 
+            + "--dbpath=" + __dirname+ "\\data\\db "
+            + "--port=" + config.db.port);        
+    });
+});
+gulp.task('stop-mongo', function(callback) {
+    fs.readdir(mongoBaseDir, function (err, list) {                    
+        if (list.length == 0) {                                 
+            console.log("MongoDB is not installed on this machine");
+            return;
+        }                       
+        var mongoDir = mongoBaseDir + "\\" + list[0] + "\\bin";
+        runCommandSync('"' + mongoDir + '\\mongo.exe" admin --eval "db.shutdownServer();"');
+    });    
+});
 
 //Bootstrap tasks
 var bootstrap_ver = require('./package.json').dependencies.bootstrap;
@@ -67,4 +91,15 @@ function runCommand(command) {
       cb(err);
     });
   }
+}
+function runCommandSync(command) {
+    const exec = require('child_process').exec;
+    const child = exec(command,
+      (error, stdout, stderr) => {
+        console.log(`${stdout}`);
+        console.log(`${stderr}`);
+        if (error !== null) {
+          console.log(`exec error: ${error}`);
+        }
+    });    
 }

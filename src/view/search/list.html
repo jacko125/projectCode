@@ -1,7 +1,8 @@
 <div class="search-list">
 
   <div class="row">
-    <div class="col-sm-4 col-sm-offset-4">
+    <div class="col-md-6 col-md-offset-3
+                col-sm-6 col-sm-offset-3">
       <input type="text" class="form-control" 
         placeholder="Search staff by name..."
         ng-model="searchCtrl.searchParams.name"
@@ -15,7 +16,7 @@
   
   <div class="row">
     
-    <div class="col-sm-7 col-sm-offset-3">
+    <div class="col-md-8 col-md-offset-2">
       <p class="alert alert-info" role="alert" style="padding: 15px;" ng-if="results.length <= 0"> No matching staff profile found!</p>
       <div class="list-group listnav">
         <ul>
@@ -23,20 +24,46 @@
           ng-repeat="staff in results track by staff.EmployeeId">
           <!--ui-sref="profile({ profile: staff })">-->
           <div class="media">
-            <div class="media-left  media-middle">
-          <div class="profile-container">
-          <a ui-sref="profile({ profile: staff })"><img class="media-object profile-image" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'"></a>
+            <div class="media-left media-middle">
+              <a class="profile-container"
+                 ui-sref="profile({ profile: staff })">
+                <img class="media-object profile-image"
+                     ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profile-images/profile-placeholder.png'">
+              </a>
             </div>
-          </div>
-            <div class="media-body" style="padding-left: 5%;">
-              <a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{::staff.Description}}</h4></a>
-              <p> {{::staff.Group}}</p>
-              <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{::staff.Office}}</p> </div>
-              <p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{::staff.postalAddress}} - {{::staff.Country}}</p>
+            <div class="media-body">
+              <a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>
+              <p> {{staff.Group}}</p>
+              <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
+              <p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{staff.postalAddress}} - {{staff.Country}}</p>
             </div>
             <div class="media-right">
-              <button data-toggle="tooltip" data-placement="bottom" title="Request their Location" class="btn btn-success"
-                      ng-click="searchCtrl.requestLocationButtonClick(staff.Shortname)"><span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true"></span></button>
+              <button data-toggle="tooltip"
+                      data-placement="bottom"
+                      title="Request their Location"
+                      class="btn btn-success"
+                      ng-click="searchCtrl.requestLocationButtonClick(staff)">
+                      <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
+                      </span>
+              </button>
+              <button
+                      data-toggle="tooltip"
+                      data-placement="bottom"
+                      title="Send my location"
+                      class="btn btn-info"
+                      ng-click="searchCtrl.sendLocationButtonClick(staff)">
+                      <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
+                      </span>
+              </button>
+              <button
+                      data-toggle="tooltip"
+                      data-placement="bottom"
+                      title="Add to list"
+                      class="btn btn-alt"
+                      ng-click="searchCtrl.addToGroupButtonClick(staff)">
+                      <span class="glyphicon glyphicon-plus gi-2x text-center" aria-hidden="true">
+                      </span>
+              </button>
             </div>
           </div>
         </li>

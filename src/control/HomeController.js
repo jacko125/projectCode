@@ -1,7 +1,6 @@
 // Modules this controller depends on.
 var UserModule = require('../model/module/UserModule.js');
-var RequestModule = require('../model/module/RequestModule.js');
-var ResponseModule = require('../model/module/ResponseModule.js');
+var MessageModule = require('../model/module/MessageModule.js');
 
 var http = require('http');
 var jwt = require('jsonwebtoken');
@@ -29,6 +28,17 @@ module.exports = {
         res.status(200).send('Websocket client authenticated');        
     },
     
+    ajaxGetConfig: function (req, res) {
+        res.send("var config = " + JSON.stringify(require('../../resources/config.json')));
+    },
+    
+    ajaxGetMapViewData: function (req, res) {
+        res.send("var mapViewData = " + JSON.stringify(require('../../resources/map-view-data.json')));
+    },
+    ajaxGetMapItemData: function (req, res) {
+        res.send("var mapItemData = " + JSON.stringify(require('../../resources/map-item-data.json')));
+    },    
+        
     ajaxTestGetStaffList: function (req, res) {
         res.json(require('../../resources/test/testGetStaffList.json'));
     },
@@ -40,29 +50,17 @@ module.exports = {
         else            
             res.json(require('../../resources/test/testGetStaffProfileB.json'));
     },        
-    
-    actionDumpRequests: function (req,res) {
-        RequestModule.getAllRequests(function(requests) {
-            res.json(requests);
+            
+    actionDumpMessages: function (req,res) {        
+        MessageModule.getAllMessages(function(messages) {
+            res.json(messages);
         });        
     },
     
-    actionDumpResponses: function (req,res) {
-        ResponseModule.getAllResponses(function(responses) {
-            res.json(responses);
-        });        
+    actionDeleteAllMessages: function (req,res) {        
+        MessageModule.deleteAllMessages();
+        res.send('<h3>Deleted all messages.</h3>');
     },
-    
-    actionDeleteAllRequests: function (req,res) {        
-        RequestModule.deleteAllRequests();
-        res.send('<h3>Deleted all requests.</h3>');
-    },
-    
-    actionDeleteAllResponses: function (req,res) {        
-        ResponseModule.deleteAllResponses();
-        res.send('<h3>Deleted all responses.</h3>');
-    },
-        
 	
     // Example handler that "creates" and "gets" a User.
 	testGetUser: function (req, res) {        

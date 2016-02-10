@@ -20,19 +20,19 @@ miaApp.controller('parentController', [
                     
                 case 'ws-sent-response':                                                  
                     $scope.notifyCount = requestService.messages.length
-                    var toastMsg = 'You have responded to ' + data + '\'s request';
+                    var toastMsg = 'You have responded to ' + data.data.senderName + '\'s request';
                     showToast(ngToast, toastMsg, 'success');      
                     break;                    
                     
                 case 'ws-receive-request':                        
                     $scope.notifyCount = requestService.messages.length;
-                    var toastMsg = data.senderName + ' has requested your location';
+                    var toastMsg = data.data.senderName + ' has requested your location';
                     showToast(ngToast, toastMsg, 'info');                            
                     break;                                                                
                     
                 case 'ws-receive-response':
                     $scope.notifyCount = requestService.messages.length;
-                    var toastMsg = data.senderName + ' has responded with their location.';
+                    var toastMsg = data.data.senderName + ' has responded with their location.';
                     showToast(ngToast, toastMsg, 'success');                     
                     break;
             }            
@@ -41,9 +41,7 @@ miaApp.controller('parentController', [
                 inherit: false,
                 notify: true
             });
-        });
-        
-        
+        });                
         
         self.notificationButtonClass = function() {
             return {
