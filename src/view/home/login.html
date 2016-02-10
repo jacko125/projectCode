@@ -1,4 +1,4 @@
-<div class="container-home">
+<div class="container-home" ng-init="initialise()">
 
   <h1>Log in</h1>
   <p class="lead">Who's looking for you?</p>  
@@ -16,7 +16,20 @@
         <input type="password" class="form-control" placeholder="Password" ng-model="homeCtrl.loginForm.password">
       </div>
       -->
-      
+      <div class="errorContainer">
+          <div class="has-error">
+            <span class="help-block" ng-repeat="error in errors">
+              {{error.message}}
+              <i class="glyphicon glyphicon-question-sign" aria-hidden="true"
+                  data-toggle="tooltip"
+                 data-placement="left"
+                 title="{{error.tooltip}}"
+              ></i>
+            </span>
+            <br>
+          </div>
+      </div>
+
       <button type="submit" class="btn btn-default">Log in</button>
     </form>
     <br>
