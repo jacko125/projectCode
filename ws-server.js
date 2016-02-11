@@ -1,9 +1,13 @@
-var config = require('./resources/config.json');
 var http = require('http');
 var WebSocketServer = require('ws').Server;
-var wsModule = require('./src/model/module/WsModule.js');
 var jwt = require('jsonwebtoken');
 var util = require('util');
+
+
+var config = require('./resources/config.json');
+var wsModule = require('./src/model/module/WsModule.js');
+var MessageModule = require('./src/model/module/MessageModule.js');
+var UserModule = require('./src/model/module/UserModule.js');
 
 var wss = new WebSocketServer(
 {
@@ -33,3 +37,9 @@ wss.on('connection', function connection(ws) {
     console.log('disconnected');
   });    
 });
+
+setInterval(function() {    
+    MessageModule.flushMessages();
+    UserModule.flushUserDefaultLocs();    
+    
+}, 30 * 1000)

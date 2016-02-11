@@ -36,6 +36,32 @@ module.exports = {
         MessageDAO.getAllMessages({
             callback: callback
         });
+    },
+    
+    flushMessages: function() {
+        MessageDAO.getAllMessages({
+            callback: function(messages) {
+                var now = new Date();
+                messages.forEach(function(message) {
+                    message.datetime = new Date(message.datetime);
+                    var timeDiffMin = (now.getTime() - message.datetime.getTime()) / (1000 * 60);
+                    if (timeDiffMin > 30) {
+                        MessageDAO.deleteMessage({
+                            query: {
+                                type: message.type,
+                                sender: message.sender,
+                                recipient: message.recipient
+                            },
+                            callback: function() {
+                                console.log('Message expired (' 
+                                    + message.sender + ':' + message.recipient
+                                    + ' - ' + message.type + ')');
+                            }
+                        });                                                
+                    }
+                })
+            }
+        })
     }
 }
 

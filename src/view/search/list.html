@@ -1,56 +1,48 @@
 <div class="search-list" ng-init="initialise()">
     <div class="row">
-        <div class = "col-md-8 col-md-offset-2">
-		    <!-- Show list of current group if it exists-->
-			<div class="group-container" ng-if="group.length > 0">
-			   <div class='media'>
-			      <div class='group-header'>
-				    <button data-toggle="tooltip"
-							  data-placement="bottom"
-							  title="Request group's location"
-							  class="btn btn-success"
-							  ng-click="searchCtrl.sendRequestToGroupButtonClick()">
-						  <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
-						  </span>
-                    </button>
-					<button data-toggle="tooltip"
-                                  data-placement="bottom"
-                                  title="Send my location to group"
-                                  class="btn btn-info"
-                                  ui-sref="map({ action: 'send-broadcast-group', target: group})">
-                       <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
-                       </span>
-                    </button>
-					<button data-toggle="tooltip"
-								  data-placement="bottom"
-								  title="Clear list"
-								  class="btn btn-warning"
-								  ng-click="searchCtrl.clearGroup()">
-					   <span class="glyphicon glyphicon-trash gi-2x" aria-hidden="true">
-					   </span>
-					</button>
-				  </div>
-				</div>
-				<ul class = 'col-md-offset-1'>
-				<li class="groupmember-container" ng-repeat="staff in group">
-					<!--ui-sref="profile({ profile: staff })">-->
-
-								<button data-toggle="tooltip"
-								  data-placement = "right"
-								  title="Remove from list"
-								  class="btn btn-warning pos-right"
-								  ng-click="searchCtrl.removeMember(staff)">
-									<span class="glyphicon glyphicon-remove gi-1x" aria-hidden="true">
-									</span>
-								</button>
-
-							<a ui-sref="profile({ profile: staff })">{{staff.Description}}</a>
-
-
-
-				</li>
-				</ul>
-			</div>
+      <div class = "col-md-8 col-md-offset-2">
+		    <!-- Show list of current group if it exists-->         
+        <div class="media">
+          <div class="media-body">
+            <ul>
+              <li class="groupmember-container" ng-repeat="staff in group">					
+                <a ui-sref="profile({ profile: staff })">{{staff.Description}}</a> 
+                  <button data-toggle="tooltip"
+                    data-placement = "right"
+                    title="Remove from list"
+                    class="btn btn-warning pos-right"
+                    ng-click="searchCtrl.removeMember(staff)">
+                    <span class="glyphicon glyphicon-remove gi-1x" aria-hidden="true"></span>
+                  </button>&nbsp;                  
+              </li>
+            </ul>
+          </div>
+          <div class="media-right">
+            <div class="group-container" ng-if="group.length > 0">                      
+              <button data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Request group's location"
+                  class="btn btn-success"
+                  ng-click="searchCtrl.sendRequestToGroupButtonClick()">
+                <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true"></span>
+              </button><br>
+              <button data-toggle="tooltip"
+                      data-placement="bottom"
+                      title="Send my location to group"
+                      class="btn btn-info"
+                      ui-sref="map({ action: 'send-broadcast-group', target: group})">
+                <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true"></span>
+              </button><br>
+              <button data-toggle="tooltip"
+                      data-placement="bottom"
+                      title="Clear list"
+                      class="btn btn-warning"
+                      ng-click="searchCtrl.clearGroup()">
+                <span class="glyphicon glyphicon-trash gi-2x" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>          
+        </div>
 	    </div>
     </div>
   <div class="row">
