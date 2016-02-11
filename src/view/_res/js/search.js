@@ -81,11 +81,6 @@ miaApp.controller('searchController', [
         }
 }]);
 
-
-function getProfileFromResults(results, shortname) {
-
-
-
 function showToast(ngToast, message, type) {
     ngToast.create({
         className: type,

@@ -107,11 +107,7 @@
                       ui-sref="map({ action:'send-broadcast', target:staff })">
                       <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
                       </span>
-              </button>
-              <button 
-                      data-toggle="tooltip" 
-                      data-placement="bottom"
-              </button>
+              </button>              
               <button
                       data-toggle="tooltip"
                       data-placement="left"
@@ -123,16 +119,16 @@
               </button>
             </div>
           </div>
-            <div class="alert alert-info" style="margin-bottom: 0px; margin-top: 5px; padding: 10px;" role="alert" ng-if="requestUserLocation === staff.Shortname">
+            <div class="alert alert-warning" style="margin-bottom: 0px; margin-top: 5px; padding: 10px;" role="alert" ng-if="requestUserLocation === staff.Shortname">
               <div>
                 <div>
-                  Please confirm you wish to request {{staff.Description}}'s location.
+                  <b>Are you sure you want to request {{staff.Description}}'s location?</b>
                 </div>
                 <div class="text-right">
                   <button class="btn btn-default" value="cancel" ng-click="removeRequestConfirmation()">
                     Cancel
                   </button>
-                  <button class="btn btn-warning" style="margin-left: 10px;" value="confirm" ng-click="searchCtrl.requestLocationButtonClick(staff)">
+                  <button class="btn btn-primary" style="margin-left: 10px;" value="confirm" ng-click="searchCtrl.sendRequestButtonClick(staff)">
                     Confirm
                   </button>
                 </div>
