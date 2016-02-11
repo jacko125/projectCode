@@ -81,6 +81,7 @@ miaApp.controller('parentController', [
         // Login functions
         loginFunctions(self, {
             $scope: $scope,
+            $rootScope: $rootScope,
             $window: $window,
             $state: $state,
             wsService: wsService
@@ -101,13 +102,15 @@ function loginFunctions(self, dep) {
     dep.$scope.loggedIn = false;
         
     dep.$scope.$on('logged_in', function(event, data) {                        
-        dep.$scope.username = data.Shortname;        
+        dep.$scope.username = data.Shortname; 
+        dep.$rootScope.loggedIn = true;
         dep.$scope.loggedIn = true;                
     });
     
     self.logoutButtonClick = function() {        
         delete dep.$window.sessionStorage.token;
         dep.$scope.loggedIn = false;
+        dep.$rootScope.loggedIn = false;
         dep.wsService.disconnect();
         dep.$state.go('home');                
         $('.navbar-toggle').click();  // Close nav bar if open        

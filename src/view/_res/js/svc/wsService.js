@@ -1,5 +1,5 @@
-miaApp.factory('wsService', ['$location', 'requestService', 
-    function($location, requestService) {       
+miaApp.factory('wsService', ['$location', 'requestService', 'userService', 
+    function($location, requestService, userService) {       
     var self = this;	
 	
     self.webSocket = {};
@@ -33,6 +33,7 @@ miaApp.factory('wsService', ['$location', 'requestService',
         self.webSocket.onmessage = msgHandler(self,
         {                        
             requestService: requestService,
+            userService: userService,
             notifyObservers: notifyObservers
         });
                 
@@ -127,6 +128,12 @@ function msgHandler(self, dep) {
         var message = JSON.parse(event.data);                
     
         switch (message.type) {
+
+            case 'user-login':                
+                dep.userService.profile = JSON.parse(message.user);
+                console.log('Received user object from server');
+                console.log(dep.userService.profile);                
+                break;                
 
             case 'message-list':
                 dep.requestService.messages = message.messages;

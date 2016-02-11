@@ -2,6 +2,9 @@
 var http = require('http');
 var util = require('util');
 
+var User = require('../User.js');
+var UserModule = require('./UserModule.js');
+
 var Message = require('../Message.js');
 var MessageModule = require('./MessageModule.js');
 var MessageType = {
@@ -27,7 +30,7 @@ module.exports = {
                     });                
                 
                 // Get all messages for user, sort by datetime and send.
-                MessageModule.getMessagesForUser(message.sender, function(messages) {                                                                                                                   
+                MessageModule.getMessagesForUser(message.sender, function(messages) {    
                     messages.sort(function(a, b) {
                        return a.datetime > b.datetime;
                     });
@@ -35,7 +38,24 @@ module.exports = {
                         type: 'message-list',
                         messages: messages
                     });                    
-                });                                    
+                });          
+                
+                UserModule.getUser(message.sender, function(users) {
+                    if (users.length == 0) {
+                        UserModule.createUser(new User(message.sender), function(user) {
+                            sendToClient(wss, ws, message.sender, {
+                                type: 'user-login',
+                                user: JSON.stringify(user)
+                            });
+                        })
+                    } else {
+                        sendToClient(wss, ws, message.sender, {
+                            type: 'user-login',
+                            user: JSON.stringify(users[0])
+                        });                        
+                    }     
+                });
+                
                 break;            
                 
             // data: senderName
@@ -86,8 +106,7 @@ module.exports = {
                 });                
                 sendToClient(wss, ws, broadcast.recipient, broadcast);                
                 break;                        
-            
-                
+                            
             case 'remove-message':
                 var msg = JSON.parse(message.message);
                 console.log('Received remove-request ' + msg.sender + ':' + msg.recipient);

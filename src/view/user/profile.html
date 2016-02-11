@@ -1,7 +1,36 @@
-<div>
+<div class="container-user">
 
-  <h1>Profile</h1>
-  <p class="lead">The profile page for users.</p>     
+  <div class="row">        
+      <h1>Profile</h1>
+      <div class="profile-container-large">
+        <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{userCtrl.user.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profile-images/profile-placeholder.png'">
+      </div>
+      <div class="col-sm-offset-3 col-sm-6">
+      <p class="lead" ng-bind="userCtrl.user.FirstName + ' ' + userCtrl.user.LastName"></p>
+      
+      <table class="table">
+        <tr>
+          <td>Username</td>
+          <td><b>{{userCtrl.user.Shortname}}</b></td>
+        </tr>
+        <tr>
+          <td>Use default location</td>
+          <td>
+            <select ng-model="userCtrl.profile.defaultLocType">
+              <option ng-repeat="type in userCtrl.DefaultLocTypes" value="type.value">{{type.name}}</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td colspan=2>
+            <button class="btn btn-info">Set default location</button>
+          </td>
+        </tr>      
+      </table>
+      
+    </div>
+  
+  </div>
     
 </div>
     

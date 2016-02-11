@@ -1,16 +1,66 @@
 // Storage-specific (MongoDB) accessors for User objects.
-var User = require('../User.js');
+var MongoClient = require('mongodb').MongoClient
+var assert = require('assert');        
+var util = require('util');
+
+var config = require('./../../../resources/config.json');
+var mongoURL = "mongodb://" + config.db.host + ":" + config.db.port + "/" + config.db.name;
 
 module.exports = {
 	
-	CreateUser: function(name) {
-        var newUser = new User(name);
-        // Insert new user into MongoDB        		
-	},
+	createUser: mongoCommand(createUser),
     
-    GetUser: function(name) {
-        var user = new User(name) // "Retrieve" user from MongoDB 
-        return user;
-    }
-
+    getUser: mongoCommand(getUser),
+    
+    getAllUsers: mongoCommand(getAllUsers),
+    
+    deleteAllUsers: mongoCommand(deleteAllUsers)
+    
 }
+
+// Wrapper for mongoDB calls
+function mongoCommand(command) {    
+    return function (params) {
+        MongoClient.connect(mongoURL, function(err, db) {            
+          assert.equal(null, err);
+          
+          //Execute command and get result          
+          return command(db, params);
+        });
+    };
+}
+
+function createUser(db, params) {
+    console.log("Inserting 1 user (" + params.user.username + ") into the user collection");
+    db.collection('users').insertOne(params.user, function(err, result) {
+        assert.equal(err, null);        
+        db.close();
+        params.callback(result.ops[0]);
+    });
+    
+}
+
+function getUser(db, params) {  
+    console.log('Getting user: ' + params.username);      
+    return db.collection('users').find({username: params.username}).toArray(function(err, users) {
+        assert.equal(err, null);        
+        db.close();                
+        params.callback(users);
+    });
+}
+
+function getAllUsers(db, params) {
+    return db.collection('users').find({}).toArray(function(err, docs) {
+        db.close();
+        params.callback(docs);
+    })
+}
+
+function deleteAllUsers(db, params) {
+    db.collection('users').removeMany({}, function(err, r) {
+        console.log('Deleted ' + r.deletedCount + ' users');
+        db.close();
+    });    
+}
+
+

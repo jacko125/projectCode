@@ -4,12 +4,28 @@ var User = require('../User.js');
 
 module.exports = {
 	
-	CreateUser: function(name) {
-        UserDAO.CreateUser(name);		
+	createUser: function(user, callback) {
+        UserDAO.createUser({
+            user: user,
+            callback: callback
+        });
 	},
     
-    GetUser: function(name) {
-        return UserDAO.GetUser(name);
+    getUser: function(username, callback) {
+        UserDAO.getUser({
+            username: username,
+            callback: callback
+        });
+    },
+    
+    getAllUsers: function(callback) {
+        UserDAO.getAllUsers({
+            callback: callback
+        });
+    },
+    
+    deleteAllUsers: function() {
+        UserDAO.deleteAllUsers();
     }
 
 }
