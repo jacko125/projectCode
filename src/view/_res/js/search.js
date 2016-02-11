@@ -14,7 +14,6 @@ miaApp.controller('searchController', [
             name: ''
         };
 
-        };
         $scope.requestUserLocation = '';
 
         $scope.results = staffSearchService.results;

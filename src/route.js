@@ -19,8 +19,7 @@ module.exports = function(app) {
     app.get('/testGetStaffProfile', homeController.ajaxTestGetStaffProfile);            
     app.get('/dumpMessages', homeController.actionDumpMessages);    
     app.get('/deleteAllMessages', homeController.actionDeleteAllMessages);
-    
-    app.get('/getUser', expressJwt({secret: jwtSecret}), userController.ajaxGetUser);
+        
     app.get('/dumpUsers', userController.actionDumpUsers);
     app.get('/deleteAllUsers', userController.actionDeleteAllUsers);
     

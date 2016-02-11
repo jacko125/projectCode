@@ -14,6 +14,6 @@ module.exports = {
     actionDeleteAllUsers: function (req, res) {
         UserModule.deleteAllUsers();
         res.send('<h3>Deleted all users</h3>');
-    },
+    }
     
 }
