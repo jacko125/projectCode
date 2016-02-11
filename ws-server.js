@@ -42,4 +42,4 @@ setInterval(function() {
     MessageModule.flushMessages();
     UserModule.flushUserDefaultLocs();    
     
-}, 30 * 1000)
+}, 30 * 60 * 1000)
