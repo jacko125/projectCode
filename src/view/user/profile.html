@@ -1,35 +1,48 @@
 <div class="container-user">
 
   <div class="row">        
-      <h1>Profile</h1>
+    <h1>Profile</h1>
       <div class="profile-container-large">
         <img class="profile-image-large" ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/{{userCtrl.user.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profile-images/profile-placeholder.png'">
       </div>
       <div class="col-sm-offset-3 col-sm-6">
-      <p class="lead" ng-bind="userCtrl.user.FirstName + ' ' + userCtrl.user.LastName"></p>
-      
-      <table class="table">
-        <tr>
-          <td>Username</td>
-          <td><b>{{userCtrl.user.Shortname}}</b></td>
-        </tr>
-        <tr>
-          <td>Use default location</td>
-          <td>
-            <select ng-model="userCtrl.selectedDefaultLocType"
-                    ng-options="type.name for type in userCtrl.DefaultLocTypes">              
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td colspan=2>
-            <button class="btn btn-info">Set default location</button>
-          </td>
-        </tr>      
-      </table>
-      
-    </div>
+        <p class="lead" ng-bind="userCtrl.user.FirstName + ' ' + userCtrl.user.LastName"></p>        
+        <table class="table table-profile">
+          <tr>
+            <td>Username</td>
+            <td><b>{{userCtrl.user.Shortname}}</b></td>
+          </tr>
+          <tr>
+            <td>Use default location
+              <i class="glyphicon glyphicon-question-sign" aria-hidden="true"
+                  data-toggle="tooltip"
+                 data-placement="left"
+                 title="Automatically respond to requests for your location"></i>
+              </td>            
+            <td>
+              <span ng-if="userCtrl.profile.defaultLoc == null">
+                <b>Set default location first</b>
+              </span>
+              <select ng-if="userCtrl.profile.defaultLoc != null"
+                      ng-model="userCtrl.selectedDefaultLocType"
+                      ng-change="userCtrl.defaultLocTypeChanged()"
+                      ng-options="type.name for type in userCtrl.DefaultLocTypes">              
+              </select>
+              <span ng-if="userCtrl.displayDefaultLocDate()">
+                &nbsp;from <b>{{userCtrl.profile.defaultLocDate | date:'h:mm a'}}</b>
+              </span>
+            </td>
+          </tr>          
+        </table>               
+        <a class="btn btn-info"
+           ui-sref="map({action:'set-default-loc', target:userCtrl.profile})">
+           Set default location
+        </a>
+    </div>  
+  </div> <!-- /.row -->
   
+  <div class="row">
+      
   </div>
     
 </div>
