@@ -1,6 +1,6 @@
 {
   "name": "MIA",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Macquarie Interactive App",
   "main": "index.js",
   "scripts": {
