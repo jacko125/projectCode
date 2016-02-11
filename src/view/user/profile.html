@@ -16,8 +16,8 @@
         <tr>
           <td>Use default location</td>
           <td>
-            <select ng-model="userCtrl.profile.defaultLocType">
-              <option ng-repeat="type in userCtrl.DefaultLocTypes" value="type.value">{{type.name}}</option>
+            <select ng-model="userCtrl.selectedDefaultLocType"
+                    ng-options="type.name for type in userCtrl.DefaultLocTypes">              
             </select>
           </td>
         </tr>

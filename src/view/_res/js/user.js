@@ -11,7 +11,7 @@ miaApp.controller('userController', [
         
         self.user = $rootScope.user;
         self.profile = userService.profile;
-        
+                                               
         self.DefaultLocTypes = [
             { name: 'Never', value: 'NO_DEFAULT' },
             { name: 'For 1 hour', value: 'ONE_HOUR' },
@@ -19,6 +19,13 @@ miaApp.controller('userController', [
             { name: 'Until tomorrow', value: 'ONE_DAY' },
             { name: 'Always', value: 'ALWAYS_DEFAULT' }            
         ];
+        self.selectedDefaultLocType = self.DefaultLocTypes[0];                
+        self.DefaultLocTypes.forEach(function(option) {            
+            if (option.value == self.profile.defaultLocType) {               
+                console.log("found value");
+                self.selectedDefaultLocType = option;
+            }
+        });
         
     }
 ]);
