@@ -4,9 +4,8 @@
   <p class="lead">The Macquarie Interactive App</p>         
   <div class="container-home-item">
   
-    <div class="row">
-    
-      <div class="col-xs-6 col-sm-3 col-sm-offset-0">
+    <div class="row">    
+      <div ng-if="loggedIn" ng-class="homeCtrl.homeItemClass()">
         <div class="tile-wrapper"> <!-- For centering tiles within the column -->
           <div class="thumbnail tile tile-success tile-home-item-sm hidden-xs">
               <a ui-sref="search" class="tile-home-item-contents">
@@ -26,7 +25,7 @@
         </div>
       </div> <!-- Search button -->
             
-      <div class="col-xs-6 col-sm-3 col-sm-offset-0"
+      <div ng-if="loggedIn" ng-class="homeCtrl.homeItemClass()"
            data-toggle="collapse"
            data-target=".navbar-collapse.in">    
         <div class="tile-wrapper">
@@ -48,7 +47,7 @@
         </div>
       </div> <!-- Meeting room button -->
       
-      <div class="col-xs-6 col-sm-3 col-sm-offset-0"
+      <div ng-class="homeCtrl.homeItemClass('map')"
            data-toggle="collapse"
            data-target=".navbar-collapse.in">      
         <div class="tile-wrapper">
@@ -73,7 +72,7 @@
         </div>
       </div> <!-- Map button -->
       
-      <div class="col-xs-6 col-sm-3 col-sm-offset-0"           
+      <div ng-class="homeCtrl.homeItemClass('login')"
            data-toggle="collapse"
            data-target=".navbar-collapse.in">              
 

@@ -1,7 +1,8 @@
 miaApp.controller('parentController', [
     '$scope', '$rootScope', '$window', '$state', '$stateParams',
-    'ngToast', 'wsService', 'requestService',
-    function($scope, $rootScope, $window, $state, $stateParams, ngToast, wsService, requestService) {
+    'ngToast', 'wsService', 'requestService', 'userService',
+    function($scope, $rootScope, $window, $state, $stateParams,
+             ngToast, wsService, requestService, userService) {
 
         var self = this;
         $scope.notifyCount = 0;
@@ -45,9 +46,7 @@ miaApp.controller('parentController', [
                     $scope.notifyCount = requestService.messages.length;
                     var toastMsg = data.senderName + ' has sent you their location.';
                     showToast(ngToast, toastMsg, 'info');      
-                    break;
-                 
-                
+                    break;                 
                         
             }            
             $state.transitionTo($state.current, $stateParams, {
@@ -55,7 +54,18 @@ miaApp.controller('parentController', [
                 inherit: false,
                 notify: true
             });
-        });                
+        });
+        
+        $scope.$on('set-default-loc', function(event, data) {
+            var message = '';
+            if (data == 'type') {
+                message = 'Default location set: ' 
+                    + userService.getTypeString(userService.profile.defaultLocType);    
+            } else if (data == 'loc') {
+                message = 'Default location updated.';
+            }            
+            showToast(ngToast, message, 'info');                        
+        });        
         
         self.notificationButtonClass = function() {
             return {

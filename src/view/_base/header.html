@@ -25,7 +25,7 @@
           <a ui-sref="home"
              data-toggle="collapse" data-target=".navbar-collapse.in">Home</a>
         </li>
-        <li ui-sref-active="active">
+        <li ui-sref-active="active" ng-if="loggedIn">
           <a ui-sref="search"
              data-toggle="collapse" data-target=".navbar-collapse.in">Search</a>
         </li>        

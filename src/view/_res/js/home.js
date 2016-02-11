@@ -9,7 +9,7 @@ miaApp.controller('homeController', [
             $(document).ready(function(){
                 $('[data-toggle="tooltip"]').tooltip();
             });
-        };
+        };                
 
         if ('login' in $stateParams && $rootScope.loggedIn)
             $state.go('home');               
@@ -25,7 +25,7 @@ miaApp.controller('homeController', [
                     $http.post('/login', self.loginForm)
                     .then(function success(response) {                                           
                         $window.sessionStorage.token = response.data.token;
-                        wsService.connect($scope, self.loginForm.username, response.data.token);
+                        wsService.connect($scope, self.loginForm.username, $rootScope.user.Description, response.data.token);
                         $scope.loggedIn = $rootScope.loggedIn;
                         $scope.$emit('logged_in', $rootScope.user);
                         $state.go('home');
@@ -57,12 +57,28 @@ miaApp.controller('homeController', [
         };
 
         self.homeItemClass = function(item) {
-            return {                
-                'col-xs-6': true,
-                'col-sm-3': true,
-                'col-sm-offset-0': true
-            }                        
-        }    
+            if (!$rootScope.loggedIn) {
+                if (item == 'map') { 
+                    return {                
+                        'col-xs-6': true,
+                        'col-sm-3 ': true,
+                        'col-sm-offset-3': true
+                    }
+                } else if (item == 'login') {
+                    return {                
+                        'col-xs-6': true,
+                        'col-sm-3': true,
+                        'col-sm-offset-0': true                        
+                    }                    
+                }
+            } else {
+                return {                    
+                    'col-xs-6': true,
+                    'col-sm-3': true,
+                    'col-sm-offset-0': true
+                }
+            }
+        }            
         self.mapItemSubClass = function() {
             return {                
                 'pull-right': !$scope.loggedIn,

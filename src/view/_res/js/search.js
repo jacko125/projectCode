@@ -5,8 +5,11 @@ miaApp.controller('searchController', [
         var self = this;
 
         // Return to search if profile page accessed directly
+        if (!$rootScope.loggedIn)
+            $state.go('home');
+        
         if ('profile' in $stateParams && $stateParams.profile == null)
-            $state.go('search');
+            $state.go('search');        
 
         $scope.group = [];
 
