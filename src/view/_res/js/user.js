@@ -1,31 +1,48 @@
 miaApp.controller('userController', [
     '$http', '$window', '$scope','$rootScope', '$state', '$stateParams',
-    'userService',
+    'wsService', 'userService',
     function($http, $window, $scope, $rootScope, $state, $stateParams,
-             userService) {   
+             wsService, userService) {   
              
         var self = this;
-        
+              
         if (!$rootScope.loggedIn)
             $state.go('home');
         
         self.user = $rootScope.user;
-        self.profile = userService.profile;
+        self.profile = userService.profile;                
                                                
-        self.DefaultLocTypes = [
-            { name: 'Never', value: 'NO_DEFAULT' },
-            { name: 'For 1 hour', value: 'ONE_HOUR' },
-            { name: 'For 2 hours', value: 'TWO_HOURS' },
-            { name: 'Until tomorrow', value: 'ONE_DAY' },
-            { name: 'Always', value: 'ALWAYS_DEFAULT' }            
-        ];
-        self.selectedDefaultLocType = self.DefaultLocTypes[0];                
+        self.DefaultLocTypes = userService.getDefaultLocTypes();
+        self.selectedDefaultLocType = self.DefaultLocTypes[0];
         self.DefaultLocTypes.forEach(function(option) {            
-            if (option.value == self.profile.defaultLocType) {               
-                console.log("found value");
+            if (userService.profile != null
+                && option.value == userService.profile.defaultLocType) {                
                 self.selectedDefaultLocType = option;
             }
-        });
+        });                        
+        
+        self.displayDefaultLocDate = function() {
+            return ['NO_DEFAULT','ALWAYS_DEFAULT','ONE_DAY']
+                .indexOf(userService.profile.defaultLocType) == -1;
+        }
+        
+        self.defaultLocTypeChanged = function() {
+            userService.setDefaultLocType(self.selectedDefaultLocType.value)
+            .then(function success(response) {
+                userService.profile = response.data;
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                $scope.$emit('set-default-loc', 'type');
+                    
+            }, function error(response) {
+                consoole.log(response);
+                //TODO: Handle error gracefully
+            });
+        }
         
     }
 ]);
+

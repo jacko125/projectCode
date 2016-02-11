@@ -12,6 +12,8 @@ module.exports = {
     
     getUser: mongoCommand(getUser),
     
+    updateUser: mongoCommand(updateUser),
+    
     getAllUsers: mongoCommand(getAllUsers),
     
     deleteAllUsers: mongoCommand(deleteAllUsers)
@@ -42,18 +44,30 @@ function createUser(db, params) {
 
 function getUser(db, params) {  
     console.log('Getting user: ' + params.username);      
-    return db.collection('users').find({username: params.username}).toArray(function(err, users) {
+    db.collection('users').find({username: params.username}).toArray(function(err, users) {
         assert.equal(err, null);        
         db.close();                
         params.callback(users);
     });
 }
 
+function updateUser(db, params) {            
+    db.collection('users').update(
+        { username: params.user.username },
+        params.user,
+        function(err, doc) {
+            assert.equal(err, null);
+            db.close();
+            console.log('Updated defaultLoc for user ' + params.username);
+            params.callback();
+        });
+}
+
 function getAllUsers(db, params) {
-    return db.collection('users').find({}).toArray(function(err, docs) {
+     db.collection('users').find({}).toArray(function(err, docs) {
         db.close();
         params.callback(docs);
-    })
+    });
 }
 
 function deleteAllUsers(db, params) {

@@ -16,7 +16,7 @@ miaApp.factory('wsService', ['$location', 'requestService', 'userService',
         });
     }
     
-    var connect = function($scope, username, token) {
+    var connect = function($scope, username, description, token) {
         self.token = token;
         self.username = username;
         
@@ -26,6 +26,7 @@ miaApp.factory('wsService', ['$location', 'requestService', 'userService',
             self.webSocket.send(JSON.stringify({
                 type: 'connect',
                 sender: self.username,
+                description: description,
                 token: self.token
             }));
         };
@@ -130,7 +131,7 @@ function msgHandler(self, dep) {
         switch (message.type) {
 
             case 'user-login':                
-                dep.userService.profile = JSON.parse(message.user);
+                dep.userService.profile = JSON.parse(message.user);                
                 console.log('Received user object from server');
                 console.log(dep.userService.profile);                
                 break;                

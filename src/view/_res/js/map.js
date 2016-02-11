@@ -1,9 +1,9 @@
 miaApp.controller('mapController', [
     '$rootScope', '$scope', '$state', '$stateParams', '$location',
-    'ngToast', 'requestService', 'wsService',
+    'ngToast', 'requestService', 'wsService', 'userService',
     function(                  
         $rootScope, $scope, $state, $stateParams,
-        $location, ngToast, requestService, wsService) { 
+        $location, ngToast, requestService, wsService, userService) { 
         
         var self = this;
         
@@ -41,7 +41,10 @@ miaApp.controller('mapController', [
         }
         
         self.choosingLocation = function(action) {            
-            return (['send-broadcast','send-broadcast-group','send-response'].indexOf(action) != -1);
+            return (['send-broadcast',
+                     'send-broadcast-group',
+                     'send-response',
+                     'set-default-loc'].indexOf(action) != -1);
         };
         self.viewingLocation = function(action) {
             return (['view-broadcast','view-response'].indexOf(action) != -1);
@@ -86,7 +89,9 @@ miaApp.controller('mapController', [
         requestFunctions(self, {            
             $scope: $scope,     
             $rootScope: $rootScope,
+            $state: $state,
             wsService: wsService,
+            userService: userService,
             userMarker: userMarker
         });        
 }]);   
@@ -216,7 +221,8 @@ function mapFunctions(self, dep) {
 
 function requestFunctions(self, dep) {
 
-    self.sendResponseButtonClick = function(request) {
+    self.sendResponseButtonClick = function(target) {
+        var request = target;
         dep.wsService.sendResponse(dep.$rootScope.user, request, {
             building: self.currentLocation.building,
             level: self.currentLocation.level,
@@ -225,14 +231,16 @@ function requestFunctions(self, dep) {
     }
  
     self.sendBroadcastButtonClick = function(target) {
-        dep.wsService.sendBroadcast(dep.$rootScope.user, target, {
+        var recipient = target;
+        dep.wsService.sendBroadcast(dep.$rootScope.user, recipient, {
             building: self.currentLocation.building,
             level: self.currentLocation.level,
             latLng: dep.userMarker.getLatLng()
         }); // Parent is notified as observer from wsService (for toast)        
     }
     
-    self.sendBroadcastToGroupButtonClick = function(group) {
+    self.sendBroadcastToGroupButtonClick = function(target) {
+        var group = target;
         group.forEach(function(staff) {
             dep.wsService.sendBroadcast(dep.$rootScope.user, staff, {
                 building: self.currentLocation.building,
@@ -240,6 +248,20 @@ function requestFunctions(self, dep) {
                 latLng: dep.userMarker.getLatLng()
             });                        
         })
+    }
+    
+    self.setDefaultLocationButtonClick = function() {        
+        dep.userService.setDefaultLoc({
+            building: self.currentLocation.building,
+            level: self.currentLocation.level,
+            latLng: dep.userMarker.getLatLng()
+        }).then(function success(response) {
+            dep.userService.profile.defaultLoc = response.data.defaultLoc;            
+            dep.$scope.$emit('set-default-loc', 'loc');            
+            dep.$state.go('user');
+        }, function error(response) {            
+            // TODO: Handle error gracefully
+        });        
     }
     
 }

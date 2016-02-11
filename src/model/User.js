@@ -1,7 +1,8 @@
 module.exports = User;
 
-function User(username) {
+function User(username, description) {
 	this.username = username;
+    this.description = description;
     
     this.defaultLoc = null;
     this.defaultLocDate = null;

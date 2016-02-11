@@ -42,7 +42,7 @@ module.exports = {
                 
                 UserModule.getUser(message.sender, function(users) {
                     if (users.length == 0) {
-                        UserModule.createUser(new User(message.sender), function(user) {
+                        UserModule.createUser(new User(message.sender, message.description), function(user) {
                             sendToClient(wss, ws, message.sender, {
                                 type: 'user-login',
                                 user: JSON.stringify(user)
@@ -67,8 +67,26 @@ module.exports = {
                     type: MessageType.REQUEST,
                     sender: request.sender,
                     recipient: request.recipient
-                }, function () {
-                    MessageModule.createMessage(new Message(request));
+                }, function () {                                                          
+                    UserModule.getUser(request.recipient, function(users) {
+                        var user = users[0];
+                        if (user.defaultLocType != User.DefaultLocType.NO_DEFAULT) {
+                            var response = {
+                                type: MessageType.RESPONSE,
+                                sender: request.recipient,
+                                recipient: request.sender,
+                                datetime: new Date(),
+                                data: {
+                                    senderName: user.description,
+                                    location: user.defaultLoc
+                                }
+                            }
+                            MessageModule.createMessage(response);                                                                       
+                            sendToClient(wss, ws, request.sender, response); 
+                        } else {
+                            MessageModule.createMessage(new Message(request));      
+                        }                        
+                    })                                        
                 })
                 sendToClient(wss, ws, request.recipient, request);     
                 console.log ('Sending request to ' + request.recipient);                                                
@@ -115,7 +133,7 @@ module.exports = {
                 break;                                                         
         }
        
-    }	
+    }    
 }
 
 // Send a JSON object to a client (via username). Assumes they are online.

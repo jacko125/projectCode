@@ -1,3 +1,14 @@
 .container-user {  
   text-align: center;      
+  margin-bottom: 80px;
 }
+
+.table-profile td:nth-of-type(2n) {
+  text-align: left;
+}
+
+.table-profile td:nth-of-type(2n+1) {
+  text-align: right;
+}
+
+

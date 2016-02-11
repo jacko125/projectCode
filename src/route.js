@@ -15,6 +15,9 @@ module.exports = function(app) {
     app.get('/mapViewData', homeController.ajaxGetMapViewData);    
     app.get('/mapItemData', homeController.ajaxGetMapItemData);
     
+    app.post('/user/setDefaultLoc', userController.actionSetDefaultLoc);
+    app.post('/user/setDefaultLocType', userController.actionSetDefaultLocType);
+    
     app.get('/testGetStaffList', homeController.ajaxTestGetStaffList);    
     app.get('/testGetStaffProfile', homeController.ajaxTestGetStaffProfile);            
     app.get('/dumpMessages', homeController.actionDumpMessages);    

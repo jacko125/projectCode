@@ -1,10 +1,16 @@
-<div class="container container-map">  
+<div class="container container-map">    
 
   <div ng-if="mapCtrl.choosingLocation(action)"
-       class="map-overlay-message hidden-xs hidden-sm">  
-    <button class="btn btn-info">
-      Place the pin at your location.
-    </button>      
+       class="map-overlay-message hidden-xs hidden-sm">              
+       
+    <button ng-if="action != 'set-default-loc'" 
+            class="btn btn-info">
+        Place the pin at your location.
+    </button>
+    <button ng-if="action == 'set-default-loc'" 
+            class="btn btn-info">
+        Set your default location
+    </button>
   </div>  
   <div ng-if="mapCtrl.viewingLocation(action)"
        class="map-overlay-message hidden-xs hidden-sm">    
@@ -101,7 +107,17 @@
         <a class="btn btn-default"
            ui-sref="search">Back to list
         </a>      
-      </div>      
+      </div>
+      <div ng-if="action == 'set-default-loc'">
+        <a ng-click="mapCtrl.setDefaultLocationButtonClick(target)"           
+           class="btn btn-success">
+          Set location
+        </a>
+        <a class="btn btn-default"
+           ui-sref="user">
+          Back to profile
+        </a>
+      </div>
         
     </div> <!-- / choosingLocation buttons -->
     

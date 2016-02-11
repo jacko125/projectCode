@@ -44,7 +44,7 @@ function createMessage(db, params) {
 function deleteMessage(db, params) {    
     db.collection('messages').removeOne(params.query, function(err, r) {
         if (r.result.n > 0) {
-            console.log('Deleted existing message (' + params.query.sender + ': ' + params.query.recipient + ')');
+            console.log('Deleted existing message (' + params.query.sender + ':' + params.query.recipient + ')');
         }        
         db.close();
         params.callback();
