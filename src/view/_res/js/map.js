@@ -201,9 +201,8 @@ function mapFunctions(self, dep) {
     }
     
     self.setMapView = function(latLng) {        
-        var viewData = getMapViewData(self.mapViewData, self.currentLocation);                                       
-        map.setView(latLng, viewData.zoom.max - 2, { animate: true });
-        
+        var viewData = getMapViewData(self.mapViewData, self.currentLocation);
+        map.setView(latLng, viewData.zoom.min, { animate: true });        
     }
     
     //Get current position (Only for mobile devices)
