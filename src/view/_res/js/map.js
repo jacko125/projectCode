@@ -60,8 +60,28 @@ miaApp.controller('mapController', [
             var message = $stateParams.target;            
             self.currentLocation = message.data.location;                     
             self.updateMap();
-            userMarker.setLatLng(L.latLng(message.data.location.latLng.lat, message.data.location.latLng.lng));                                                            
-        } 
+            userMarker.setLatLng(L.latLng(message.data.location.latLng.lat, message.data.location.latLng.lng));
+            self.setMapView(userMarker.getLatLng());
+        } else if ($stateParams.action == 'set-default-loc') {
+            var profile = $stateParams.target;
+            if (profile.defaultLoc != null) {
+                self.currentLocation = profile.defaultLoc;
+                self.updateMap();
+                userMarker.setLatLng(L.latLng(profile.defaultLoc.latLng.lat, profile.defaultLoc.latLng.lng));                                                                            
+                self.setMapView(userMarker.getLatLng());
+            }            
+        } else if (self.choosingLocation($stateParams.action)) {
+            var profile = userService.profile;
+            console.log(userService.profile);
+            if (profile.defaultLoc != null) {                
+                userMarker.setLatLng(L.latLng(profile.defaultLoc.latLng.lat, profile.defaultLoc.latLng.lng));
+                self.setMapView(userMarker.getLatLng());
+                console.log('defaulted location');
+            } else {
+                var viewData = getMapViewData(self.mapViewData, self.currentLocation);
+                self.setMapView(L.latLng(viewData.origin.latLng[0], viewData.origin.latLng[1]));
+            }
+        }
              
         requestFunctions(self, {            
             $scope: $scope,     
@@ -173,6 +193,12 @@ function mapFunctions(self, dep) {
         return {
             'map-disabled': self.unsupportedMap
         }
+    }
+    
+    self.setMapView = function(latLng) {        
+        var viewData = getMapViewData(self.mapViewData, self.currentLocation);                                       
+        map.setView(latLng, viewData.zoom.max - 2, { animate: true });
+        
     }
     
     //Get current position (Only for mobile devices)
