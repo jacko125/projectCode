@@ -77,7 +77,7 @@
               </a>
             </div>
             <div class="media-body">
-              <a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>
+              <a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.FirstName + ' '+ staff.LastName}}</h4></a>
               <p> {{staff.Group}}</p>
               <div><p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> {{staff.Office}}</p> </div>
               <p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{staff.postalAddress}} - {{staff.Country}}</p>

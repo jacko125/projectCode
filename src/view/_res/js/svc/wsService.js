@@ -55,7 +55,7 @@ miaApp.factory('wsService', ['$location', 'requestService', 'userService',
             recipient: recipient,
             datetime: new Date(),
             data: JSON.stringify({
-                senderName: user.Description                            
+                senderName: user.FirstName + ' ' + user.LastName                            
             })
         }));
     };
@@ -71,7 +71,7 @@ miaApp.factory('wsService', ['$location', 'requestService', 'userService',
             recipient: request.sender,            
             datetime: new Date(),
             data: JSON.stringify({
-                senderName: user.Description,          
+                senderName: user.FirstName + ' ' + user.LastName,
                 location: JSON.stringify({
                     building: location.building,
                     level: location.level,
@@ -92,7 +92,7 @@ miaApp.factory('wsService', ['$location', 'requestService', 'userService',
             recipient: target.Shortname,            
             datetime: new Date(),
             data: JSON.stringify({
-                senderName: user.Description,          
+                senderName: user.FirstName + ' ' + user.LastName,         
                 location: JSON.stringify({
                     building: location.building,
                     level: location.level,

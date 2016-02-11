@@ -25,7 +25,8 @@ miaApp.controller('homeController', [
                     $http.post('/login', self.loginForm)
                     .then(function success(response) {                                           
                         $window.sessionStorage.token = response.data.token;
-                        wsService.connect($scope, self.loginForm.username, $rootScope.user.Description, response.data.token);
+                        var description = $rootScope.user.FirstName + ' ' + $rootScope.user.LastName;
+                        wsService.connect($scope, self.loginForm.username, description, response.data.token);
                         $scope.loggedIn = $rootScope.loggedIn;
                         $scope.$emit('logged_in', $rootScope.user);
                         $state.go('home');

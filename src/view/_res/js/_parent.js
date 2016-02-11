@@ -33,7 +33,9 @@ miaApp.controller('parentController', [
                     
                 case 'ws-receive-response':
                     $scope.notifyCount = requestService.messages.length;
-                    var toastMsg = data.data.senderName + ' has responded with their location.';
+                    var response = data;
+                    var autoMsg = (response.data.auto) ? ' <b>automatically</b>': ' has';
+                    var toastMsg = response.data.senderName + autoMsg + ' responded with their location.';
                     showToast(ngToast, toastMsg, 'success');                     
                     break;
                 
@@ -94,6 +96,7 @@ miaApp.controller('parentController', [
             $rootScope: $rootScope,
             $window: $window,
             $state: $state,
+            ngToast: ngToast,
             wsService: wsService
         });
         
@@ -114,7 +117,8 @@ function loginFunctions(self, dep) {
     dep.$scope.$on('logged_in', function(event, data) {                        
         dep.$scope.username = data.Shortname; 
         dep.$rootScope.loggedIn = true;
-        dep.$scope.loggedIn = true;                
+        dep.$scope.loggedIn = true;
+        showToast(dep.ngToast, 'Logged in as <b>' + data.Shortname + '</b>', 'success');
     });
     
     self.logoutButtonClick = function() {        

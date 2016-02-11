@@ -70,6 +70,7 @@ module.exports = {
                 }, function () {                                                          
                     UserModule.getUser(request.recipient, function(users) {
                         var user = users[0];
+                        // Automatically bounce
                         if (user.defaultLocType != User.DefaultLocType.NO_DEFAULT) {
                             var response = {
                                 type: MessageType.RESPONSE,
@@ -78,18 +79,21 @@ module.exports = {
                                 datetime: new Date(),
                                 data: {
                                     senderName: user.description,
-                                    location: user.defaultLoc
+                                    location: user.defaultLoc,
+                                    auto: true,
                                 }
                             }
                             MessageModule.createMessage(response);                                                                       
                             sendToClient(wss, ws, request.sender, response); 
+                            console.log ('Sending auto-response to ' + request.recipient);                                     
                         } else {
                             MessageModule.createMessage(new Message(request));      
+                            sendToClient(wss, ws, request.recipient, request);     
+                            console.log ('Sending request to ' + request.recipient);                                     
                         }                        
                     })                                        
                 })
-                sendToClient(wss, ws, request.recipient, request);     
-                console.log ('Sending request to ' + request.recipient);                                                
+                                
                 break;                                      
 
             // data: senderName, location (building, level, latLng)

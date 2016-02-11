@@ -28,7 +28,7 @@
               <b>{{message.data.senderName}}</b> 
               <span ng-switch="message.type">
                 <span ng-switch-when="request">requested your location</span>
-                <span ng-switch-when="response">responded to your request</span>
+                <span ng-switch-when="response"><span ng-if="message.data.auto"><i>automatically</i></span> responded to your request</span>
                 <span ng-switch-when="broadcast">sent their location to you</span>
               </span>
               <b>{{message.datetime | timeSince }}</b> ago 
