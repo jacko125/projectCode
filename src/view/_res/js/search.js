@@ -4,8 +4,16 @@ miaApp.controller('searchController', [
     function($scope, $rootScope, $state, $stateParams, ngToast, staffSearchService, wsService) {
         var self = this;
 
+        // Return to search if profile page accessed directly
+        if ('profile' in $stateParams && $stateParams.profile == null)
+            $state.go('search');
+
+        $scope.group = [];
+
         self.searchParams = {
             name: ''
+        };
+
         };
         $scope.requestUserLocation = '';
 
@@ -29,20 +37,22 @@ miaApp.controller('searchController', [
             $scope.requestUserLocation = null;
         };
 
-        self.requestLocationButtonClick = function(recipient) {
-            console.log(recipient);
+		self.addToGroupButtonClick = function(staff){
+			console.log('add to group button clicked');
+			var contains = $.inArray(staff, $scope.group);
+		    if (contains == -1){
+				$scope.group.push(staff);
+			}
+		}
+
+        self.sendRequestButtonClick = function(recipient) {
             // Request button was clicked from search-list, so profile is not set yet.
             if (!('profile' in $stateParams))
                 self.profile = recipient;
 
             var toastMsg = 'You have requested ' + self.profile.Description + '\'s location';
-            ngToast.create({
-                className: 'info',
-                animation: 'fade',
-                content: '<div class="toast">' + toastMsg + '</div>',
-                horizontalPosition: 'left'
-            });
-            wsService.requestLocation($rootScope.user, recipient.Shortname);
+            showToast(ngToast, toastMsg, 'info');
+            wsService.sendRequest($rootScope.user, recipient.Shortname);
             $scope.requestUserLocation = null;
         }
 
@@ -50,22 +60,35 @@ miaApp.controller('searchController', [
             $scope.requestUserLocation = staffShortName;
         };
 
-        self.sendLocationButtonClick = function(recipient) {
-            console.log("Send location button was clicked");
+        self.sendRequestToGroupButtonClick = function(){
+            var toastMsg = 'You have requested the location of the group';
+            showToast(ngToast, toastMsg, 'info');
+            for(var i = 0; i < $scope.group.length; i++){
+                var recipient = $scope.group[i];
+                wsService.sendRequest($rootScope.user, recipient.Shortname);
+            }
+            $scope.group = [];
         }
 
-        self.addToGroupButtonClick = function(recipient) {
-            console.log("Add to group button was clicked");
+        self.removeMember = function(staff){
+            for (var i = 0; i < $scope.group.length; i++){
+                if ($scope.group[i] == staff) $scope.group.splice(i, 1);
+            }
         }
 
-        // Return to search if profile page accessed directly
-        if ('profile' in $stateParams && $stateParams.profile == null)
-            $state.go('search');
-
-    }]);
+        self.clearGroup = function(){
+            $scope.group = [];
+        }
+}]);
 
 
 function getProfileFromResults(results, shortname) {
 
 
+
+function showToast(ngToast, message, type) {
+    ngToast.create({
+        className: type,
+        content: '<div>' + message + '</div>',
+    });
 }

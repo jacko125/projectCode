@@ -10,8 +10,8 @@ var config = require('./resources/config.json');
 gulp.task('default', function() {
   console.log('Usage: gulp <command>\n'
 	+ 'Possible commands:\n'
-	+ 'start-app            Start NodeJS server\n'
-	+ 'start-mongo          Start the MongoDB server (Can cancel gulp-task after starting)\n' 
+	+ 'start-supervisor     Start NodeJS server (Cancellable after starting)\n'
+	+ 'start-mongo          Start the MongoDB server (Cancellable after starting)\n' 
 	+ 'stop-mongo           Stop the MongoDB server\n'  
     + 'deploy-bootstrap     Compile bootstrap.css from variables.less and deploy\n'
     + 'Release tasks:\n'
@@ -22,8 +22,11 @@ gulp.task('default', function() {
 	);
 });
 
-// Run app  
-gulp.task('start-app', runCommand('node index.js'));
+// Run app with Supervisor
+gulp.task('start-supervisor', function(callback) {
+    runCommandSync('start supervisor -e html,css,js,json -w src,resources index.js');
+    callback();
+});
 
 // MongoDB tasks
 var mongoBaseDir = 'C:\\Program Files\\MongoDB\\Server'

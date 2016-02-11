@@ -1,5 +1,58 @@
 <div class="search-list" ng-init="initialise()">
+    <div class="row">
+        <div class = "col-md-8 col-md-offset-2">
+		    <!-- Show list of current group if it exists-->
+			<div class="group-container" ng-if="group.length > 0">
+			   <div class='media'>
+			      <div class='group-header'>
+				    <button data-toggle="tooltip"
+							  data-placement="bottom"
+							  title="Request group's location"
+							  class="btn btn-success"
+							  ng-click="searchCtrl.sendRequestToGroupButtonClick()">
+						  <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
+						  </span>
+                    </button>
+					<button data-toggle="tooltip"
+                                  data-placement="bottom"
+                                  title="Send my location to group"
+                                  class="btn btn-info"
+                                  ui-sref="map({ action: 'send-broadcast-group', target: group})">
+                       <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
+                       </span>
+                    </button>
+					<button data-toggle="tooltip"
+								  data-placement="bottom"
+								  title="Clear list"
+								  class="btn btn-warning"
+								  ng-click="searchCtrl.clearGroup()">
+					   <span class="glyphicon glyphicon-trash gi-2x" aria-hidden="true">
+					   </span>
+					</button>
+				  </div>
+				</div>
+				<ul class = 'col-md-offset-1'>
+				<li class="groupmember-container" ng-repeat="staff in group">
+					<!--ui-sref="profile({ profile: staff })">-->
 
+								<button data-toggle="tooltip"
+								  data-placement = "right"
+								  title="Remove from list"
+								  class="btn btn-warning pos-right"
+								  ng-click="searchCtrl.removeMember(staff)">
+									<span class="glyphicon glyphicon-remove gi-1x" aria-hidden="true">
+									</span>
+								</button>
+
+							<a ui-sref="profile({ profile: staff })">{{staff.Description}}</a>
+
+
+
+				</li>
+				</ul>
+			</div>
+	    </div>
+    </div>
   <div class="row">
     <div class="col-md-6 col-md-offset-3
                 col-sm-6 col-sm-offset-3">
@@ -9,7 +62,7 @@
         ng-model-options="{ debounce: 350 }"
         ng-change="searchCtrl.loadStaffList(searchCtrl.searchParams.name)"/>
       <p class="lead">
-        {{::searchCtrl.staff.name}}
+        {{searchCtrl.staff.name}}
       </p>
     </div>
   </div>
@@ -51,9 +104,13 @@
                       data-placement="left"
                       title="Send my location"
                       class="btn btn-info"
-                      ng-click="searchCtrl.sendLocationButtonClick(staff)">
+                      ui-sref="map({ action:'send-broadcast', target:staff })">
                       <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
                       </span>
+              </button>
+              <button 
+                      data-toggle="tooltip" 
+                      data-placement="bottom"
               </button>
               <button
                       data-toggle="tooltip"

@@ -1,14 +1,33 @@
 <div class="container container-map">  
 
-<!-- <div style="position:relative; margin-bottom:-50px; z-index:1;"> -->
-  <div ng-if="action == 'send-response'"
-      style="position:relative; margin-bottom:-45px; z-index:1;"
-      class="hidden-xs hidden-sm">  
-    <button class="btn btn-info">Place the pin at your location.       
+  <div ng-if="mapCtrl.choosingLocation(action)"
+       class="map-overlay-message hidden-xs hidden-sm">  
+    <button class="btn btn-info">
+      Place the pin at your location.
+    </button>      
+  </div>  
+  <div ng-if="mapCtrl.viewingLocation(action)"
+       class="map-overlay-message hidden-xs hidden-sm">    
+    <button class="btn btn-info">
+      Viewing {{target.data.senderName}}'s location
     </button>  
   </div>
   
-  <div style="position:absolute; margin-left:50px; margin-top:10px; z-index:1;">
+  <!-- Info message when viewport too small for overlay -->
+  <div ng-if="mapCtrl.choosingLocation(action)"
+       class="map-overlay-message-alt hidden-md hidden-lg">
+    <button class="btn btn-info hidden-md hidden-lg">Place the pin at your location</button>
+  </div>
+  <div ng-if="mapCtrl.viewingLocation(action)"
+       class="map-overlay-message-alt hidden-md hidden-lg">
+    <button ng-if="mapCtrl.viewingLocation(action)"            
+            class="btn btn-info hidden-md hidden-lg">
+            {{("Viewing " + target.data.senderName + "'s location" | limitTo:30) + "..."}}
+    </button>  
+  </div>  
+  
+  <!-- Map selection buttons -->
+  <div class="map-overlay-mapbuttons">
     <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         <span ng-bind="mapCtrl.currentLocation.building"></span>
@@ -30,34 +49,62 @@
           <a ng-click="mapCtrl.changeLevel(level)" ng-bind="level"></a>
         </li>                       
       </ul>      
-    </div>     
-  </div>
-  
-  <div id="map" ng-class="mapCtrl.isMapSupportedClass()"></div>    
-  
+    </div>
+    <br>
+  </div> <!-- ./map-overlay-mapbuttons -->
+
+  <!-- The map -->
+  <div id="map" ng-class="mapCtrl.isMapSupportedClass()"></div>      
+    
   <div ng-if="mapCtrl.unsupportedMap" style="margin-top:25vh;">
     <div class="alert alert-warning">
       This map is not supported. Please select another map.
     </div>        
   </div>
  
-  <div style="position:relative; margin-top:-50px;"> 
+  <!-- Bottom buttons for responding -->
+  <div class="map-overlay-bottombuttons"> 
   
-    <div ng-if="action === 'view-response'">
+    <div ng-if="mapCtrl.viewingLocation(action)">
       <a class="btn btn-default" 
          ui-sref="notifications">Back to list
       </a>
     </div>
     
-    <div ng-if="action === 'send-response'
-              && !mapCtrl.unsupportedMap">
-    <a class="btn btn-success"
-       ng-click="mapCtrl.sendLocationButtonClick(target)"
-       ui-sref="home">Send location
-    </a>
-    <a class="btn btn-default" ui-sref="notifications">Back to list</a>
-
+    <div ng-if="mapCtrl.choosingLocation(action) && !mapCtrl.unsupportedMap">
+         
+      <div ng-if="action == 'send-response'">
+        <a ng-click="mapCtrl.sendResponseButtonClick(target)"
+           ui-sref="home"
+           class="btn btn-success">Send location
+        </a>
+        <a class="btn btn-default" 
+           ui-sref="notifications">Back to list
+        </a>            
+      </div>
+      
+      <div ng-if="action == 'send-broadcast'">
+        <a ng-click="mapCtrl.sendBroadcastButtonClick(target)"
+           ui-sref="home"
+           class="btn btn-success">Send location
+        </a>
+        <a class="btn btn-default"
+           ui-sref="search">Back to list
+        </a>      
+      </div>
+      
+      <div ng-if="action == 'send-broadcast-group'">
+        <a ng-click="mapCtrl.sendBroadcastToGroupButtonClick(target)"
+           ui-sref="home"
+           class="btn btn-success">Send to group
+        </a>
+        <a class="btn btn-default"
+           ui-sref="search">Back to list
+        </a>      
+      </div>      
+        
+    </div> <!-- / choosingLocation buttons -->
     
-  </div>
-
+  </div> <!-- /.map-overlay-mapbuttons -->
+  
 </div> <!-- /.container -->

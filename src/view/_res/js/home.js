@@ -57,21 +57,11 @@ miaApp.controller('homeController', [
         };
 
         self.homeItemClass = function(item) {
-            if ($scope.loggedIn && item == 'map') {
-                return {                
-                    'col-xs-12': true,
-                    'col-sm-3': !$scope.loggedIn,
-                    'col-sm-offset-0': !$scope.loggedIn,
-                    'col-sm-4': $scope.loggedIn
-                }                                
-            } else {
-                return {                
-                    'col-xs-6': true,
-                    'col-sm-3': !$scope.loggedIn,
-                    'col-sm-offset-0': !$scope.loggedIn,
-                    'col-sm-4': $scope.loggedIn
-                }
-            }            
+            return {                
+                'col-xs-6': true,
+                'col-sm-3': true,
+                'col-sm-offset-0': true
+            }                        
         }    
         self.mapItemSubClass = function() {
             return {                

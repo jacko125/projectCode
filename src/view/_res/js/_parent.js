@@ -6,9 +6,9 @@ miaApp.controller('parentController', [
         var self = this;
         $scope.notifyCount = 0;
         
+        // Listen for events from wsService, to display toasts
         wsService.registerObserverCallback(function(event, data) {
-            console.log(event);
-            console.log('logging state');      
+            console.log(event);            
             switch (event) {                           
                 case 'ws-receive-message-list':
                     $scope.notifyCount = requestService.messages.length;                        
@@ -21,13 +21,13 @@ miaApp.controller('parentController', [
                 case 'ws-sent-response':                                                  
                     $scope.notifyCount = requestService.messages.length
                     var toastMsg = 'You have responded to ' + data.data.senderName + '\'s request';
-                    showToast(ngToast, toastMsg, 'success');      
-                    break;                    
+                    showToast(ngToast, toastMsg, 'info');      
+                    break;                                  
                     
                 case 'ws-receive-request':                        
                     $scope.notifyCount = requestService.messages.length;
                     var toastMsg = data.data.senderName + ' has requested your location';
-                    showToast(ngToast, toastMsg, 'info');                            
+                    showToast(ngToast, toastMsg, 'warning');                            
                     break;                                                                
                     
                 case 'ws-receive-response':
@@ -35,6 +35,20 @@ miaApp.controller('parentController', [
                     var toastMsg = data.data.senderName + ' has responded with their location.';
                     showToast(ngToast, toastMsg, 'success');                     
                     break;
+                
+                case 'ws-sent-broadcast':
+                    var toastMsg = 'You have sent your location to ' + data.Description;
+                    showToast(ngToast, toastMsg, 'info');      
+                    break; 
+
+                case 'ws-receive-broadcast':
+                    $scope.notifyCount = requestService.messages.length;
+                    var toastMsg = data.senderName + ' has sent you their location.';
+                    showToast(ngToast, toastMsg, 'info');      
+                    break;
+                 
+                
+                        
             }            
             $state.transitionTo($state.current, $stateParams, {
                 reload: true,
@@ -105,13 +119,4 @@ function showToast(ngToast, message, type) {
         className: type,        
         content: '<div>' + message + '</div>',        
     });    
-}
-
-function refreshState($state, $stateParams) {
-    var currentState = $state.current;
-    if (currentState.name == 'home')
-        $state.go('search');
-    else 
-        $state.go('home');
-    $state.go(currentState.name, $stateParams, { reload: true });
 }

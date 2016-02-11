@@ -4,6 +4,31 @@
   
 }
 
+.map-overlay-message {
+  position:relative; 
+  margin-bottom:-45px; 
+  z-index:1;
+}
+
+.map-overlay-message-alt {
+  position:absolute;
+  margin-left:50px;
+  margin-top:50px;
+  z-index:1;
+}
+
+.map-overlay-mapbuttons {
+  position:absolute;
+  margin-left:50px;
+  margin-top:10px;
+  z-index:1;
+}
+
+.map-overlay-bottombuttons {
+  position:relative; 
+  margin-top:-50px;
+}
+
 #map {
   height:75vh;
   background:white;  
