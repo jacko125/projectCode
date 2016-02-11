@@ -1,58 +1,50 @@
-<div class="search-list">
+<div class="search-list" ng-init="initialise()">
     <div class="row">
         <div class = "col-md-8 col-md-offset-2">
 		    <!-- Show list of current group if it exists-->
-			<div class="list-group listnav group-container" ng-if="group.length > 0">
+			<div class="group-container" ng-if="group.length > 0">
 			   <div class='media'>
 			      <div class='group-header'>
-					<h2>Current Group</h2>
-				    <button data-toggle="tooltip" 
+				    <button data-toggle="tooltip"
 							  data-placement="bottom"
-							  title="Request their Location"
+							  title="Request group's location"
 							  class="btn btn-success"
 							  ng-click="searchCtrl.sendRequestToGroupButtonClick()">
 						  <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
 						  </span>
-                    </button>               
-					<button data-toggle="tooltip" 
+                    </button>
+					<button data-toggle="tooltip"
                                   data-placement="bottom"
-                                  title="Send my location"
+                                  title="Send my location to group"
                                   class="btn btn-info"
                                   ui-sref="map({ action: 'send-broadcast-group', target: group})">
                        <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
                        </span>
-                    </button> 
-					<button data-toggle="tooltip" 
+                    </button>
+					<button data-toggle="tooltip"
 								  data-placement="bottom"
 								  title="Clear list"
 								  class="btn btn-warning"
 								  ng-click="searchCtrl.clearGroup()">
 					   <span class="glyphicon glyphicon-trash gi-2x" aria-hidden="true">
 					   </span>
-					</button> 				
+					</button>
 				  </div>
-				</div>				
+				</div>
 				<ul class = 'col-md-offset-1'>
 				<li class="groupmember-container" ng-repeat="staff in group">
 					<!--ui-sref="profile({ profile: staff })">-->
 
-
-								<a class="profile-container" 
-										  ui-sref="profile({ profile: staff })">
-								<img class="media-object profile-image"
-										  ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profileImages/profile-placeholder.png'">
-								</a>   
-
-								<button data-toggle="tooltip" 
-								  data-placement = "top"
+								<button data-toggle="tooltip"
+								  data-placement = "right"
 								  title="Remove from list"
-								  class="btn btn-alt"
+								  class="btn btn-warning pos-right"
 								  ng-click="searchCtrl.removeMember(staff)">
-									<span class="glyphicon glyphicon-minus gi-1x" aria-hidden="true">
+									<span class="glyphicon glyphicon-remove gi-1x" aria-hidden="true">
 									</span>
-								</button>  
+								</button>
 
-							<a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>     
+							<a ui-sref="profile({ profile: staff })">{{staff.Description}}</a>
 
 
 
@@ -60,7 +52,7 @@
 				</ul>
 			</div>
 	    </div>
-    </div>  
+    </div>
   <div class="row">
     <div class="col-md-6 col-md-offset-3
                 col-sm-6 col-sm-offset-3">
@@ -85,12 +77,12 @@
           ng-repeat="staff in results track by staff.EmployeeId">
           <!--ui-sref="profile({ profile: staff })">-->
           <div class="media">
-            <div class="media-left media-middle">              
-              <a class="profile-container" 
+            <div class="media-left media-middle">
+              <a class="profile-container"
                  ui-sref="profile({ profile: staff })">
                 <img class="media-object profile-image"
                      ng-src="http://staffdirectory.pc.internal.macquarie.com/StaffPhotos/thumbnails/{{staff.EmployeeId}}.jpg" alt="Profile Image" onError="this.onerror=null;this.src='/img/profile-images/profile-placeholder.png'">
-              </a>              
+              </a>
             </div>
             <div class="media-body">
               <a ui-sref="profile({ profile: staff })"><h4 class="media-heading">{{staff.Description}}</h4></a>
@@ -99,34 +91,49 @@
               <p><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{staff.postalAddress}} - {{staff.Country}}</p>
             </div>
             <div class="media-right">
-              <button data-toggle="tooltip" 
-                      data-placement="bottom"
+              <button data-toggle="tooltip"
+                      data-placement="left"
                       title="Request their Location"
                       class="btn btn-success"
-                      ng-click="searchCtrl.sendRequestButtonClick(staff)">
-                      <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
+                      ng-click="searchCtrl.showRequestConfirmation(staff.Shortname)">
+              <span class="glyphicon glyphicon-globe gi-2x" aria-hidden="true">
                       </span>
-              </button>              
-              <button 
-                      data-toggle="tooltip" 
-                      data-placement="bottom"
+              </button>
+              <button
+                      data-toggle="tooltip"
+                      data-placement="left"
                       title="Send my location"
                       class="btn btn-info"
-                      ui-sref="map({ action:'send-broadcast', target:staff })">      
+                      ui-sref="map({ action:'send-broadcast', target:staff })">
                       <span class="glyphicon glyphicon-send gi-2x" aria-hidden="true">
                       </span>
-              </button>               
-              <button 
-                      data-toggle="tooltip" 
-                      data-placement="bottom"
+              </button>              
+              <button
+                      data-toggle="tooltip"
+                      data-placement="left"
                       title="Add to list"
                       class="btn btn-alt"
                       ng-click="searchCtrl.addToGroupButtonClick(staff)">
                       <span class="glyphicon glyphicon-plus gi-2x text-center" aria-hidden="true">
                       </span>
-              </button>              
+              </button>
             </div>
           </div>
+            <div class="alert alert-warning" style="margin-bottom: 0px; margin-top: 5px; padding: 10px;" role="alert" ng-if="requestUserLocation === staff.Shortname">
+              <div>
+                <div>
+                  <b>Are you sure you want to request {{staff.Description}}'s location?</b>
+                </div>
+                <div class="text-right">
+                  <button class="btn btn-default" value="cancel" ng-click="removeRequestConfirmation()">
+                    Cancel
+                  </button>
+                  <button class="btn btn-primary" style="margin-left: 10px;" value="confirm" ng-click="searchCtrl.sendRequestButtonClick(staff)">
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
         </li>
         </ul>
       </div>

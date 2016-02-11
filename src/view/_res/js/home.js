@@ -1,10 +1,16 @@
 miaApp.controller('homeController', [
     '$http', '$window', '$scope','$rootScope', '$state', '$stateParams',
-    'wsService', 'staffSearchService', 
+    'wsService', 'staffSearchService', 'errorService',
     function($http, $window, $scope, $rootScope, $state, $stateParams,
-             wsService, staffSearchService) {   
+             wsService, staffSearchService, errorService) {
         var self = this;
-        
+
+        $scope.initialise = function() {
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        };
+
         if ('login' in $stateParams && $rootScope.loggedIn)
             $state.go('home');               
 
@@ -30,13 +36,25 @@ miaApp.controller('homeController', [
                     });    
                         
                 } else {
-                    // Handle erroneous login                        
+                    // Handle erroneous login
+                    $scope.errors =[];
+                    setError({code: 'loginError'});
                 }                                             
                 
             }, function error(response) {
                 // Handle Staff Search service down
             });       
         }
+
+        var setError = function (error) {
+            if (!error.message) {
+                error.message = errorService.getErrorMessageByCode(error.code);
+            }
+            if (!error.tooltip) {
+                error.tooltip = errorService.getErrorTooltipByCode(error.code);
+            }
+            $scope.errors.push({code: error.code, message: error.message, tooltip: error.tooltip});
+        };
 
         self.homeItemClass = function(item) {
             return {                
