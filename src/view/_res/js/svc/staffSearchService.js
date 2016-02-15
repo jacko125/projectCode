@@ -1,7 +1,8 @@
 miaApp.factory('staffSearchService', ['$http', function($http) {
     var self = this;    
 
-    var results = []; // Used for caching staff results between profile pages.
+    var results = []; // Used for caching staff results
+    var group = []; // Used for caching groups
     
     self.staffSearchUrl = config.searchUrl;    
 

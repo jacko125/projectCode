@@ -19,6 +19,11 @@
     overflow: auto;
 }
 
+
+.list-search {
+  margin-left:-35px;
+}
+
 .profile-container{
     display: inline-block;
     width: 75px;
@@ -65,18 +70,16 @@
 	margin: auto;
 }
 
-.group-container {
-    background: #eee;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-	margin: 2vh 2vw 2vh 2vw;
+.group-item-container {
 	max-height: 20vh;
-	overflow: auto;
+	overflow: auto; 
+}
+.group-button-container {
+  margin: 15px;   
 }
 .group-header{
-	
 	padding: 5% 2% 2% 2%;
 	float:right;
-	
 }
 
 .pos-right{
