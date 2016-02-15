@@ -48,7 +48,13 @@ miaApp.controller('parentController', [
                     $scope.notifyCount = requestService.messages.length;
                     var toastMsg = data.senderName + ' has sent you their location.';
                     showToast(ngToast, toastMsg, 'info');      
-                    break;                 
+                    break;
+                
+                case 'ws-receive-other':
+                    $scope.notifyCount = requestService.messages.length;
+                    var toastMsg = 'You have new notifications';
+                    showToast(ngToast, toastMsg, 'info');
+                    break;
                         
             }            
             $state.transitionTo($state.current, $stateParams, {
@@ -80,6 +86,7 @@ miaApp.controller('parentController', [
         self.notificationIconClass = function() {
             return {
                 'visible-xs-inline': true,
+                'visible-sm-inline': true,
                 'badge-custom': true,
                 'badge-active': ($scope.notifyCount > 0),
                 'badge-inactive': ($scope.notifyCount == 0)

@@ -156,7 +156,7 @@ function msgHandler(self, dep) {
                 var response = message;                               
                 console.log('Received response at service level, sender: ' + response.sender);                
                 console.log(response);     
-                dep.requestService.removeMessage(dep.requestService, response)
+                dep.requestService.removeMessage(dep.requestService, response);
                 dep.requestService.messages.push(response) // Only one response from someone at any given time                
                 dep.notifyObservers('ws-receive-response', response);
                 break;
@@ -165,9 +165,18 @@ function msgHandler(self, dep) {
                 var broadcast = message;
                 console.log('Received broadcast at service level, sender: ' + broadcast.sender);                
                 console.log(broadcast);     
-                dep.requestService.removeMessage(dep.requestService, broadcast)
+                dep.requestService.removeMessage(dep.requestService, broadcast);
                 dep.requestService.messages.push(broadcast) // Only one broadcast from someone at any given time                
                 dep.notifyObservers('ws-receive-broadcast', broadcast.data);
+                break;
+            
+            case 'other':
+                console.log('Received other-type message at service level, sender: ' + message.sender);
+                console.log(message);
+                dep.requestService.removeMessage(dep.requestService, message);
+                dep.requestService.messages.push(message);
+                dep.notifyObservers('ws-receive-other');
+                break;
                                                 
             default:
                 console.log('Received unknown message');        

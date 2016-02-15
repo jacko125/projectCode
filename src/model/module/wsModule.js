@@ -9,8 +9,14 @@ var Message = require('../Message.js');
 var MessageModule = require('./MessageModule.js');
 var MessageType = {
     REQUEST: 'request',
-    RESPONSE: 'response'
+    RESPONSE: 'response',
+    BROADCAST: 'broadcast',
+    OTHER: 'other'
 };
+
+var MessageSubtype = {
+    AUTO_RESPONSE_NOTIFY: 'auto-response-notify'    
+}
 
 module.exports = {
 	
@@ -71,8 +77,8 @@ module.exports = {
                     UserModule.getUser(request.recipient, function(users) {
                         var user = users[0];
                         // Automatically bounce
-                        if (user.defaultLocType != User.DefaultLocType.NO_DEFAULT) {
-                            var response = {
+                        if (user != null && user.defaultLocType != User.DefaultLocType.NO_DEFAULT) {
+                            var response = new Message({
                                 type: MessageType.RESPONSE,
                                 sender: request.recipient,
                                 recipient: request.sender,
@@ -82,10 +88,25 @@ module.exports = {
                                     location: user.defaultLoc,
                                     auto: true,
                                 }
-                            }
+                            });
                             MessageModule.createMessage(response);                                                                       
                             sendToClient(wss, ws, request.sender, response); 
-                            console.log ('Sending auto-response to ' + request.recipient);                                     
+                            console.log ('Sending auto-response to ' + request.sender);
+                            
+                            var requestNotification = new Message({
+                                type: MessageType.OTHER,
+                                sender: request.sender,
+                                recipient: request.recipient,
+                                datetime: new Date(),
+                                data: {
+                                    senderName: request.data.senderName,
+                                    subtype: MessageSubtype.AUTO_RESPONSE_NOTIFY
+                                }                                
+                            });                
+                            MessageModule.createMessage(requestNotification)
+                            sendToClient(wss, ws, request.recipient, requestNotification);
+                            console.log('Sending notification of request to ' + request.recipient);
+                            
                         } else {
                             MessageModule.createMessage(new Message(request));      
                             sendToClient(wss, ws, request.recipient, request);     
