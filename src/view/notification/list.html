@@ -23,34 +23,53 @@
             </div>
           </div>
            
-          <div class="media-body">
-            <div class="list-group-item-heading">
+          <div class="media-body media-middle">
+            <div class="list-group-item-text">
               <b>{{message.data.senderName}}</b> 
               <span ng-switch="message.type">
-                <span ng-switch-when="request">requested your location</span>
-                <span ng-switch-when="response"><span ng-if="message.data.auto"><i>automatically</i></span> responded to your request</span>
-                <span ng-switch-when="broadcast">sent their location to you</span>
-              </span>
-              <b>{{message.datetime | timeSince }}</b> ago 
-            </div>
-                            
-            <div class="list-group-item-text">
-              <span ng-switch="message.type">
-                <a ng-switch-when="request" 
-                   class="btn btn-success" 
-                   ui-sref="map({ action: 'send-response', target: message })">Accept</a>                       
-                <a ng-switch-when="response"
-                   class="btn btn-success"
-                   ui-sref="map({ action: 'view-response', target: message })">View</a>
-                <a ng-switch-when="broadcast"
-                   class="btn btn-success"
-                   ui-sref="map({ action: 'view-broadcast', target: message })">View</a>                   
-              </span>
-                &nbsp;
-              <a class="btn btn-warning" href="#" 
-                 ng-click="notifyCtrl.removeMessageButtonClick(message)">Remove</a>
-            </div>                                                
+                <span ng-switch-when="request">requested your location.</span>
+                <span ng-switch-when="response">
+                  <span ng-if="message.data.auto">(automatically)</span>                  
+                    responded to your request.                  
+                </span>
+                <span ng-switch-when="broadcast">sent their location to you.</span>
+                <span ng-switch-when="other">
+                  <span ng-switch="message.data.subtype">
+                    <span ng-switch-when="auto-response-notify">
+                      requested your location, and was sent your current default location
+                    </span>
+                  </span>                
+                </span>
+              </span>                                         
+              <br><br>              
+              <i>{{message.datetime | timeSince }} ago</i>              
+              <div class="text-right">
+                <span ng-switch="message.type">
+                  <a ng-switch-when="request" 
+                     class="btn btn-success" 
+                     ui-sref="map({ action: 'send-response', target: message })">
+                    <b>Respond</b>
+                  </a>                       
+                  <a ng-switch-when="response"
+                     class="btn btn-success"
+                     ui-sref="map({ action: 'view-response', target: message })">
+                    <b>View</b>
+                  </a>
+                  <a ng-switch-when="broadcast"
+                     class="btn btn-success"
+                     ui-sref="map({ action: 'view-broadcast', target: message })">
+                     <b>View</b>
+                  </a>                   
+                </span>              
+                <a class="btn btn-warning" 
+                  ng-click="notifyCtrl.removeMessageButtonClick(message)">
+                    <b>Remove</b>
+                </a>
+              </div>
+            </div>                                    
           </div> <!-- ./media-body -->
+          <div class="media-right">       
+          </div>
         </div> <!-- ./media -->
         
       </div> <!-- ./panel -->
