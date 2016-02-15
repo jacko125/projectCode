@@ -55,36 +55,40 @@ miaApp.controller('mapController', [
             $location: $location,
             $stateParams: $stateParams,
             userMarker: userMarker
-        });        
-        self.updateMap() // Refreshes map
+        });                
         
         // Assume received location is valid (and maps exist)
-        if (self.viewingLocation($stateParams.action)) {            
-            var message = $stateParams.target;            
-            self.currentLocation = message.data.location;                     
+        if (self.viewingLocation($stateParams.action)) {  
+            var message = $stateParams.target;                                    
+            self.currentLocation = message.data.location;                                 
             self.updateMap();
             userMarker.setLatLng(L.latLng(message.data.location.latLng.lat, message.data.location.latLng.lng));
             self.setMapView(userMarker.getLatLng());
         } else if ($stateParams.action == 'set-default-loc') {
             var profile = $stateParams.target;
             if (profile.defaultLoc != null) {
-                self.currentLocation = profile.defaultLoc;
+                self.currentLocation = profile.defaultLoc;                
                 self.updateMap();
                 userMarker.setLatLng(L.latLng(profile.defaultLoc.latLng.lat, profile.defaultLoc.latLng.lng));                                                                            
                 self.setMapView(userMarker.getLatLng());
-            }            
-        } else if (self.choosingLocation($stateParams.action)) {
-            var profile = userService.profile;
-            console.log(userService.profile);
-            if (profile.defaultLoc != null) {                
-                userMarker.setLatLng(L.latLng(profile.defaultLoc.latLng.lat, profile.defaultLoc.latLng.lng));
-                self.setMapView(userMarker.getLatLng());
-                console.log('defaulted location');
             } else {
-                var viewData = getMapViewData(self.mapViewData, self.currentLocation);
+                self.updateMap();                
+            }
+        } else if (self.choosingLocation($stateParams.action)) {
+            var profile = userService.profile;            
+            if (profile.defaultLoc != null) { 
+                self.currentLocation = profile.defaultLoc;                
+                self.updateMap();
+                userMarker.setLatLng(L.latLng(profile.defaultLoc.latLng.lat, profile.defaultLoc.latLng.lng));
+                self.setMapView(userMarker.getLatLng());                
+            } else {             
+                self.updateMap();            
+                var viewData = getMapViewData(self.mapViewData, self.currentLocation);                
                 self.setMapView(L.latLng(viewData.origin.latLng[0], viewData.origin.latLng[1]));
             }
-        }
+        } else {
+            self.updateMap();
+        } 
              
         requestFunctions(self, {            
             $scope: $scope,     
@@ -181,9 +185,7 @@ function mapFunctions(self, dep) {
             });
         }            
         //TODO Change markers
-    }
-    
-    self.updateMap();
+    }        
         
     map.on('click', function(e) {                    
         console.log(e.latlng.lat.toFixed(4) + "," + e.latlng.lng.toFixed(4));
