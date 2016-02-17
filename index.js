@@ -1,5 +1,6 @@
 var config = require('./resources/config.json');
 var express = require('express');
+var favicon = require('serve-favicon');
 
 var nunjucks = require('nunjucks');
 var bodyParser = require('body-parser');
@@ -15,6 +16,9 @@ nunjucks.configure(__dirname + '/src/view', {
 app.use('/', express.static(__dirname + '/src/view/_res'));
 app.use('/view', express.static(__dirname + '/src/view'));
 app.use('/maps', express.static(__dirname + '/data/maps'));
+app.use(favicon(__dirname + '/src/view/_res/img/favicon.ico'));
+
+
 
 // Configure router-level middleware
 app.use(bodyParser.json());

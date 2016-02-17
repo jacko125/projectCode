@@ -21,6 +21,7 @@
     "jsonwebtoken": "^5.4.1",
     "mongodb": "^2.0.49",
     "nunjucks": "^2.1.0",
+    "serve-favicon": "^2.3.0",
     "ws": "^0.8.0"
   }
 }
