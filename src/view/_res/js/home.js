@@ -33,7 +33,7 @@ miaApp.controller('homeController', [
                         
                     }, function error(response) {
                         delete $window.sessionStorage.token;                
-                        // Handle HTTP server down
+                        $state.go('error', 'httpError');
                     });    
                         
                 } else {
@@ -43,6 +43,7 @@ miaApp.controller('homeController', [
                 }                                             
                 
             }, function error(response) {
+                $state.go('error', 'staffSearchError');
                 // Handle Staff Search service down
             });       
         }
@@ -56,7 +57,7 @@ miaApp.controller('homeController', [
             }
             $scope.errors.push({code: error.code, message: error.message, tooltip: error.tooltip});
         };
-
+        
         self.homeItemClass = function(item) {
             if (!$rootScope.loggedIn) {
                 if (item == 'map') { 
@@ -73,17 +74,38 @@ miaApp.controller('homeController', [
                     }                    
                 }
             } else {
-                return {                    
-                    'col-xs-6': true,
-                    'col-sm-3': true,
-                    'col-sm-offset-0': true
+                if (item == 'search') {
+                    return {
+                        'col-xs-3': true,
+                        'col-xs-offset-3': true,
+                        'col-sm-4': true,
+                        'col-sm-offset-0': true
+                    }
+                } else if (item == 'map') {
+                    return {
+                        'col-xs-3': true,
+                        'col-xs-offset-0': true,
+                        'col-sm-4': true,
+                        'col-sm-offset-0': true
+                    }
+                } else if (item == 'login') {
+                    return {                        
+                        'col-xs-12': true,                        
+                        'col-sm-4': true,
+                        'col-sm-offset-0': true
+                    }
                 }
             }
         }            
-        self.mapItemSubClass = function() {
-            return {                
+        self.mapSubItemClass = function() {
+            return {
                 'pull-right': !$scope.loggedIn,
-                'tile-wrapper': $scope.loggedIn
+                'pull-left': $scope.loggedIn
+            }
+        }
+        self.loginSubItemClass = function() {
+            return {
+                'tile-wrapper': true
             }
         }
         
