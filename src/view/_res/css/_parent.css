@@ -21,6 +21,10 @@ body > .container {
   margin-left: 10px;
 }
 
+.block-div {
+  display:inline-block; padding:10px 15px;
+}
+
 .color-white {
   color:white;
 }

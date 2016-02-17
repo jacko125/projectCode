@@ -36,7 +36,7 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToast
                    
         $stateProvider
             .state('map', {
-                url: '/map',
+                url: '/map?link&linkLocation',
                 templateUrl: 'view/map/map.html',
                 controller: 'mapController as mapCtrl',
                 params: { action: null, target: null }

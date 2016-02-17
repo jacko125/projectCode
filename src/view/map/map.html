@@ -1,36 +1,19 @@
 <div class="container container-map">    
 
-  <div ng-if="mapCtrl.choosingLocation(action)"
-       class="map-overlay-message hidden-xs hidden-sm">              
-       
-    <button ng-if="action != 'set-default-loc'" 
-            class="btn btn-info">
-        Place the pin at your location.
-    </button>
-    <button ng-if="action == 'set-default-loc'" 
-            class="btn btn-info">
-        Set your default location
-    </button>
-  </div>  
-  <div ng-if="mapCtrl.viewingLocation(action)"
-       class="map-overlay-message hidden-xs hidden-sm">    
-    <button class="btn btn-info">
-      Viewing {{target.data.senderName}}'s location
-    </button>  
-  </div>
+  <!-- Info message -->
+  <div class="map-overlay-message hidden-xs hidden-sm">                    
+    <button class="btn btn-info"          
+            ng-click="mapCtrl.panToMarker()"
+            ng-bind="mapCtrl.getMapOverlayMessage(action,target)">      
+    </button>      
+  </div>    
   
   <!-- Info message when viewport too small for overlay -->
-  <div ng-if="mapCtrl.choosingLocation(action)"
-       class="map-overlay-message-alt hidden-md hidden-lg">
-    <button class="btn btn-info hidden-md hidden-lg">Place the pin at your location</button>
+  <div class="map-overlay-message-alt hidden-md hidden-lg">
+      <div class="block-div color-white bg-info"
+           ng-bind="mapCtrl.getMapOverlayMessage(action, target)">      
+      </div>
   </div>
-  <div ng-if="mapCtrl.viewingLocation(action)"
-       class="map-overlay-message-alt hidden-md hidden-lg">
-    <button ng-if="mapCtrl.viewingLocation(action)"            
-            class="btn btn-info hidden-md hidden-lg">
-            Viewing {{target.data.senderName}}'s location
-    </button>  
-  </div>  
   
   <!-- Map selection buttons -->
   <div class="map-overlay-mapbuttons">
@@ -39,7 +22,7 @@
         <span ng-bind="mapCtrl.currentLocation.building"></span>
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu" role="menu">        
+      <ul ng-if="mapCtrl.choosingLocation(action)" class="dropdown-menu" role="menu">        
         <li ng-repeat="building in mapCtrl.allBuildings">        
           <a ng-click="mapCtrl.changeBuilding(building)" ng-bind="building"></a>
         </li>                       
@@ -49,8 +32,8 @@
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         <span ng-bind="mapCtrl.currentLocation.level"></span>
         <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">        
+      </button>      
+      <ul ng-if="mapCtrl.choosingLocation(action)" class="dropdown-menu" role="menu">        
         <li ng-repeat="level in mapCtrl.allLevels">        
           <a ng-click="mapCtrl.changeLevel(level)" ng-bind="level"></a>
         </li>                       
@@ -58,7 +41,7 @@
     </div>
     <br>
   </div> <!-- ./map-overlay-mapbuttons -->
-
+ 
   <!-- The map -->
   <div id="map" ng-class="mapCtrl.isMapSupportedClass()"></div>      
     
@@ -69,57 +52,67 @@
   </div>
  
   <!-- Bottom buttons for responding -->
-  <div class="map-overlay-bottombuttons"> 
+  <div class="map-bottombuttons"> 
   
     <div ng-if="mapCtrl.viewingLocation(action)">
-      <a class="btn btn-default" 
-         ui-sref="notifications">Back to list
-      </a>
+      <div ng-switch="action">
+        <div ng-switch-when="view-response">
+          <a class="btn btn-default" 
+             ui-sref="notifications">Back to list
+          </a>
+        </div>
+        <div ng-switch-when="view-link">
+          <a class="btn btn-default" href="/#/map">Reset map
+          </a>
+        </div>
+      </div>
     </div>
     
     <div ng-if="mapCtrl.choosingLocation(action) && !mapCtrl.unsupportedMap">
          
-      <div ng-if="action == 'send-response'">
-        <a ng-click="mapCtrl.sendResponseButtonClick(target)"
-           ui-sref="home"
-           class="btn btn-success">Send location
-        </a>
-        <a class="btn btn-default" 
-           ui-sref="notifications">Back to list
-        </a>            
-      </div>
-      
-      <div ng-if="action == 'send-broadcast'">
-        <a ng-click="mapCtrl.sendBroadcastButtonClick(target)"
-           ui-sref="home"
-           class="btn btn-success">Send location
-        </a>
-        <a class="btn btn-default"
-           ui-sref="search">Back to list
-        </a>      
-      </div>
-      
-      <div ng-if="action == 'send-broadcast-group'">
-        <a ng-click="mapCtrl.sendBroadcastToGroupButtonClick(target)"
-           ui-sref="home"
-           class="btn btn-success">Send to group
-        </a>
-        <a class="btn btn-default"
-           ui-sref="search">Back to list
-        </a>      
-      </div>
-      <div ng-if="action == 'set-default-loc'">
-        <a ng-click="mapCtrl.setDefaultLocationButtonClick(target)"           
-           class="btn btn-success">
-          Set location
-        </a>
-        <a class="btn btn-default"
-           ui-sref="user">
-          Back to profile
-        </a>
+      <div ng-switch="action">
+        <div ng-switch-when="send-response">
+          <a ng-click="mapCtrl.sendResponseButtonClick(target)"
+             ui-sref="home"
+             class="btn btn-success">Send location
+          </a>
+          <a class="btn btn-default" 
+             ui-sref="notifications">Back to list
+          </a>            
+        </div>
+        <div ng-switch-when="send-broadcast">
+          <a ng-click="mapCtrl.sendBroadcastButtonClick(target)"
+             ui-sref="home" class="btn btn-success">
+             Send location</a>
+          <a class="btn btn-default"
+             ui-sref="search">Back to list</a>      
+        </div>
+        <div ng-switch-when="send-broadcast-group">
+          <a ng-click="mapCtrl.sendBroadcastToGroupButtonClick(target)"
+             ui-sref="home"
+             class="btn btn-success">Send to group</a>
+          <a class="btn btn-default"
+             ui-sref="search">Back to list</a>      
+        </div>
+        <div ng-switch-when="set-default-loc">
+          <a ng-click="mapCtrl.setDefaultLocationButtonClick(target)"           
+             class="btn btn-success">Set location</a>
+          <a class="btn btn-default"
+             ui-sref="user">Back to profile</a>
+        </div>        
+        <div ng-switch-when="share-link">
+          <button ng-click="mapCtrl.shareLocationLinkButtonClick()" 
+                  class="btn btn-info">Copy link</button>&nbsp;
+          <input type="text" 
+                 id="shareLocationLinkTextbox"
+                 style="width:60%;" 
+                 ng-model="mapCtrl.shareLocationUrl"/>
+        </div>
       </div>
         
     </div> <!-- / choosingLocation buttons -->
+    
+  
     
   </div> <!-- /.map-overlay-mapbuttons -->
   
