@@ -52,7 +52,14 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToast
                 url: '/user',
                 templateUrl: 'view/user/profile.html',
                 controller: 'userController as userCtrl'                
-            });            
+            });
+        $stateProvider
+            .state('error', {
+                url: '/error',
+                templateUrl: 'view/error/error.html',
+                controller: 'errorController as errorCtrl',
+                params: { type: null }
+            });
             
         ngToastProvider.configure({            
             horizontalPosition: 'right',            

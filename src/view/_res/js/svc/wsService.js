@@ -39,7 +39,9 @@ miaApp.factory('wsService', ['$location', 'requestService', 'userService',
         });
                 
         self.webSocket.onclose = function(event) {
+            
             console.log('closed!');
+            notifyObservers('ws-error', 'websocketError');
         };
     };
     
