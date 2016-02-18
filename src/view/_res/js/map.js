@@ -85,8 +85,8 @@ miaApp.controller('mapController', [
         var userMarker = L.marker(L.latLng(0,0), {
             icon: L.icon({
                 iconUrl:    '/img/map-icons/user-marker.png',
-                iconSize:   [25,40.8],
-                iconAnchor: [12.5,40.8],
+                iconSize:   [50,50],
+                iconAnchor: [25,50],
                 popupAnchor:[0,0]
             }),                                
             draggable: self.choosingLocation($scope.action)
@@ -191,10 +191,12 @@ function mapFunctions(self, dep) {
             map.removeLayer(dep.userMarker);   
         }
         
+        map.removeLayer(itemLayer);
+        itemLayer = L.layerGroup().addTo(map);        
+        
         initialiseItemLayer(self, {
             map: map,
-            itemLayer: itemLayer,
-            userMarker: dep.userMarker
+            itemLayer: itemLayer            
         });       
                     
         //TODO Change markers
@@ -280,12 +282,7 @@ function requestFunctions(self, dep) {
 
 // Read itemdata and set up icons
 function initialiseItemLayer(self, dep) {
-    var map = dep.map;
-    var itemLayer = dep.itemLayer;
-    var userMarker = dep.userMarker;
-
-    map.removeLayer(itemLayer);
-    itemLayer = L.layerGroup().addTo(map);        
+    
     var itemData = getMapItemData(self.mapItemData, self.currentLocation);
     
     if (!self.unsupportedMap && itemData != null) {            
@@ -293,7 +290,7 @@ function initialiseItemLayer(self, dep) {
         var H = getMapItemDataHeaders(self.mapItemData);
         var IconTypes = getIconTypes();
         
-        var meetingRoomLayer = L.layerGroup().addTo(itemLayer);
+        var meetingRoomLayer = L.layerGroup().addTo(dep.itemLayer);
         itemData.meetingRooms.forEach(function(room) {                             
             var marker = L.marker( [room[H.MEETING_ROOM.LATLNG][0], room[H.MEETING_ROOM.LATLNG][1]],
                 { icon: createIcon(IconTypes.MEETING_ROOM) })
@@ -303,7 +300,7 @@ function initialiseItemLayer(self, dep) {
                             + room[H.MEETING_ROOM.INFO]);                
         });
         
-        var liftLayer = L.layerGroup().addTo(itemLayer);
+        var liftLayer = L.layerGroup().addTo(dep.itemLayer);
         itemData.lifts.forEach(function(lift) {                
             L.marker( [lift[H.LIFT.LATLNG][0], lift[H.LIFT.LATLNG][1]],
                 { icon: createIcon(IconTypes.LIFT(lift[H.LIFT.TYPE])) })
@@ -311,7 +308,7 @@ function initialiseItemLayer(self, dep) {
                 .bindPopup("<b>" + capitalise(lift[H.LIFT.TYPE]) + "</b>");                
         });
         
-        var toiletLayer = L.layerGroup().addTo(itemLayer);
+        var toiletLayer = L.layerGroup().addTo(dep.itemLayer);
         itemData.toilets.forEach(function(toilet) {
             L.marker( [toilet[H.TOILET.LATLNG][0], toilet[H.TOILET.LATLNG][1]],
                 { icon: createIcon(IconTypes.TOILET(toilet[H.TOILET.TYPE])) })
@@ -319,16 +316,13 @@ function initialiseItemLayer(self, dep) {
                 .bindPopup("<b>Toilets</b><br>" + capitalise(toilet[H.TOILET.TYPE]));                
         });
         
-        var otherLayer = L.layerGroup().addTo(itemLayer);
+        var otherLayer = L.layerGroup().addTo(dep.itemLayer);
         itemData.other.forEach(function(other) {
             L.marker( [other[H.OTHER.LATLNG][0], other[H.OTHER.LATLNG][1]],
                 { icon: createIcon(IconTypes.OTHER(other[H.OTHER.TYPE])) })
                 .addTo(otherLayer)
                 .bindPopup("<b>" + capitalise(other[H.OTHER.TYPE]) + "</b>"
-                            + ((other[H.OTHER.NAME] != null) ? "<br>" + other[H.OTHER.NAME] : ""));                
-                            
-                            
-            console.log(other);
+                            + ((other[H.OTHER.NAME] != null) ? "<br>" + other[H.OTHER.NAME] : ""));                                                                                   
         });        
     }                
 }
