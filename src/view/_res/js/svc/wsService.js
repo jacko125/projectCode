@@ -1,5 +1,5 @@
-miaApp.factory('wsService', ['$location', 'requestService', 'userService', 
-    function($location, requestService, userService) {       
+miaApp.factory('wsService', ['$rootScope', '$location', 'requestService', 'userService',
+    function($rootScope, $location, requestService, userService) {       
     var self = this;	
 	
     self.webSocket = {};
@@ -20,7 +20,9 @@ miaApp.factory('wsService', ['$location', 'requestService', 'userService',
         self.token = token;
         self.username = username;
         
+        
         self.webSocket = new WebSocket('ws://' + $location.host() + ":" + config.ws.port, self.token); 
+        
         self.webSocket.onopen = function(event) {            
             console.log('connection opened. sending connect packet...');
             self.webSocket.send(JSON.stringify({
@@ -38,15 +40,16 @@ miaApp.factory('wsService', ['$location', 'requestService', 'userService',
             notifyObservers: notifyObservers
         });
                 
-        self.webSocket.onclose = function(event) {
-            
-            console.log('closed!');
-            notifyObservers('ws-error', 'websocketError');
+        self.webSocket.onclose = function(event) {            
+            if ($rootScope.loggedIn) {
+                notifyObservers('ws-error', 'websocketError');    
+            }                                  
         };
     };
     
     var disconnect = function() {
-        self.webSocket.close();
+        if (self.websocket != null)
+            self.webSocket.close();
     };
     
     var sendRequest = function(user, recipient) {

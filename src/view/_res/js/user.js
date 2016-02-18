@@ -38,8 +38,7 @@ miaApp.controller('userController', [
                 $scope.$emit('set-default-loc', 'type');
                     
             }, function error(response) {
-                consoole.log(response);
-                //TODO: Handle error gracefully
+                $scope.$emit('error', 'httpError');
             });
         }
         

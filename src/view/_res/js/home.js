@@ -28,12 +28,12 @@ miaApp.controller('homeController', [
                         var description = $rootScope.user.FirstName + ' ' + $rootScope.user.LastName;
                         wsService.connect($scope, self.loginForm.username, description, response.data.token);
                         $scope.loggedIn = $rootScope.loggedIn;
-                        $scope.$emit('logged_in', $rootScope.user);
+                        $scope.$emit('logged-in', $rootScope.user);
                         $state.go('home');
                         
                     }, function error(response) {
                         delete $window.sessionStorage.token;                
-                        $state.go('error', 'httpError');
+                        $state.go('error', { errorCode: 'httpError' });
                     });    
                         
                 } else {
@@ -43,8 +43,8 @@ miaApp.controller('homeController', [
                 }                                             
                 
             }, function error(response) {
-                $state.go('error', 'staffSearchError');
                 // Handle Staff Search service down
+                $scope.$emit('error', 'staffSearchError');                
             });       
         }
 

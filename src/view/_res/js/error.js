@@ -1,11 +1,16 @@
 miaApp.controller('errorController', [
-    '$http', '$window', '$scope','$rootScope', '$state', '$stateParams',    
-    function($http, $window, $scope, $rootScope, $state, $stateParams) {   
+    '$http', '$window', '$scope','$rootScope', '$state', '$stateParams', 
+    'errorService',
+    function($http, $window, $scope, $rootScope, $state, $stateParams,
+             errorService) {   
              
         var self = this;
 
 
-        self.errorType = $stateParams.type;
+        self.errorMessage = errorService.getErrorMessageByCode($stateParams.errorCode);       
+        
+        
+        
      
         
     }

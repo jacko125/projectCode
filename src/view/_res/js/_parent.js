@@ -54,14 +54,24 @@ miaApp.controller('parentController', [
                     $scope.notifyCount = requestService.messages.length;
                     var toastMsg = 'You have new notifications';
                     showToast(ngToast, toastMsg, 'info');
-                    break;
-                        
+                    break;                                                        
             }            
-            $state.transitionTo($state.current, $stateParams, {
-                reload: true,
-                inherit: false,
-                notify: true
-            });
+            
+            if (event != 'ws-error') {
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });                
+            } else {                
+                self.logout();
+                $('.navbar-toggle').click();                    
+                $state.transitionTo('error', { errorCode: data }, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });                              
+            }            
         });
         
         $scope.$on('set-default-loc', function(event, data) {
@@ -74,6 +84,12 @@ miaApp.controller('parentController', [
             }            
             showToast(ngToast, message, 'info');                        
         });        
+        
+        $scope.$on('error', function(event, data) {
+            self.logout();
+            $('.navbar-toggle').click();      
+            $state.go('error', { errorCode: data });                        
+        })
         
         self.notificationButtonClass = function() {
             return {
@@ -121,21 +137,25 @@ function loginFunctions(self, dep) {
 
     dep.$scope.loggedIn = false;
         
-    dep.$scope.$on('logged_in', function(event, data) {                        
+    dep.$scope.$on('logged-in', function(event, data) {                        
         dep.$scope.username = data.Shortname; 
         dep.$rootScope.loggedIn = true;
         dep.$scope.loggedIn = true;
         showToast(dep.ngToast, 'Logged in as <b>' + data.Shortname + '</b>', 'success');
     });
     
-    self.logoutButtonClick = function() {        
+    self.logout = function() {
         delete dep.$window.sessionStorage.token;
         dep.$scope.loggedIn = false;
         dep.$rootScope.loggedIn = false;
-        dep.wsService.disconnect();
+        dep.wsService.disconnect();        
+    }        
+    
+    self.logoutButtonClick = function() {        
+        self.logout();
         dep.$state.go('home');                
         $('.navbar-toggle').click();  // Close nav bar if open        
-    }               
+    }       
 }
 
 function showToast(ngToast, message, type) {

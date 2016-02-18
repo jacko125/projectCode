@@ -54,11 +54,11 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToast
                 controller: 'userController as userCtrl'                
             });
         $stateProvider
-            .state('error', {
+            .state('error', {   
                 url: '/error',
                 templateUrl: 'view/error/error.html',
                 controller: 'errorController as errorCtrl',
-                params: { type: null }
+                params: { errorCode: null }
             });
             
         ngToastProvider.configure({            
