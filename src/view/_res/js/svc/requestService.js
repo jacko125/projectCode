@@ -7,13 +7,9 @@ miaApp.factory('requestService', [function() {
             var indexToRemove = -1;
             // Remove duplicate messages based on type/sender 
             for (var i = 0; i < requestService.messages.length; i++) {                
-                var currentMsg = requestService.messages[i]
-                console.log('iterating...');
-                console.log(currentMsg);     
-                console.log(message);
+                var currentMsg = requestService.messages[i];
                 if (currentMsg.type == message.type && currentMsg.sender == message.sender) {
-                    indexToRemove = i;       
-                    console.log('found and removing');
+                    indexToRemove = i;                           
                 }
             }
             if (indexToRemove != -1) {

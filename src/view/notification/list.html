@@ -42,7 +42,7 @@
                 </span>
               </span>                                         
               <br><br>              
-              <i>{{message.datetime | timeSince }} ago</i>              
+              <i>{{message.datetime | date: 'h:mm a'}} ({{message.datetime | timeSince }} ago)</i>              
               <div class="text-right">
                 <span ng-switch="message.type">
                   <a ng-switch-when="request" 
