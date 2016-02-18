@@ -26,31 +26,6 @@
           </div>                        
         </div>
       </div> 
-            
-      <!-- Meeting room button -->            
-      <!--
-      <div ng-if="loggedIn" ng-class="homeCtrl.homeItemClass()"
-           data-toggle="collapse"
-           data-target=".navbar-collapse.in">    
-        <div class="tile-wrapper">
-          <div class="thumbnail tile tile-warning tile-home-item-sm hidden-xs">
-              <a href="#" class="tile-home-item-contents">
-                <i class="fa fa-users fa-4x"></i><br><br>
-                <b>Find a room</b> 
-              </a>
-          </div>          
-        </div>
-        <div class="pull-left">
-          <div class="thumbnail tile tile-warning tile-home-item-xs 
-                      hidden-sm hidden-md hidden-lg">
-              <a href="#" class="tile-home-item-contents">
-                <i class="fa fa-users fa-2x"></i><br><br>
-                <b>Find a room</b> 
-              </a>
-          </div>                        
-        </div>
-      </div> 
-      -->
       
       <!-- Map button -->
       <div ng-class="homeCtrl.homeItemClass('map')"
@@ -64,11 +39,11 @@
               </a>
           </div>
         </div>
-        <div ng-class="homeCtrl.mapSubItemClass()">
+        <div ng-class="homeCtrl.mapLoggedInSubclass()">
           <div class="thumbnail tile tile-info tile-home-item-xs 
                       hidden-sm hidden-md hidden-lg">
-              <a ui-sref="map"
-                 class="tile-home-item-contents"
+              <a class="tile-home-item-contents"
+                 ui-sref="map"                 
                  data-toggle="collapse"
                  data-target=".navbar-collapse.in">
                 <i class="fa fa-map fa-2x"></i><br><br>
@@ -76,7 +51,31 @@
               </a>
           </div>        
         </div>
-      </div>
+      </div>      
+            
+      <!-- Meeting room button -->                  
+      <div ng-class="homeCtrl.homeItemClass('meeting')"
+           data-toggle="collapse"
+           data-target=".navbar-collapse.in">    
+        <div class="tile-wrapper">
+          <div class="thumbnail tile tile-warning tile-home-item-sm hidden-xs">
+              <a href="#" class="tile-home-item-contents">
+                <i class="fa fa-users fa-4x"></i><br><br>
+                <b>Find a room</b> 
+              </a>
+          </div>          
+        </div>
+        <div ng-class="homeCtrl.meetingLoggedInSubclass()">
+          <div class="thumbnail tile tile-warning tile-home-item-xs 
+                      hidden-sm hidden-md hidden-lg">
+              <a href="#" class="tile-home-item-contents">
+                <i class="fa fa-users fa-2x"></i><br><br>
+                <b>Find a room</b> 
+              </a>
+          </div>                        
+        </div>
+      </div> 
+                  
       
        <!-- Login button -->
       <div ng-class="homeCtrl.homeItemClass('login')"
@@ -104,7 +103,7 @@
         </div>
         
         <!-- Mobile view -->
-        <div class="pull-left">        
+        <div class="tile-wrapper">        
           <div ng-if="!loggedIn"
                class="thumbnail tile tile-alt tile-home-item-xs 
                       hidden-sm hidden-md hidden-lg">
@@ -116,7 +115,7 @@
           </div>  
         </div>
         
-        <div ng-class="homeCtrl.loginSubItemClass()">
+        <div class="pull-left">
           <div ng-if="loggedIn"
                class="thumbnail tile tile-primary tile-home-item-xs 
                       hidden-sm hidden-md hidden-lg">

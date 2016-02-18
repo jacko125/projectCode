@@ -19,7 +19,12 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToast
                 templateUrl: 'view/home/login.html',
                 controller: homeCtrl,
                 params: { login: null }
-            });
+            })
+            // .state('about', {
+                // url: '/about',
+                // templateUrl: 'view/home/about.html',
+                // controller: aboutCtrl,                
+            // });
                         
         $stateProvider
             .state('search', {
@@ -48,6 +53,12 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToast
                 params: { action: null }
             });
         $stateProvider
+            .state('meeting', {
+                url: '/meeting',
+                templateUrl: 'view/meeting/search.html',
+                controller: 'meetingController as meetingCtrl'                
+            });
+        $stateProvider
             .state('user', {
                 url: '/user',
                 templateUrl: 'view/user/profile.html',
@@ -55,11 +66,11 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToast
             });
         $stateProvider
             .state('error', {   
-                url: '/error',
                 templateUrl: 'view/error/error.html',
                 controller: 'errorController as errorCtrl',
                 params: { errorCode: null }
             });
+           
             
         ngToastProvider.configure({            
             horizontalPosition: 'right',            

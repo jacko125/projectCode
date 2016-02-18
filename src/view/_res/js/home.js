@@ -60,54 +60,39 @@ miaApp.controller('homeController', [
         
         self.homeItemClass = function(item) {
             if (!$rootScope.loggedIn) {
-                if (item == 'map') { 
+                if (item == 'login') { 
                     return {                
-                        'col-xs-6': true,
-                        'col-sm-3 ': true,
-                        'col-sm-offset-3': true
+                        'col-xs-12': true,
+                        'col-sm-4': true,
+                        'col-sm-offset-0': true
                     }
-                } else if (item == 'login') {
+                } else {
                     return {                
                         'col-xs-6': true,
-                        'col-sm-3': true,
+                        'col-sm-4': true,
                         'col-sm-offset-0': true                        
-                    }                    
+                    }                       
                 }
             } else {
-                if (item == 'search') {
-                    return {
-                        'col-xs-3': true,
-                        'col-xs-offset-3': true,
-                        'col-sm-4': true,
-                        'col-sm-offset-0': true
-                    }
-                } else if (item == 'map') {
-                    return {
-                        'col-xs-3': true,
-                        'col-xs-offset-0': true,
-                        'col-sm-4': true,
-                        'col-sm-offset-0': true
-                    }
-                } else if (item == 'login') {
-                    return {                        
-                        'col-xs-12': true,                        
-                        'col-sm-4': true,
-                        'col-sm-offset-0': true
-                    }
+                var retVal = {
+                    'col-sm-3': true,
+                    'col-xs-6': true
                 }
+                return retVal;
             }
         }            
-        self.mapSubItemClass = function() {
+        self.mapLoggedInSubclass = function() {
             return {
                 'pull-right': !$scope.loggedIn,
                 'pull-left': $scope.loggedIn
             }
         }
-        self.loginSubItemClass = function() {
+        self.meetingLoggedInSubclass = function() {
             return {
-                'tile-wrapper': true
+                'pull-left': !$scope.loggedIn,
+                'pull-right': $scope.loggedIn
             }
-        }
+        }        
         
 }]);
     
