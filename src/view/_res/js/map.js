@@ -11,20 +11,18 @@ miaApp.controller('mapController', [
         self.mapViewData = mapViewData; 
         self.mapItemData = mapItemData;                
         
-        if ($stateParams.link != null) {
-            $stateParams.action = 'view-link';
-            console.log
+        if ($stateParams.link != null) { // Viewing location from link
+            $stateParams.action = 'view-link';            
             $stateParams.target = getLinkLocation($stateParams.linkLocation);
         }
-        else if ($stateParams.action == null) 
+        else if ($stateParams.action == null) // Default to sharing link view
             $stateParams.action = 'share-link';                              
                                
         // stateParams actions: "send-response","view-response"               
         $scope.action = $stateParams.action; // Action being taken
-        $scope.target = $stateParams.target; // Recipient of action    
-
+        $scope.target = $stateParams.target; // Data associated with action                        
         
-        var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 1' };
+        var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 2' };
         self.currentLocation = ($rootScope.user) ? getUserLocation($rootScope.user) : defaultLocation;                                           
  
         self.allLocations = [];
@@ -181,19 +179,11 @@ function mapFunctions(self, dep) {
             continuousWorld: false,
             noWrap: true
         }).addTo(map);
-                        
-        dep.userMarker.addTo(map);             
-         
-        if (self.choosingLocation(dep.$stateParams.action) 
-            || self.viewingLocation(dep.$stateParams.action)) {                
-            dep.userMarker.addTo(map);                                       
-        } else {
-            map.removeLayer(dep.userMarker);   
-        }
+                                         
+        dep.userMarker.addTo(map);                                       
         
         map.removeLayer(itemLayer);
-        itemLayer = L.layerGroup().addTo(map);        
-        
+        itemLayer = L.layerGroup().addTo(map);                
         initialiseItemLayer(self, {
             map: map,
             itemLayer: itemLayer            
@@ -206,8 +196,7 @@ function mapFunctions(self, dep) {
         console.log(e.latlng.lat.toFixed(4) + "," + e.latlng.lng.toFixed(4));
         
         if (self.choosingLocation(dep.$stateParams.action)) {                       
-            dep.userMarker.setLatLng(e.latlng);
-            dep.userMarker.addTo(map);            
+            dep.userMarker.setLatLng(e.latlng);            
         }                              
     });
     
@@ -294,35 +283,44 @@ function initialiseItemLayer(self, dep) {
         itemData.meetingRooms.forEach(function(room) {                             
             var marker = L.marker( [room[H.MEETING_ROOM.LATLNG][0], room[H.MEETING_ROOM.LATLNG][1]],
                 { icon: createIcon(IconTypes.MEETING_ROOM) })
-                .addTo(meetingRoomLayer)
-                .bindPopup("<b>Meeting room</b> " + room[H.MEETING_ROOM.NAME] + "<br>"
-                            + "Capacity: " + room[H.MEETING_ROOM.CAPACITY] + "<br>"
-                            + room[H.MEETING_ROOM.INFO]);                
+                .addTo(meetingRoomLayer);
+            marker.bindPopup("<b>Meeting room (" + room[H.MEETING_ROOM.CAPACITY] + ")</b>" 
+                            + "<br>" + room[H.MEETING_ROOM.NAME]
+                            + ((room[H.MEETING_ROOM.INFO].length > 0) ? "<br>" + room[H.MEETING_ROOM.INFO] : ""));
+                            // + "<br>[" + marker.getLatLng().lat.toFixed(4) + "," 
+                            // + marker.getLatLng().lng.toFixed(4) + "]");
         });
         
         var liftLayer = L.layerGroup().addTo(dep.itemLayer);
         itemData.lifts.forEach(function(lift) {                
-            L.marker( [lift[H.LIFT.LATLNG][0], lift[H.LIFT.LATLNG][1]],
+            var marker = L.marker( [lift[H.LIFT.LATLNG][0], lift[H.LIFT.LATLNG][1]],
                 { icon: createIcon(IconTypes.LIFT(lift[H.LIFT.TYPE])) })
-                .addTo(liftLayer)
-                .bindPopup("<b>" + capitalise(lift[H.LIFT.TYPE]) + "</b>");                
+                .addTo(liftLayer);
+            marker.bindPopup("<b>" + capitalise(lift[H.LIFT.TYPE]) + "</b>");
+                    // + "<br>[" + marker.getLatLng().lat.toFixed(4) + "," 
+                    // + marker.getLatLng().lng.toFixed(4) + "]");
         });
         
         var toiletLayer = L.layerGroup().addTo(dep.itemLayer);
         itemData.toilets.forEach(function(toilet) {
-            L.marker( [toilet[H.TOILET.LATLNG][0], toilet[H.TOILET.LATLNG][1]],
+            var marker = L.marker( [toilet[H.TOILET.LATLNG][0], toilet[H.TOILET.LATLNG][1]],
                 { icon: createIcon(IconTypes.TOILET(toilet[H.TOILET.TYPE])) })
-                .addTo(toiletLayer)
-                .bindPopup("<b>Toilets</b><br>" + capitalise(toilet[H.TOILET.TYPE]));                
+                .addTo(toiletLayer);                
+            marker.bindPopup("<b>Toilets</b><br>" 
+                    + capitalise(toilet[H.TOILET.TYPE]));
+                    // + "<br>[" + marker.getLatLng().lat.toFixed(4) + "," 
+                    // + marker.getLatLng().lng.toFixed(4) + "]");
         });
         
         var otherLayer = L.layerGroup().addTo(dep.itemLayer);
         itemData.other.forEach(function(other) {
-            L.marker( [other[H.OTHER.LATLNG][0], other[H.OTHER.LATLNG][1]],
+            var marker = L.marker( [other[H.OTHER.LATLNG][0], other[H.OTHER.LATLNG][1]],
                 { icon: createIcon(IconTypes.OTHER(other[H.OTHER.TYPE])) })
-                .addTo(otherLayer)
-                .bindPopup("<b>" + capitalise(other[H.OTHER.TYPE]) + "</b>"
-                            + ((other[H.OTHER.NAME] != null) ? "<br>" + other[H.OTHER.NAME] : ""));                                                                                   
+                .addTo(otherLayer);
+            marker.bindPopup("<b>" + capitalise(other[H.OTHER.TYPE]) + "</b>"
+                            + ((other[H.OTHER.NAME].length > 0) ? "<br>" + other[H.OTHER.NAME] : ""));
+                            //+ "<br>[" + marker.getLatLng().lat.toFixed(4) + "," 
+                            //+ marker.getLatLng().lng.toFixed(4) + "]");
         });        
     }                
 }
