@@ -65,7 +65,6 @@ miaApp.controller('parentController', [
                 });                
             } else {                
                 self.logout();
-                $('.navbar-toggle').click();                    
                 $state.transitionTo('error', { errorCode: data }, {
                     reload: true,
                     inherit: false,
