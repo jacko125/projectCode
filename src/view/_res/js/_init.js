@@ -49,8 +49,7 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToast
         $stateProvider
             .state('notifications', {
                 templateUrl: 'view/notification/list.html',
-                controller: 'notificationController as notifyCtrl',
-                params: { action: null }
+                controller: 'notificationController as notifyCtrl'                
             });
         $stateProvider
             .state('meeting', {
