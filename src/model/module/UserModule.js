@@ -18,8 +18,8 @@ module.exports = {
         });
     },
     
-    updateUserDefaultLoc: function(username, location, callback) {
-        // Get user, then update user in callback
+    // Get user, then update user's default location in callback
+    updateUserDefaultLoc: function(username, location, callback) {        
         UserDAO.getUser({
             username: username,
             callback: function(users) {
@@ -33,8 +33,21 @@ module.exports = {
         });
     },
     
-    //Defined outside import
-    updateUserDefaultLocType: updateUserDefaultLocType,
+    // Get user, then update user's default location type in callback
+    updateUserDefaultLocType: function (username, defaultLocType, callback) {
+        UserDAO.getUser({
+            username: username,
+            callback: function(users) {
+                var user = users[0];
+                user.defaultLocType = defaultLocType;
+                user.defaultLocDate = new Date();
+                UserDAO.updateUser({
+                    user: user,
+                    callback: callback
+                });                
+            }
+        });
+    },
     
     getAllUsers: function(callback) {
         UserDAO.getAllUsers({
@@ -46,6 +59,8 @@ module.exports = {
         UserDAO.deleteAllUsers();
     },
     
+    // Check all users if their default-location has expired.
+    // Reset their default location type to 'never' if expired.
     flushUserDefaultLocs: function() {
         UserDAO.getAllUsers({
             callback: function(users) {                
@@ -75,19 +90,4 @@ module.exports = {
         });
     }
 
-}
-
-function updateUserDefaultLocType(username, defaultLocType, callback) {
-    UserDAO.getUser({
-        username: username,
-        callback: function(users) {
-            var user = users[0];
-            user.defaultLocType = defaultLocType;
-            user.defaultLocDate = new Date();
-            UserDAO.updateUser({
-                user: user,
-                callback: callback
-            });                
-        }
-    })
 }
