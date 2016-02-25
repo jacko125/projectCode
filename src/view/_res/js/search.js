@@ -9,39 +9,39 @@ miaApp.controller('searchController', [
             $state.go('home');
         
         if ('profile' in $stateParams && $stateParams.profile == null)
-            $state.go('search');        
+            $state.go('search');                        
+        
+        // Initialise search parameters, groups and results list
+        self.searchParams = { name: '' };
+        self.profile = $stateParams.profile;                
         
         if (staffSearchService.group == null)
             staffSearchService.group = [];                
-        $scope.group = staffSearchService.group;        
-        
-        self.searchParams = { name: '' };
-        self.profile = $stateParams.profile;
-        $scope.requestUserLocation = '';                
+        $scope.group = staffSearchService.group;                        
         
         $scope.results = staffSearchService.results;
         self.loadStaffList = function() {
-            staffSearchService.getStaffList(self.searchParams).then(function(results) {
-                console.log(results);
+            staffSearchService.getStaffList(self.searchParams).then(function(results) {                
                 staffSearchService.results = results.data;
                 $scope.results = results.data;
             });
         };        
 
+        // Used for requestUserLocation confirmation dialog
+        $scope.requestUserLocation = '';      
         self.removeRequestConfirmation = function() {
             $scope.requestUserLocation = null;
-        };
-        
+        };        
         self.showRequestConfirmation = function(staffShortName) {
             $scope.requestUserLocation = staffShortName;
         };
-
+        
         self.sendRequestButtonClick = function(recipient) {
             // Request button was clicked from search-list, so profile is not set yet.
             if (!('profile' in $stateParams))
                 self.profile = recipient;
 
-            var toastMsg = 'You have requested ' + self.profile.Description + '\'s location';
+            var toastMsg = 'You have requested ' + self.profile.FirstName + ' ' + self.profile.LastName + '\'s location';
             showToast(ngToast, toastMsg, 'info');
             wsService.sendRequest($rootScope.user, recipient.Shortname);
             $scope.requestUserLocation = null;
@@ -57,6 +57,7 @@ miaApp.controller('searchController', [
 
 }]);
 
+// Functions used for manipulating selected user groups
 function groupFunctions(self, dep) {
     
         self.sendRequestToGroupButtonClick = function(){
@@ -71,7 +72,7 @@ function groupFunctions(self, dep) {
 		self.addToGroupButtonClick = function(staff){						
             if (dep.staffSearchService.group.indexOf(staff) == -1)
                 dep.staffSearchService.group.push(staff);
-            $("#group-item-container").scrollTop($("#group-item-container")[0].scrollHeight);            
+            //$("#group-item-container").scrollTop($("#group-item-container")[0].scrollHeight);            
 		}        
     
         self.groupRemoveMember = function(staff){
