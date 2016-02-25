@@ -102,13 +102,17 @@ miaApp.controller('mapController', [
         
         // Assume received location is valid (and maps exist)
         if (self.viewingLocation($stateParams.action)) {              
-            var location = {};
-            
-            if ($stateParams.action == 'view-link')
-                location = $stateParams.target;
-            else 
-                location = $stateParams.target.data.location;
-            
+            var location = {};            
+            switch ($stateParams.action) {
+                case 'view-link':
+                    location = mapService.getLinkLocation($stateParams.target);
+                    break;
+                case 'view-room':
+                    location = $stateParams.target; // Rooms are a subset of locations                    
+                    break;
+                default:
+                    location = $stateParams.target.data.location
+            }                                
             self.currentLocation = location;
             self.updateMap();
             userMarker.setLatLng(L.latLng(location.latLng.lat, location.latLng.lng));
@@ -289,6 +293,11 @@ function initialiseItemLayer(self, dep) {
                             + ((room[H.MEETING_ROOM.INFO].length > 0) ? "<br>" + room[H.MEETING_ROOM.INFO] : ""));
                             // + "<br>[" + marker.getLatLng().lat.toFixed(4) + "," 
                             // + marker.getLatLng().lng.toFixed(4) + "]");
+                            
+            if (dep.$stateParams.action == 'view-room'
+                && dep.$stateParams.target.latLng.lat == room[H.MEETING_ROOM.LATLNG][0]
+                && dep.$stateParams.target.latLng.lng == room[H.MEETING_ROOM.LATLNG][1])
+                marker.openPopup();                
         });
         
         var liftLayer = L.layerGroup().addTo(dep.itemLayer);
@@ -333,6 +342,8 @@ function getMapOverlayMessage(action, target) {
             return 'Set your default location.';
         case 'view-link':
             return 'Viewing a location from a link.';
+        case 'view-room': 
+            return 'Viewing meeting room ' + target.name + '.';
         case 'share-link':
             return 'Share your location with the link below.';
         case 'view-response':

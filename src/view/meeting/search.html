@@ -1,7 +1,69 @@
-<div class="container-meeting">
-
-  <h1>Find a room</h1> 
-  <p class="lead">...because MRBS is bad.</p>    
+<div class="container-meeting">  
+  <i class="fa fa-users fa-3x"></i>
+  <h2>Find a meeting room</h2>
+  <div class="row">
+    <div class="col-xs-12">    
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span ng-bind="meetingCtrl.currentLocation.building"></span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">        
+          <li ng-repeat="building in meetingCtrl.allBuildings">        
+            <a ng-click="meetingCtrl.changeBuilding(building)" ng-bind="building"></a>
+          </li>                       
+        </ul>      
+      </div> 
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span ng-bind="meetingCtrl.currentLocation.level"></span>
+          <span class="caret"></span>
+        </button>      
+        <ul class="dropdown-menu" role="menu">        
+          <li ng-repeat="level in meetingCtrl.allLevels">        
+            <a ng-click="meetingCtrl.changeLevel(level)" ng-bind="level"></a>
+          </li>                       
+        </ul>      
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-user"></i> <span ng-bind="meetingCtrl.currentLocation.capacity"></span>
+          <span class="caret"></span>
+        </button>      
+        <ul class="dropdown-menu" role="menu">        
+          <li ng-repeat="capacity in meetingCtrl.allCapacities">
+            <a ng-click="meetingCtrl.changeCapacity(capacity)">
+              <i class="fa fa-user"></i> {{capacity}}
+            </a>
+          </li>                       
+        </ul>      
+      </div>            
+    </div>
+  </div>  
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+      <div class="form-inline-roomname">
+        <input type="text" 
+               class="form-control" 
+               placeholder='Room name (e.g. "<<1 Martin Pl... >>", "1MP_1.23")'
+               ng-model="meetingCtrl.roomName"
+               ng-model-options="{ debounce: 350 }"
+               ng-change="meetingCtrl.changeName()"/>
+      </div>
+      <br>
+      <div class="list-group list-rooms text-left">
+        
+        <a ng-repeat="room in meetingCtrl.currentRooms"
+           class="list-group-item"
+           ui-sref="map({action: 'view-room', target: room})">
+          <p class="list-group-item-heading"><b>Room {{room.name}}</b> (Capacity: {{room.capacity}})</p>
+          <p class="list-group-item-text">{{room.building}}, {{room.level}}</p>          
+        </a>
+        
+      </div>    
+    
+    </div>
   
+  </div>
   
 </div>

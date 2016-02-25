@@ -1,5 +1,16 @@
 .container-meeting {
-    text-align: center;
-    margin-top: 40px;
+    text-align: center;    
+
+}
+
+.form-inline-roomname {
+    margin-top:15px;        
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.list-rooms {
+  max-height: 40vh;
+  overflow: auto;
 
 }
