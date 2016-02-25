@@ -1,9 +1,9 @@
 miaApp.controller('mapController', [
     '$rootScope', '$scope', '$state', '$stateParams', '$location',
-    'ngToast', 'requestService', 'wsService', 'userService',
+    'mapService', 'requestService', 'wsService', 'userService',
     function(                  
-        $rootScope, $scope, $state, $stateParams,
-        $location, ngToast, requestService, wsService, userService) { 
+        $rootScope, $scope, $state, $stateParams, $location, 
+        mapService, requestService, wsService, userService) { 
         
         var self = this;
         
@@ -13,32 +13,31 @@ miaApp.controller('mapController', [
         
         if ($stateParams.link != null) { // Viewing location from link
             $stateParams.action = 'view-link';            
-            $stateParams.target = getLinkLocation($stateParams.linkLocation);
+            $stateParams.target = $stateParams.linkLocation;
         }
         else if ($stateParams.action == null) // Default to sharing link view
             $stateParams.action = 'share-link';                              
-                               
-        // stateParams actions: "send-response","view-response"               
+                                       
         $scope.action = $stateParams.action; // Action being taken
-        $scope.target = $stateParams.target; // Data associated with action                        
+        $scope.target = $stateParams.target; // Data associated with action                               
         
         var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 2' };
-        self.currentLocation = ($rootScope.user) ? getUserLocation($rootScope.user) : defaultLocation;                                           
+        self.currentLocation = ($rootScope.user) ? mapService.getUserLocation($rootScope.user) : defaultLocation;                                           
  
         self.allLocations = [];
         self.allLocations = self.allLocations.concat(self.mapViewData);                        
         self.allLocations.shift(); // Remove default map from list        
                 
-        self.unsupportedMap = (getMapViewData(self.allLocations, self.currentLocation) == null)
+        self.unsupportedMap = (mapService.getMapViewData(self.allLocations, self.currentLocation) == null)
         
         self.allBuildings = []; // Get all buildings
         for (var i = 0; i < self.allLocations.length; i++) 
             self.allBuildings.push(self.allLocations[i].building);                
-        self.allLevels = getBuildingLevels(self.currentLocation.building, self.allLocations);  // Get levels of the current building                      
+        self.allLevels = mapService.getBuildingLevels(self.currentLocation.building, self.allLocations);  // Get levels of the current building                      
                 
         self.changeBuilding = function (building) { 
             self.currentLocation.building = building;
-            self.allLevels = getBuildingLevels(self.currentLocation.building, self.allLocations);  // Get levels of the current building                      
+            self.allLevels = mapService.getBuildingLevels(self.currentLocation.building, self.allLocations);  // Get levels of the current building                      
             self.currentLocation.level = self.allLevels[0]; // Defaults floor to first level                        
             self.updateMap(); // Based in mapFunctions            
             self.updateUrlTextbox(self.currentLocation, userMarker.getLatLng());
@@ -50,14 +49,19 @@ miaApp.controller('mapController', [
         }
                 
         self.choosingLocation = function(action) {            
-            return (['send-broadcast',
-                     'send-broadcast-group',
-                     'send-response',
-                     'share-link',
-                     'set-default-loc'].indexOf(action) != -1)                      
+            return (['send-broadcast',          // target: staffProfile
+                     'send-broadcast-group',    // target: array[staffProfile]
+                     'send-response',           // target: message (type: request)
+                     'share-link',  
+                     'set-default-loc']         // target: profile (from userService)
+                     .indexOf(action) != -1)                      
         };        
         self.viewingLocation = function(action) {
-            return (['view-broadcast','view-response','view-link'].indexOf(action) != -1);
+            return (['view-broadcast',  // target: message (type: broadcast)
+                     'view-response',   // target: message (type: response)
+                     'view-room',       // target: room (from meetingController)
+                     'view-link']       // target: location (from link)
+                     .indexOf(action) != -1);
         };
         self.getMapOverlayMessage = getMapOverlayMessage;
         
@@ -97,6 +101,7 @@ miaApp.controller('mapController', [
         mapFunctions(self, {
             $location: $location,
             $stateParams: $stateParams,
+            mapService: mapService,
             userMarker: userMarker
         });                        
         
@@ -126,7 +131,7 @@ miaApp.controller('mapController', [
                 self.setMapView(userMarker.getLatLng());                
             } else {             
                 self.updateMap();            
-                var viewData = getMapViewData(self.mapViewData, self.currentLocation);
+                var viewData = mapService.getMapViewData(self.mapViewData, self.currentLocation);
                 var originLatLng = L.latLng(viewData.origin.latLng[0], viewData.origin.latLng[1]);                
                 userMarker.setLatLng(originLatLng)
                 self.setMapView(originLatLng);                
@@ -158,11 +163,11 @@ function mapFunctions(self, dep) {
     var itemLayer = L.layerGroup().addTo(map);
          
     self.updateMap = function () { // Change floor map when level is changed        
-        var viewData = getMapViewData(self.mapViewData, self.currentLocation);                                       
+        var viewData = dep.mapService.getMapViewData(self.mapViewData, self.currentLocation);                                       
         
         self.unsupportedMap = (viewData == null);
         if (self.unsupportedMap) {                        
-            viewData = getMapViewData(self.mapViewData, { building: "default", level: "default" });                                               
+            viewData = dep.mapService.getMapViewData(self.mapViewData, { building: "default", level: "default" });                                               
         }               
         
         map.setView([viewData.origin.latLng[0], viewData.origin.latLng[1]], viewData.zoom.min+1)                                                         
@@ -174,7 +179,7 @@ function mapFunctions(self, dep) {
         map.removeLayer(tileLayer);
         var url = 'http://' + dep.$location.host() 
                     + ':' + dep.$location.port() 
-                    + '/maps/' + getLocationFolder(self.currentLocation) 
+                    + '/maps/' + dep.mapService.getLocationFolder(self.currentLocation) 
                     + '/{z}/{x}/{y}.png';
         
         tileLayer = L.tileLayer(url, {
@@ -184,13 +189,19 @@ function mapFunctions(self, dep) {
             noWrap: true
         }).addTo(map);
                                          
-        dep.userMarker.addTo(map);                                       
+        dep.userMarker.addTo(map);        
+
+        if (dep.$stateParams.action == 'view-room') {
+            map.removeLayer(dep.userMarker);
+        }
         
         map.removeLayer(itemLayer);
         itemLayer = L.layerGroup().addTo(map);                
         initialiseItemLayer(self, {
+            $stateParams: dep.$stateParams,
             map: map,
-            itemLayer: itemLayer            
+            itemLayer: itemLayer,
+            mapService: dep.mapService,            
         });       
                     
         //TODO Change markers
@@ -209,11 +220,11 @@ function mapFunctions(self, dep) {
     }
     
     self.setMapView = function(latLng) {        
-        var viewData = getMapViewData(self.mapViewData, self.currentLocation);
+        var viewData = dep.mapService.getMapViewData(self.mapViewData, self.currentLocation);
         map.setView(latLng, viewData.zoom.min+1 , { animate: true });        
     }
     
-    //Get current position (Only for mobile devices)
+    //Get current position from GPS coordinates (Only for mobile devices)
     navigator.geolocation.getCurrentPosition(
         function(pos) {
             console.log('get current position');
@@ -226,6 +237,7 @@ function mapFunctions(self, dep) {
     );   
 }
 
+// Handlers for map-bottombutton actions
 function requestFunctions(self, dep) {
 
     self.sendResponseButtonClick = function(target) {
@@ -234,7 +246,7 @@ function requestFunctions(self, dep) {
             building: self.currentLocation.building,
             level: self.currentLocation.level,
             latLng: dep.userMarker.getLatLng()
-        }); // Parent is notified as observer from wsService (for toast)        
+        });
     }
  
     self.sendBroadcastButtonClick = function(target) {
@@ -243,7 +255,7 @@ function requestFunctions(self, dep) {
             building: self.currentLocation.building,
             level: self.currentLocation.level,
             latLng: dep.userMarker.getLatLng()
-        }); // Parent is notified as observer from wsService (for toast)        
+        }); 
     }
     
     self.sendBroadcastToGroupButtonClick = function(target) {
@@ -276,12 +288,11 @@ function requestFunctions(self, dep) {
 // Read itemdata and set up icons
 function initialiseItemLayer(self, dep) {
     
-    var itemData = getMapItemData(self.mapItemData, self.currentLocation);
+    var itemData = dep.mapService.getMapItemDataForLevel(self.mapItemData, self.currentLocation);
     
     if (!self.unsupportedMap && itemData != null) {            
         
-        var H = getMapItemDataHeaders(self.mapItemData);
-        var IconTypes = getIconTypes();
+        var H = dep.mapService.getMapItemDataHeaders(self.mapItemData);        
         
         var meetingRoomLayer = L.layerGroup().addTo(dep.itemLayer);
         itemData.meetingRooms.forEach(function(room) {                             
@@ -289,7 +300,7 @@ function initialiseItemLayer(self, dep) {
                 { icon: createIcon(IconTypes.MEETING_ROOM) })
                 .addTo(meetingRoomLayer);
             marker.bindPopup("<b>Meeting room (" + room[H.MEETING_ROOM.CAPACITY] + ")</b>" 
-                            + "<br>" + room[H.MEETING_ROOM.NAME]
+                            + "<br>" + dep.mapService.getMeetingRoomName(self.currentLocation, room[H.MEETING_ROOM.NAME])
                             + ((room[H.MEETING_ROOM.INFO].length > 0) ? "<br>" + room[H.MEETING_ROOM.INFO] : ""));
                             // + "<br>[" + marker.getLatLng().lat.toFixed(4) + "," 
                             // + marker.getLatLng().lng.toFixed(4) + "]");
@@ -348,116 +359,29 @@ function getMapOverlayMessage(action, target) {
             return 'Share your location with the link below.';
         case 'view-response':
             return 'Viewing ' + target.data.senderName + '\'s location';
+        case 'view-broadcast':
+            return 'Viewing location sent by ' + target.data.senderName + '.';
         default:
             return 'Place the pin at your location.';                            
     }
 }
 
-// Get user's location from Macnet profile "postalAddress"
-function getUserLocation(user) {    
-    // TODO: Handle NON-MACQUARIE BUILDING    
-    var regex = /(L\s\d)\s(.*)/
-    var locFields = user.postalAddress.match(regex);
-    console.log('Building: ' + locFields[2] + ' Level: ' + locFields[1]);    
-    return {
-        building: locFields[2],
-        level: locFields[1]
-    };
-    
-}
-
-// Get levels for a given building
-function getBuildingLevels(currentBuilding, allLocations) {
-    for (var i = 0; i < allLocations.length; i++) 
-        if (allLocations[i].building == currentBuilding)
-            return allLocations[i].levels;        
-    return [];
-}
-
-// Get name of folder for a building and level
-function getLocationFolder(currentLocation) {
-    var locationFolder = currentLocation.building + ' ' + currentLocation.level;
-    return locationFolder.replace(/\s/g, '_');           
-}
-
-// View data corresponds to map-specific view settings (origin, bounds, etc)
-function getMapViewData(allViewData, currentLocation) {
-    var result = null;
-    allViewData.forEach(function(location) {        
-        if (location.building == currentLocation.building) {
-            location.levels.forEach(function(level) {                 
-                if (level == currentLocation.level) {
-                    result = location;                    
-                    return;
-                }
-            });
-        }        
-    });        
-    return result;
-}
-
-// Item data corresponds to the various POIs on a map (meeting rooms, lifts, etc)
-function getMapItemData(allItemData, currentLocation) {
-            
-    var result = null;
-    allItemData.data.forEach(function(location) {
-        if (location.building == currentLocation.building) {            
-            location.levels.forEach(function(level) {
-                if (level.name == currentLocation.level) {                           
-                    result = level;
-                    return;
-                }
-            });
-        }
-    });
-    return result;    
-}
-
-// Item data is stored without headers for compactness
-function getMapItemDataHeaders(allItemData) {
-    var headers = allItemData.headers;
-    return {
-        MEETING_ROOM: {
-            NAME: headers.meetingRoom.indexOf('name'),
-            LATLNG: headers.meetingRoom.indexOf('latlng'),
-            CAPACITY: headers.meetingRoom.indexOf('capacity'),
-            INFO: headers.meetingRoom.indexOf('info')        
-        },
-        LIFT: {
-            TYPE: headers.lift.indexOf('type'),
-            LATLNG: headers.lift.indexOf('latlng')
-        },    
-        TOILET: {
-            TYPE: headers.toilet.indexOf('type'),
-            LATLNG: headers.toilet.indexOf('latlng')
-        },
-        OTHER: {
-            NAME: headers.other.indexOf('name'),    
-            TYPE: headers.other.indexOf('type'),            
-            LATLNG: headers.other.indexOf('latlng')
-        }
-    }
-    
-}
-
 // Default options for icons
-function getIconTypes() {
-    
-    return {
-        MEETING_ROOM:   { size: 30, url: 'meeting' },
-        LIFT: function(type) {
-            return { size: 30, url: type };
-        },
-        TOILET: function(type) {
-            return { size: 30, url: 'toilet-' + type };
-        },
-        OTHER: function(type) {
-            return { size: 30, url: type };
-        },
-        USER_MARKER: { size:50, url: 'user-marker' }
-    }
-    
+var IconTypes = {
+    MEETING_ROOM:   { size: 30, url: 'meeting' },
+    LIFT: function(type) {
+        return { size: 30, url: type };
+    },
+    TOILET: function(type) {
+        return { size: 30, url: 'toilet-' + type };
+    },
+    OTHER: function(type) {
+        return { size: 30, url: type };
+    },
+    USER_MARKER: { size:50, url: 'user-marker' }
 }
+
+// Create Leaflet.js icon from an iconType
 function createIcon(iconType) {
     return L.icon({
         iconUrl:        '/img/map-icons/' + iconType.url + '.png',
@@ -465,21 +389,6 @@ function createIcon(iconType) {
         iconAnchor:     [iconType.size/2, iconType.size/2],
         popupAnchor:    [0,0] 
     });    
-}
-
-function getLinkLocation(linkLocation) {     
-    console.log(linkLocation);
-    var locationArray = linkLocation.split(';');
-    var location = {
-        building: locationArray[0],
-        level: locationArray[1],
-        latLng: {
-            lat: locationArray[2].split(',')[0],
-            lng: locationArray[2].split(',')[1]
-        }
-    };
-    console.log(location);
-    return location;
 }
 
 function capitalise(token) {

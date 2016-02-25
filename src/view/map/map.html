@@ -11,6 +11,7 @@
   <!-- Info message when viewport too small for overlay -->
   <div class="map-overlay-message-alt hidden-md hidden-lg">
       <div class="block-div color-white bg-info"
+           ng-click="mapCtrl.panToMarker()"
            ng-bind="mapCtrl.getMapOverlayMessage(action, target)">      
       </div>
   </div>
@@ -57,13 +58,18 @@
     <div ng-if="mapCtrl.viewingLocation(action)">
       <div ng-switch="action">
         <div ng-switch-when="view-response">
-          <a class="btn btn-default" 
-             ui-sref="notifications">Back to list
-          </a>
+          <a class="btn btn-default" ui-sref="notifications">Back to list</a>
+        </div>
+        <div ng-switch-when="view-broadcast">
+          <a class="btn btn-default" ui-sref="notifications">Back to list</a>
         </div>
         <div ng-switch-when="view-link">
           <a class="btn btn-default" href="/#/map">Reset map
           </a>
+        </div>
+
+        <div ng-switch-when="view-room">
+          <a class="btn btn-default" ui-sref="meeting">Back to rooms</a>
         </div>
       </div>
     </div>
