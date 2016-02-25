@@ -7,6 +7,11 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
     self.staffSearchUrl = config.searchUrl;    
 
     var getStaffList = function(staffSearchParams) {
+        
+        if (config.test) {
+            return getStaffListTest(staffSearchParams);
+        }        
+        
         var params = {
             'callback': 'JSON_CALLBACK',
             'name': staffSearchParams.name
@@ -15,10 +20,6 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
         return $http.jsonp(self.staffSearchUrl + '/FindADProfileByName', {
             'params': params
         });
-    };
-
-    var getProfileImage = function(employeeID) {
-
     };
     
     var getStaffProfile = function(employeeID) {
@@ -31,7 +32,11 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
         });
     }
 
-    var getStaffProfileByShortname = function(shortname) {        
+    var getStaffProfileByShortname = function(shortname) {            
+        if (config.test) {
+            return getStaffProfileByShortnameTest(shortname);                        
+        }         
+        
         var params = {
             'callback': 'JSON_CALLBACK',
             'shortname': shortname
@@ -68,12 +73,17 @@ miaApp.factory('staffSearchService', ['$http', function($http) {
         });       
     }
     
-
+    var clearCache = function(staffSearchService) {
+        staffSearchService.results = [];
+        staffSearchService.groups = [];        
+    }
+    
     return { 
-        getStaffList: getStaffList,        
-        getProfileImage: getProfileImage,
+        getStaffList: getStaffList,                
         getStaffProfile: getStaffProfile,
         getStaffProfileByShortname: getStaffProfileByShortname,
+        
+        clearCache: clearCache,
         
         getStaffListTest: getStaffListTest,
         getStaffProfileByShortnameTest: getStaffProfileByShortnameTest,
