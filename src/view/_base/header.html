@@ -27,17 +27,28 @@
         </li>
         -->
         <li ui-sref-active="active" ng-if="loggedIn">
-          <a ui-sref="search" data-toggle="collapse" data-target=".navbar-collapse.in">Search</a>
+          <a ui-sref="search" data-toggle="collapse" data-target=".navbar-collapse.in">
+            <i class="fa fa-search hidden-md hidden-lg">&nbsp;&nbsp;</i>Search
+          </a>
         </li>        
-        <li ui-sref-active="active">
-          <a ui-sref="map" data-toggle="collapse" data-target=".navbar-collapse.in">Map</a>
+        <li ui-sref-active="active">          
+          <a ui-sref="map" data-toggle="collapse" data-target=".navbar-collapse.in">
+            <i class="fa fa-map-o hidden-md hidden-lg">&nbsp;&nbsp;</i>Map
+          </a>
         </li>
         <li ui-sref-active="active">
-          <a ui-sref="meeting" data-toggle="collapse" data-target=".navbar-collapse.in">Rooms</a>
+          <a ui-sref="meeting" data-toggle="collapse" data-target=".navbar-collapse.in">
+            <i class="fa fa-users hidden-md hidden-lg">&nbsp;&nbsp;</i>Rooms
+          </a>
+        </li>
+        <li ui-sref-active="active" ng-if="!loggedIn" class="hidden-md hidden-lg">
+          <a ui-sref="login" data-toggle="collapse" data-target=".navbar-collapse.in">Log in</a>
         </li>
         <li ui-sref-active="active" ng-if="loggedIn">
-          <a ui-sref="user" data-toggle="collapse" data-target=".navbar-collapse.in">Profile</a>
-        </li>          
+          <a ui-sref="user" data-toggle="collapse" data-target=".navbar-collapse.in">
+            <i class="fa fa-user hidden-md hidden-lg">&nbsp;&nbsp;</i>Profile
+          </a>
+        </li>        
       </ul>                 
       <ul class="nav navbar-nav navbar-right" ng-if="loggedIn">
         <li>
