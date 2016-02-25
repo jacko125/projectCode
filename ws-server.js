@@ -33,7 +33,7 @@ wss.on('connection', function connection(ws) {
         wsModule.handleMsg(wss, ws, message);    
     });
   
-  ws.on('close', function close() {
+  ws.on('close', function close() {   
     console.log('disconnected');
   });    
 });
@@ -43,3 +43,5 @@ setInterval(function() {
     UserModule.flushUserDefaultLocs();    
     
 }, 30 * 60 * 1000)
+
+console.log("Starting MIA websocket server on ws://" + config.ws.host + ":" + config.ws.port);

@@ -42,9 +42,11 @@ gulp.task('start-mongo', ['init-mongo'], function (callback) {
             return;
         }                   
         var mongoDir = mongoBaseDir + "\\" + list[0] + "\\bin";
-        runCommandSync('start "MongoDB" "' + mongoDir + '\\mongod.exe" ' 
+        var command = 'start "MongoDB" "' + mongoDir + '\\mongod.exe" ' 
             + "--dbpath=" + __dirname+ "\\data\\db "
-            + "--port=" + config.db.port);        
+            + "--port=" + config.db.port;
+            console.log(command);
+        runCommandSync(command);        
     });
 });
 gulp.task('stop-mongo', function(callback) {

@@ -1,7 +1,7 @@
+// Storage-agnostic interface for Message objects.
 var MessageDAO = require('../dao/MessageDAO.js');
 var Message = require('../Message.js');
 
-// Storage-agnostic interface for Message objects.
 module.exports = {
 	
     createMessage: function(message) {       

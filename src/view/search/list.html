@@ -7,7 +7,7 @@
             <div class="media-body">
               <ul>
                 <li class="groupmember-container" ng-repeat="staff in group">					
-                  <a ui-sref="profile({ profile: staff })">{{staff.Description}}</a> 
+                  <a ui-sref="profile({ profile: staff })">{{staff.FirstName}} {{staff.LastName}}</a> 
                     <button data-toggle="tooltip"
                       data-placement = "right"
                       title="Remove from list"
@@ -80,7 +80,7 @@
       <p class="alert alert-info" 
          role="alert" 
          style="padding: 15px;"
-         ng-if="results.length <= 0"> No matching staff profile found!
+         ng-if="results.length <= 0"> No matching staff profiles found.
       </p>
       <div class="list-group listnav list-search">
         <ul>

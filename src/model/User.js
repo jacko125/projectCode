@@ -18,9 +18,3 @@ User.DefaultLocType = {
     ONE_DAY: 'ONE_DAY',
     ALWAYS_DEFAULT: 'ALWAYS_DEFAULT'
 }
-
-// Example class function
-User.prototype.sayMyName = function () {
-	return null;
-};
-

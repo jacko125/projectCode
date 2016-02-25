@@ -5,14 +5,8 @@ miaApp.controller('errorController', [
              errorService) {   
              
         var self = this;
-
-
-        self.errorMessage = errorService.getErrorMessageByCode($stateParams.errorCode);       
         
-        
-        
-     
-        
+        self.errorMessage = errorService.getErrorMessageByCode($stateParams.errorCode);                      
     }
 ]);
 
