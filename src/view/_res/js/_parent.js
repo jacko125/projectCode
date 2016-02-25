@@ -40,7 +40,7 @@ miaApp.controller('parentController', [
                     break;
                 
                 case 'ws-sent-broadcast':
-                    var toastMsg = 'You have sent your location to ' + data.Description;
+                    var toastMsg = 'You have sent your location to ' + data.FirstName + ' ' + data.LastName;
                     showToast(ngToast, toastMsg, 'info');      
                     break; 
 
@@ -147,7 +147,8 @@ function loginFunctions(self, dep) {
         delete dep.$window.sessionStorage.token;
         dep.$scope.loggedIn = false;
         dep.$rootScope.loggedIn = false;
-        dep.wsService.disconnect();        
+        dep.$rootScope.user = null;
+        dep.wsService.disconnect();               
     }        
     
     self.logoutButtonClick = function() {        

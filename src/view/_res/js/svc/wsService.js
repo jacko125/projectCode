@@ -1,5 +1,8 @@
-miaApp.factory('wsService', ['$rootScope', '$location', 'requestService', 'userService',
-    function($rootScope, $location, requestService, userService) {       
+miaApp.factory('wsService', [
+    '$rootScope', '$location', 
+    'requestService', 'userService', 'staffSearchService','mapService',
+    function($rootScope, $location, 
+             requestService, userService, staffSearchService, mapService) {       
     var self = this;	
 	
     self.webSocket = {};
@@ -16,11 +19,9 @@ miaApp.factory('wsService', ['$rootScope', '$location', 'requestService', 'userS
         });
     }
     
-    var connect = function($scope, username, description, token) {
+    var connect = function($scope, username, description, token) {        
         self.token = token;
-        self.username = username;
-        
-        
+        self.username = username;               
         self.webSocket = new WebSocket('ws://' + $location.host() + ":" + config.ws.port, self.token); 
         
         self.webSocket.onopen = function(event) {            
@@ -47,9 +48,12 @@ miaApp.factory('wsService', ['$rootScope', '$location', 'requestService', 'userS
         };
     };
     
-    var disconnect = function() {
-        if (self.websocket != null)
+    var disconnect = function() {        
+        if (self.webSocket != null) {            
             self.webSocket.close();
+        }                    
+        staffSearchService.clearCache(staffSearchService);        
+        mapService.clearCache(mapService);        
     };
     
     var sendRequest = function(user, recipient) {
