@@ -1,27 +1,37 @@
 var http = require('http');
 var WebSocketServer = require('ws').Server;
+var logger = require('winston');
 var jwt = require('jsonwebtoken');
 var util = require('util');
-
 
 var config = require('./resources/config.json');
 var wsModule = require('./src/model/module/WsModule.js');
 var MessageModule = require('./src/model/module/MessageModule.js');
 var UserModule = require('./src/model/module/UserModule.js');
 
+// Configure logging subsystem (winstonjs)
+logger.level = (config.env == 'dev') ? 'debug' : 'info';
+logger.add(require('winston-daily-rotate-file'),
+{
+    filename: __dirname + '/data/logs/mia_ws.log',
+    datePattern: '.yyyy-MM-dd.log',
+    json: false
+});
+
 var wss = new WebSocketServer(
 {
     port: config.ws.port,
     verifyClient: function(info) {          
-        console.log('verifying client...');   
-        console.log(util.inspect(info.req.headers));                                
-        try {
-          var decoded = jwt.verify(info.req.headers['sec-websocket-protocol'], 'secret');                    
+                
+        try {            
+            var token = info.req.headers['sec-websocket-protocol'];
+            var decoded = jwt.verify(token, 'secret');
+            logger.info('Authenticated ws connection (token=%s)', token);
+            return true;
         } catch(err) {
+            logger.warn('Unauthenticated ws connection', info.req.headers);    
             return false;
-        }
-        
-        return true;
+        }                
     }        
 });
 
@@ -29,19 +39,19 @@ wss.on('connection', function connection(ws) {
     
     ws.on('message', function incoming(event) {
         var message = JSON.parse(event);
-        console.log('incoming object: ' + util.inspect(message));
+        logger.info('Received message',message);
         wsModule.handleMsg(wss, ws, message);    
     });
   
-  ws.on('close', function close() {   
-    console.log('disconnected');
-  });    
-});
+    ws.on('close', function close() {   
+        logger.info('Disconnected user (username=%s)', ws.username);
+    });    
+  
+}); 
 
-setInterval(function() {    
+setInterval(function() {
     MessageModule.flushMessages();
-    UserModule.flushUserDefaultLocs();    
-    
+    UserModule.flushUserDefaultLocs();        
 }, 30 * 60 * 1000)
 
-console.log("Starting MIA websocket server on ws://" + config.ws.host + ":" + config.ws.port);
+logger.info("MIA websocket server listening on ws://" + config.ws.host + ":" + config.ws.port);

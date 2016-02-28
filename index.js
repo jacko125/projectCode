@@ -2,6 +2,8 @@ var config = require('./resources/config.json');
 var express = require('express');
 var favicon = require('serve-favicon');
 
+var logger = require('winston');
+
 var nunjucks = require('nunjucks');
 var bodyParser = require('body-parser');
 
@@ -19,6 +21,15 @@ app.use('/maps', express.static(__dirname + '/data/maps'));
 app.use(favicon(__dirname + '/src/view/_res/img/favicon.ico'));
 
 
+// Configure logging subsystem (winstonjs)
+logger.level = (config.env == 'dev') ? 'debug' : 'info';
+logger.add(require('winston-daily-rotate-file'),
+{
+    filename: __dirname + '/data/logs/mia_http.log',
+    maxFiles: 3,
+    datePattern: '.yyyy-MM-dd.log',
+    json: false
+});
 
 // Configure router-level middleware
 app.use(bodyParser.json());
@@ -29,5 +40,5 @@ require('./src/route.js')(app);
 
 // Start HTTP server
 var server = app.listen(config.mia.port, function () {
-  console.log('MIA listening at http://%s:%s', server.address().address, server.address().port);
+  logger.info('MIA HTTP server listening at http://%s:%s', server.address().address, server.address().port);
 });

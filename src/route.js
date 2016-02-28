@@ -26,9 +26,6 @@ module.exports = function(app) {
     app.get('/dumpUsers', userController.actionDumpUsers);
     app.get('/deleteAllUsers', userController.actionDeleteAllUsers);
     
-	app.get('/test', homeController.testGetUser);
-    
-    
     // Handle unauthorised requests
     app.use(function (err, req, res, next) {
         if (err.name === 'UnauthorizedError') {

@@ -1,10 +1,12 @@
 // Storage-agnostic interface for User objects.
+var logger = require('winston');
+
 var UserDAO = require('../dao/UserDAO.js');
 var User = require('../User.js');
 
 module.exports = {
 	
-	createUser: function(user, callback) {
+	createUser: function(user, callback) {        
         UserDAO.createUser({
             user: user,
             callback: callback
@@ -24,7 +26,7 @@ module.exports = {
             username: username,
             callback: function(users) {
                 var user = users[0];                
-                user.defaultLoc = location;
+                user.defaultLoc = location;                
                 UserDAO.updateUser({
                     user: user,
                     callback: callback                    
@@ -40,7 +42,7 @@ module.exports = {
             callback: function(users) {
                 var user = users[0];
                 user.defaultLocType = defaultLocType;
-                user.defaultLocDate = new Date();
+                user.defaultLocDate = new Date();                
                 UserDAO.updateUser({
                     user: user,
                     callback: callback
@@ -80,9 +82,9 @@ module.exports = {
                             expired = user.defaultLocDate.getDay() != now.getDay();
                             break;
                     }
-                    if (expired) {
+                    if (expired) {                        
                         updateUserDefaultLocType(user.username, User.DefaultLocType.NO_DEFAULT, function() {
-                           console.log('User ' + user.username + ' defaultLocType has expired.');    
+                           logger.info('Flushed defaultLocType for user %s', user.username);
                         });                        
                     }
                 });

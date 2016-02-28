@@ -1,9 +1,10 @@
-var config = require('./../../../resources/config.json');
-
 // Storage-specific (MongoDB) interface for User objects.
 var MongoClient = require('mongodb').MongoClient
+var logger = require('winston');
 var assert = require('assert');        
 var util = require('util');
+
+var config = require('./../../../resources/config.json');
 var mongoURL = "mongodb://" + config.db.host + ":" + config.db.port + "/" + config.db.name;
 
 module.exports = {
@@ -32,11 +33,10 @@ function mongoCommand(command) {
     };
 }
 
-function createMessage(db, params) {
-    console.log('Inserting ' + require('util').inspect(params.message));        
+function createMessage(db, params) {    
     db.collection('messages').insertOne(params.message, function(err, r) {
         assert.equal(err, null); //TODO MongoDB - Handle error gracefully  
-        console.log("Inserted 1 documents into the message collection");        
+        logger.debug('Inserted message to DB', params.message); 
         db.close();
     });    
 }
@@ -44,7 +44,7 @@ function createMessage(db, params) {
 function deleteMessage(db, params) {    
     db.collection('messages').removeOne(params.query, function(err, r) {
         if (r.result.n > 0) {
-            console.log('Deleted existing message (' + params.query.sender + ':' + params.query.recipient + ')');
+            logger.debug('Deleted existing message from DB', params.query)
         }        
         db.close();
         params.callback();
@@ -55,7 +55,7 @@ function getMessagesForUser(db, params) {
     
     return db.collection('messages').find({recipient: params.username}).toArray(function(err, docs) {
         db.close();
-        console.log('Getting messages for ' + params.username);
+        logger.debug('Getting messages from DB for %s', params.username);
         params.callback(docs);
     });
 }
@@ -63,13 +63,14 @@ function getMessagesForUser(db, params) {
 function getAllMessages(db, params) {
     return db.collection('messages').find({}).toArray(function(err, docs) {
         db.close();
+        logger.debug('Getting all messages (count=%s)', docs.length);
         params.callback(docs);
     })
 }
 
 function deleteAllMessages(db, params) {
-    db.collection('messages').removeMany({}, function(err, r) {
-        console.log('Deleted ' + r.deletedCount + ' messages');
+    db.collection('messages').removeMany({}, function(err, r) {        
+        logger.debug('Deleted all messages (deletedCount=%s)', r.deletedCount);
         db.close();
     });    
 }

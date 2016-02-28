@@ -1,4 +1,6 @@
 // Storage-agnostic interface for Message objects.
+var logger = require('winston');
+
 var MessageDAO = require('../dao/MessageDAO.js');
 var Message = require('../Message.js');
 
@@ -53,9 +55,7 @@ module.exports = {
                                 recipient: message.recipient
                             },
                             callback: function() {
-                                console.log('Message expired (' 
-                                    + message.sender + ':' + message.recipient
-                                    + ' - ' + message.type + ')');
+                                logger.info('Flushing expired message', { message: message });
                             }
                         });                                                
                     }

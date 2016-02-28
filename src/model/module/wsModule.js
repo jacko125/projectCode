@@ -1,6 +1,7 @@
 // Storage-agnostic interface for User objects.
 var http = require('http');
 var util = require('util');
+var logger = require('winston');
 
 var User = require('../User.js');
 var UserModule = require('./UserModule.js');
@@ -20,16 +21,13 @@ var MessageSubtype = {
 
 module.exports = {
 	
-    handleMsg: function(wss, ws, message) {
-        console.log('Received: ' + require('util').inspect(message));
-        
+    handleMsg: function(wss, ws, message) {                
         // "username","token"
         switch (message.type) {
-            case 'connect':
-                console.log('received connection from ' + message.sender);
-                ws.send(message.sender + ' has connected! Token: ' + message.token);                
+            case 'connect':                                
                 ws.username = message.sender;
                 
+                logger.info('Received connection from user %s', message.sender);
                 sendToClient(wss, ws, message.sender, {
                     type: 'connect',
                     username: message.sender
@@ -48,27 +46,26 @@ module.exports = {
                 
                 UserModule.getUser(message.sender, function(users) {
                     if (users.length == 0) {
-                        UserModule.createUser(new User(message.sender, message.description), function(user) {
+                        UserModule.createUser(new User(message.sender, message.description), function(user) {                            
+                            logger.info('Created new user', { user: user });        
                             sendToClient(wss, ws, message.sender, {
                                 type: 'user-login',
                                 user: JSON.stringify(user)
                             });
                         })
-                    } else {
+                    } else {                        
                         sendToClient(wss, ws, message.sender, {
                             type: 'user-login',
                             user: JSON.stringify(users[0])
                         });                        
                     }     
-                });
-                
+                });                
                 break;            
                 
             // data: senderName
             case 'request':                                                
                 var request = message;
-                request.data = JSON.parse(request.data);
-                console.log('Received request for ' + request.recipient + '\'s location');                                
+                request.data = JSON.parse(request.data);                                
                 MessageModule.deleteMessage({
                     type: MessageType.REQUEST,
                     sender: request.sender,
@@ -76,7 +73,7 @@ module.exports = {
                 }, function () {                                                          
                     UserModule.getUser(request.recipient, function(users) {
                         var user = users[0];
-                        // Automatically bounce
+                        // Automatically bounce request if defaultLocType is active
                         if (user != null && user.defaultLocType != User.DefaultLocType.NO_DEFAULT) {
                             var response = new Message({
                                 type: MessageType.RESPONSE,
@@ -89,10 +86,9 @@ module.exports = {
                                     auto: true,
                                 }
                             });
-                            MessageModule.createMessage(response);                                                                       
-                            sendToClient(wss, ws, request.sender, response); 
-                            console.log ('Sending auto-response to ' + request.sender);
-                            
+                            MessageModule.createMessage(response);                                       
+                            logger.info('Auto-responding to request for location', response);
+                            sendToClient(wss, ws, request.sender, response);                                                         
                             var requestNotification = new Message({
                                 type: MessageType.OTHER,
                                 sender: request.sender,
@@ -105,12 +101,11 @@ module.exports = {
                             });                
                             MessageModule.createMessage(requestNotification)
                             sendToClient(wss, ws, request.recipient, requestNotification);
-                            console.log('Sending notification of request to ' + request.recipient);
                             
                         } else {
                             MessageModule.createMessage(new Message(request));      
-                            sendToClient(wss, ws, request.recipient, request);     
-                            console.log ('Sending request to ' + request.recipient);                                     
+                            logger.info('Forwarding request for location', request);
+                            sendToClient(wss, ws, request.recipient, request);                                                             
                         }                        
                     })                                        
                 })
@@ -122,8 +117,7 @@ module.exports = {
                 var response = message;                
                 response.data = JSON.parse(response.data);
                 response.data.location = JSON.parse(response.data.location);                
-                response.data.location.latLng = JSON.parse(response.data.location.latLng);                         
-                console.log('Received response to ' + response.recipient + '\'s request for ' + response.sender + '\'s location');                
+                response.data.location.latLng = JSON.parse(response.data.location.latLng);                                         
                 MessageModule.deleteMessage({
                     type: 'response',
                     sender: response.sender,
@@ -131,6 +125,7 @@ module.exports = {
                 }, function() {
                     MessageModule.createMessage(response);                                    
                 });                
+                logger.info('Forwarding response to request', response);
                 sendToClient(wss, ws, response.recipient, response);                
                 break;
                 
@@ -138,25 +133,29 @@ module.exports = {
                 var broadcast = message;                
                 broadcast.data = JSON.parse(broadcast.data);
                 broadcast.data.location = JSON.parse(broadcast.data.location);                
-                broadcast.data.location.latLng = JSON.parse(broadcast.data.location.latLng);                         
-                console.log('Received location broadcast from ' + broadcast.sender + ' to ' + broadcast.recipient);                
+                broadcast.data.location.latLng = JSON.parse(broadcast.data.location.latLng);                                         
                 MessageModule.deleteMessage({
                     type: 'broadcast',
                     sender: broadcast.sender,
                     recipient: broadcast.recipient,
                 }, function() {
                     MessageModule.createMessage(broadcast);                                    
-                });                
+                });
+                logger.info('Forwarding location broadcast', broadcast);
                 sendToClient(wss, ws, broadcast.recipient, broadcast);                
                 break;                        
                             
             case 'remove-message':
-                var msg = JSON.parse(message.message);
-                console.log('Received remove-request ' + msg.sender + ':' + msg.recipient);
-                console.log(util.inspect(msg));
+                var msg = JSON.parse(message.message);                
+                logger.info('Deleting message', { message: msg });
                 MessageModule.deleteMessage(msg, function() {}); 
-                break;                                                         
+                break;             
+
+            default:
+                logger.warn('Received message of unknown type', message);
+                break;
         }
+        
        
     }    
 }
