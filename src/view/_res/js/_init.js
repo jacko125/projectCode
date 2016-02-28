@@ -20,11 +20,10 @@ miaApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', 'ngToast
                 controller: homeCtrl,
                 params: { login: null }
             })
-            // .state('about', {
-                // url: '/about',
-                // templateUrl: 'view/home/about.html',
-                // controller: aboutCtrl,                
-            // });
+            .state('about', {
+                url: '/about',
+                templateUrl: 'view/home/about.html'                              
+            });
                         
         $stateProvider
             .state('search', {
