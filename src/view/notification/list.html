@@ -1,11 +1,11 @@
 <div class="container container-notification" ng-controller="notificationController as notifyCtrl">                       
   <!-- List area -->
   <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">      
+    <div class="col-sm-8 col-sm-offset-2">      
       <h2>Notifications</h2>        
       <div ng-if="messages.length == 0">
         <br>
-        <p class="lead">You have no new notifications.</p>          
+        <p class="lead">You have no new notifications.</p>
         <p>Click <b><a ui-sref="home">here</a></b> to go back</p>
       </div>      
         
@@ -42,8 +42,9 @@
                 </span>
               </span>                                         
               <br><br>              
-              <i>{{message.datetime | date: 'h:mm a'}} ({{message.datetime | timeSince }} ago)</i>              
+              <i>{{message.datetime | date: 'h:mm a'}} ({{message.datetime | timeSince }} ago)</i>                            
               <div class="text-right">
+                <br>
                 <span ng-switch="message.type">
                   <a ng-switch-when="request" 
                      class="btn btn-success" 

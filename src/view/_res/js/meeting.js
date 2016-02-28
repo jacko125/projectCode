@@ -8,7 +8,8 @@ miaApp.controller('meetingController', [
         var defaultLocation = {
             building: 'All buildings',
             level: 'All levels', 
-            capacity: 'Any'
+            capacity: '--',
+            roomName: ''
         };
                 
         if ($rootScope.user != null) {
@@ -26,30 +27,29 @@ miaApp.controller('meetingController', [
         self.allLocations.shift(); // Remove default map from list                
         self.allBuildings = ['All buildings'].concat(self.allLocations.map(function(loc) { return loc.building }));        
         self.allLevels = ['All levels'].concat(mapService.getBuildingLevels(self.currentLocation.building, self.allLocations));                 
-        self.allCapacities = ['Any', '1 - 5', '5 - 10', '10+'];        
-        self.roomName = '';        
+        self.allCapacities = ['Any', '1 - 5', '5 - 10', '10+'];                   
                 
         // Form control change handlers
         self.changeBuilding = function (building) { 
-            self.roomName = '';
+            self.currentLocation.roomName = '';
             mapService.meetingSearch.building = building;            
             self.allLevels = ['All levels'].concat(mapService.getBuildingLevels(self.currentLocation.building, self.allLocations));  // Get levels of the current building                      
             self.currentLocation.level = self.allLevels[0]; // Defaults to 'All levels'              
             self.currentRooms = getFilteredRooms(self.allRooms,
                                                  self.currentLocation.building,
                                                  self.currentLocation.level,
-                                                 self.currentCapacity);                    
+                                                 self.currentLocation.capacity);                    
         }
         self.changeLevel = function(level) {
-            self.roomName = '';
+            self.currentLocation.roomName = '';
             self.currentLocation.level = level;            
             self.currentRooms = getFilteredRooms(self.allRooms,
                                                  self.currentLocation.building,
                                                  self.currentLocation.level,
-                                                 self.currentCapacity);
+                                                 self.currentLocation.capacity);
         }
         self.changeCapacity = function(capacity) {
-            self.roomName = '';
+            self.currentLocation.roomName = '';
             self.currentLocation.capacity = capacity;
             self.currentRooms = getFilteredRooms(self.allRooms,
                                                  self.currentLocation.building,
@@ -59,7 +59,7 @@ miaApp.controller('meetingController', [
         self.changeName = function() {
             // Room names are in the following format: BUILDING__ROOMID
             // e.g. 1MP_1.19, 50MP_5.59, 1SS_7.79
-            var roomName = self.roomName.toUpperCase();                                    
+            var roomName = self.currentLocation.roomName.toUpperCase();                                    
             var match = roomName.match(/([0-9]+[A-Z]+)_([0-9]+\.[0-9]+)/);
             if (match != null) {
                 var buildingStr = match[1]
@@ -86,7 +86,8 @@ miaApp.controller('meetingController', [
                 self.currentRooms = self.currentRooms.filter(function(room) {
                     return room.name == roomStr;
                 });
-                self.roomName = roomName;                                
+                self.currentLocation.roomName = roomName;
+                self.currentLocation.capacity = 'Any';
             }                                    
         }
                         
@@ -122,6 +123,8 @@ miaApp.controller('meetingController', [
 function isRoomCapacity(capacity, room) {
     var roomCap = parseInt(room.capacity)
     switch(capacity) {
+        case '--':
+            return false;
         case '1 - 5':
             return (roomCap <= 5);
         case '5 - 10':
