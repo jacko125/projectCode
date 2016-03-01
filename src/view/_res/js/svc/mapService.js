@@ -17,9 +17,8 @@ miaApp.factory('mapService', ['$http', '$location','$rootScope',
    // Get user's location from Macnet profile "postalAddress"
     var getUserLocation = function(user) {    
         // TODO: Handle NON-MACQUARIE BUILDING    
-        var regex = /(L\s\d)\s(.*)/
-        var locFields = user.postalAddress.match(regex);
-        console.log('Building: ' + locFields[2] + ' Level: ' + locFields[1]);    
+        var regex = /(L\s\d+)\s(.*)/
+        var locFields = user.postalAddress.match(regex);        
         return {
             building: locFields[2],
             level: locFields[1],
@@ -56,7 +55,12 @@ miaApp.factory('mapService', ['$http', '$location','$rootScope',
                     }
                 });
             }        
-        });        
+        });
+
+        // Return default view data if location is unsupported
+        if (result == null) {
+            result = allViewData[0];
+        }        
         return result;
     }
         

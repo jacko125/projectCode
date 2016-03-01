@@ -165,10 +165,7 @@ function mapFunctions(self, dep) {
     self.updateMap = function () { // Change floor map when level is changed        
         var viewData = dep.mapService.getMapViewData(self.mapViewData, self.currentLocation);                                       
         
-        self.unsupportedMap = (viewData == null);
-        if (self.unsupportedMap) {                        
-            viewData = dep.mapService.getMapViewData(self.mapViewData, { building: "default", level: "default" });                                               
-        }               
+        self.unsupportedMap = (viewData.building == 'default');     
         
         map.setView([viewData.origin.latLng[0], viewData.origin.latLng[1]], viewData.zoom.min+1)                                                         
         var southWest = L.latLng(viewData.bounds.SW[0], viewData.bounds.SW[1]),
@@ -190,7 +187,6 @@ function mapFunctions(self, dep) {
         }).addTo(map);
                                          
         dep.userMarker.addTo(map);        
-
         if (dep.$stateParams.action == 'view-room') {
             map.removeLayer(dep.userMarker);
         }
