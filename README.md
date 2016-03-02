@@ -26,6 +26,7 @@ You can then use this with the git clone command.
     git clone ssh://git@stash.internal.macquarie.com/~hgoh2/the-grad-project-mia.git
 This will require you to be added to the project on Stash. See Henry/Alec if you need access.
 <br>
+<br>
 
 #### 2. Download, install, setup and run CNTLM
 Download and install CNTLM from http://cntlm.sourceforge.net/
@@ -50,6 +51,7 @@ Update cntlm.ini with the proxy info and forwarding port (used by npm)
     
 Start CNTLM (this can be done in Services as admin). Alternatively, you can run CNTLM from the commandline with `` cntlm -c cntlm.ini -v ``
 <br>
+<br>
 
 #### 3. Configure npm to use the CNTLM proxy
 If another process is using port 53128, it can be changed (in both cntlm.ini and the npm configuration)
@@ -71,6 +73,7 @@ This will take a while to complete for the first time.
 The application reads from a config file to get parameters for specific environments (domains/ports to use, etc), found at ``/resources/config.json``    
 By default, this file is the same as config-dev.json. By modifying this file, you can run multiple instances of MIA on the same host. 
 <br>
+<br>
 
 #### 6. Running the application
 Start the mongoDB server, HTTP server and websocket server. (any order)
@@ -80,6 +83,7 @@ Start the mongoDB server, HTTP server and websocket server. (any order)
 	start node ws-server.js
 
 You can then view the web app at http://localhost:3000 (or on whatever port was configured in ``/resources/config.json``)
+<br>
 <br>
 
 # Advanced features
