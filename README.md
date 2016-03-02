@@ -5,6 +5,7 @@ Note: these steps have only been tested for Windows.
 1. Install Git (for Windows)
 2. Install NodeJS
 3. Install MongoDB (in its default location)
+<br>
 
 ## Installation + First time setup
 
@@ -16,6 +17,7 @@ Set autocrlf to 'true' before making any changes (for consistency)
 Set sslVerify to 'false' (Git throws an error when cloning over HTTPS otherwise)
     
 	git config --global http.sslVerify false
+<br>
 
 #### 1. Clone the repository from Stash
 Navigate to the repo on Stash. Hit the clone button to get the URL to clone the repo.  
@@ -23,6 +25,7 @@ You can then use this with the git clone command.
 
     git clone ssh://git@stash.internal.macquarie.com/~hgoh2/the-grad-project-mia.git
 This will require you to be added to the project on Stash. See Henry/Alec if you need access.
+<br>
 
 #### 2. Download, install, setup and run CNTLM
 Download and install CNTLM from http://cntlm.sourceforge.net/
@@ -46,6 +49,7 @@ Update cntlm.ini with the proxy info and forwarding port (used by npm)
     Listen      53128
     
 Start CNTLM (this can be done in Services as admin). Alternatively, you can run CNTLM from the commandline with `` cntlm -c cntlm.ini -v ``
+<br>
 
 #### 3. Configure npm to use the CNTLM proxy
 If another process is using port 53128, it can be changed (in both cntlm.ini and the npm configuration)
@@ -53,6 +57,7 @@ If another process is using port 53128, it can be changed (in both cntlm.ini and
     npm config set proxy http://localhost:53128
     npm config set https-proxy https://localhost:53128
     npm config set registry "http://registry.npmjs.org"
+<br>    
 
 #### 4. Install dependent nodeJS packages
 Install required packages (it reads from package.json). 
@@ -60,10 +65,12 @@ This will take a while to complete for the first time.
 
     npm install
     npm install -g gulp
+<br>
 	
 #### 5. Setting the configuration file for your environment
 The application reads from a config file to get parameters for specific environments (domains/ports to use, etc), found at ``/resources/config.json``    
 By default, this file is the same as config-dev.json. By modifying this file, you can run multiple instances of MIA on the same host. 
+<br>
 
 #### 6. Running the application
 Start the mongoDB server, HTTP server and websocket server. (any order)
@@ -73,6 +80,7 @@ Start the mongoDB server, HTTP server and websocket server. (any order)
 	start node ws-server.js
 
 You can then view the web app at http://localhost:3000 (or on whatever port was configured in ``/resources/config.json``)
+<br>
 
 # Advanced features
 
