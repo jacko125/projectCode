@@ -21,7 +21,7 @@ miaApp.controller('mapController', [
         $scope.action = $stateParams.action; // Action being taken
         $scope.target = $stateParams.target; // Data associated with action                               
         
-        var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 2' };
+        var defaultLocation = { building: '1 MARTIN PLACE', level: 'L 1' };
         self.currentLocation = ($rootScope.user) ? mapService.getUserLocation($rootScope.user) : defaultLocation;                                           
  
         self.allLocations = [];
@@ -333,8 +333,7 @@ function initialiseItemLayer(self, dep) {
             var marker = L.marker( [other[H.OTHER.LATLNG][0], other[H.OTHER.LATLNG][1]],
                 { icon: createIcon(IconTypes.OTHER(other[H.OTHER.TYPE])) })
                 .addTo(otherLayer);
-            marker.bindPopup("<b>" + capitalise(other[H.OTHER.TYPE]) + "</b>"
-                            + ((other[H.OTHER.NAME].length > 0) ? "<br>" + other[H.OTHER.NAME] : ""));
+            marker.bindPopup("<b>" + ((other[H.OTHER.NAME].length > 0) ? other[H.OTHER.NAME] : other[H.OTHER.TYPE]) + "</b>");
                             //+ "<br>[" + marker.getLatLng().lat.toFixed(4) + "," 
                             //+ marker.getLatLng().lng.toFixed(4) + "]");
         });        
