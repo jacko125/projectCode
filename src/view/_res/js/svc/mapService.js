@@ -99,7 +99,8 @@ miaApp.factory('mapService', ['$http', '$location','$rootScope',
                 LATLNG: headers.toilet.indexOf('latlng')
             },
             OTHER: {
-                NAME: headers.other.indexOf('name'),    
+                NAME: headers.other.indexOf('name'),
+                DESCR: headers.other.indexOf('descr'),
                 TYPE: headers.other.indexOf('type'),            
                 LATLNG: headers.other.indexOf('latlng')
             }

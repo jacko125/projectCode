@@ -333,7 +333,8 @@ function initialiseItemLayer(self, dep) {
             var marker = L.marker( [other[H.OTHER.LATLNG][0], other[H.OTHER.LATLNG][1]],
                 { icon: createIcon(IconTypes.OTHER(other[H.OTHER.TYPE])) })
                 .addTo(otherLayer);
-            marker.bindPopup("<b>" + ((other[H.OTHER.NAME].length > 0) ? other[H.OTHER.NAME] : other[H.OTHER.TYPE]) + "</b>");
+            marker.bindPopup("<b>" + other[H.OTHER.NAME] + "</b>"
+                              + ((other[H.OTHER.DESCR].length > 0) ? "<br>" + other[H.OTHER.DESCR] : ""));
                             //+ "<br>[" + marker.getLatLng().lat.toFixed(4) + "," 
                             //+ marker.getLatLng().lng.toFixed(4) + "]");
         });        

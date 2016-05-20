@@ -3,7 +3,7 @@
         "meetingRoom":  ["name","latlng","capacity","info"],
         "lift":         ["latlng","type"],
         "toilet":       ["latlng","type"],
-        "other":        ["name","latlng","type"]
+        "other":        ["name","descr","latlng","type"]
     },
     "data": [{ 
         "building": "1 MARTIN PLACE", 
@@ -38,8 +38,8 @@
                 [[-1.9811,14.4940],"disabled"]
             ],
             "other": [
-                ["Water bar", [58.6312,88.2422], "waterbar"],
-                ["Macquarie Co-lab", [58.6312,124.7088], "colab"]                
+                ["Water bar", "", [58.6312,88.2422], "waterbar"],
+                ["The Macquarie Co-lab","Facilitating collaborative innovation.", [58.6312,124.7088], "colab"]                
             ]
         },
         {
@@ -69,9 +69,9 @@
                 [[-1.9811,14.4940],"disabled"]
 			],
             "other": [
-				["Kitchen", [-68.4168,129.3750], "kitchen"],
-                ["Water bar", [-63.7825,129.3750], "waterbar"],			
-                ["Town hall", [60.9188,123.4783], "townhall"]
+				["Kitchen", "", [-68.4168,129.3750], "kitchen"],
+                ["Water bar", "", [-63.7825,129.3750], "waterbar"],			
+                ["The Town Hall", "", [60.9188,123.4783], "townhall"]
 			]
         },
         {
@@ -98,8 +98,8 @@
                 [[-1.9811,14.4940],"disabled"]
 			],
             "other": [
-				["Water bar", [44.6985,-12.0011], "waterbar"],
-                ["The Cinema", [58.2381,115.6481], "cinema"]
+				["Water bar", "", [44.6985,-12.0011], "waterbar"],
+                ["The Cinema", "", [58.2381,115.6481], "cinema"]
 			]
         },
         {
@@ -128,8 +128,8 @@
                 [[-1.9811,9.9940],"disabled"]
 			],
             "other": [
-                ["L4 Cafe", [43.5109,133.2102], "cafe"],			
-                ["L4 Kitchen", [60.1922,107.5462], "kitchen"]                
+                ["L4 Cafe", "Daily specials for coffee and snacks", [43.5109,133.2102], "cafe"],			
+                ["L4 Kitchen", "Lunch served until 4 PM", [60.1922,107.5462], "kitchen"]                
 			]
         },
         {
@@ -156,7 +156,7 @@
                 [[-1.9811,14.4940],"disabled"]
 			],
             "other": [				
-                ["The Library", [58.2381,115.6481], "library"]
+                ["The Library", "Quiet working spaces.", [58.2381,115.6481], "library"]
 			]
         },
         {
@@ -182,9 +182,9 @@
                 [[-1.9811,14.4940],"disabled"]
 			],
             "other": [
-				["Kitchen", [44.6985,110.0071], "kitchen"],
-                ["Water bar", [52.0918,109.8473], "waterbar"],
-                ["The Clubhouse", [73.3003,111.4134], "clubhouse"]                
+				["Kitchen", "", [44.6985,110.0071], "kitchen"],
+                ["Water bar", "", [52.0918,109.8473], "waterbar"],
+                ["The Clubhouse", "Table Tennis, Foosball and a PS4", [73.3003,111.4134], "clubhouse"]                
 			]
         },
         {
@@ -252,7 +252,7 @@
 				[[14.1559,37.6172],"male"]
 			],
             "other": [
-				["Level 1 Cafe", [-31.2034,75.8496], "cafe"]
+				["L1 Cafe", "Lunch and baked goods served daily", [-31.2034,75.8496], "cafe"]
 			]
         },
         {
@@ -286,7 +286,7 @@
 				[[25.0060,-57.4805],"male"]
 			],
             "other": [
-				["", [20.1385,-137.9883], "kitchen"]
+				["Kitchen", "", [20.1385,-137.9883], "kitchen"]
 			]
         },
         {
@@ -322,7 +322,7 @@
 				[[25.4036,-57.9199],"male"]
 			],
             "other": [
-				["", [20.1385,-137.9883], "kitchen"]
+				["Kitchen", "", [20.1385,-137.9883], "kitchen"]
 			]
         },
         {
@@ -356,7 +356,7 @@
 				[[25.4830,-57.7441],"male"]
 			],
             "other": [
-				["", [20.3034,-138.1641], "kitchen"]
+				["Kitchen", "", [20.3034,-138.1641], "kitchen"]
 			]
         },
         {
@@ -390,7 +390,7 @@
 				[[25.1652,-57.9199],"male"]
 			],
             "other": [
-				["", [20.3858,-138.0762], "kitchen"]
+				["Kitchen", "", [20.3858,-138.0762], "kitchen"]
 			]
         },
         {
@@ -418,7 +418,7 @@
 				[[25.3242,-57.8320],"male"]
 			],
             "other": [
-				["", [20.0559,-137.7246], "kitchen"]
+				["Kitchen", "", [20.0559,-137.7246], "kitchen"]
 			]
         },
         {
@@ -443,7 +443,7 @@
 				[[14.0940,31.5527],"male"]
 			],
             "other": [
-				["", [12.6403,-136.4063], "kitchen"]
+				["Kitchen", "", [12.6403,-136.4063], "kitchen"]
 			]
         },
         {
@@ -474,7 +474,7 @@
 				[[13.9234,30.9375],"male"]
 			],
             "other": [
-				["", [12.8975,-126.4746], "kitchen"]
+				["Kitchen", "", [12.8975,-126.4746], "kitchen"]
 			]
         }]
     },
@@ -513,8 +513,8 @@
 				[[-70.1783,-55.1074],"male"]
 			],
             "other": [
-				["", [-35.0300,-62.0508], "kitchen"],
-				["", [32.2500,-62.0508], "kitchen"]
+				["Kitchen", "", [-35.0300,-62.0508], "kitchen"],
+				["Kitchen", "", [32.2500,-62.0508], "kitchen"]
 			]
         },
         {
@@ -549,7 +549,7 @@
 				[[-62.5933,-65.7422],"male"]
 			],
             "other": [
-				["", [31.9522,-68.7305], "kitchen"]
+				["Kitchen", "", [31.9522,-68.7305], "kitchen"]
 			]
         },
         {
@@ -579,8 +579,8 @@
 				[[30.6001,-135.5273],"male"]
 			],
             "other": [
-				["", [36.7389,-65.5664], "kitchen"],
-				["",[-40.3130,-65.9180], "kitchen"]
+				["Kitchen", "", [36.7389,-65.5664], "kitchen"],
+				["Kitchen", "", [-40.3130,-65.9180], "kitchen"]
 			]
         },
         {
@@ -617,7 +617,7 @@
 				[[29.8406,-135.1758],"male"]
 			],
             "other": [
-				["", [32.9902,-65.0391], "kitchen"]
+				["Kitchen", "", [32.9902,-65.0391], "kitchen"]
 			]
         },
         {
@@ -648,8 +648,8 @@
 				[[29.5352,-135.8789],"male"]
 			],
             "other": [
-				["", [-38.1346,-70.3125], "kitchen"],
-				["", [34.5970,-71.3672], "cafe"]
+				["Kitchen", "", [-38.1346,-70.3125], "kitchen"],
+				["L5 Cafe", "Coffee and Lunch served daily", [34.5970,-71.3672], "cafe"]
 			]
         },
         {
@@ -677,7 +677,7 @@
 				[[28.4590,-135.0000],"male"]
 			],
             "other": [
-				["", [-36.0313,-65.0391], "kitchen"]
+				["Kitchen", "", [-36.0313,-65.0391], "kitchen"]
 			]
         },
         {
@@ -713,8 +713,8 @@
 				[[29.3822,-135.5273],"male"]
 			],
             "other": [
-				["", [-39.5040,-65.5664], "kitchen"],
-				["", [36.7389,-66.0938], "kitchen"]
+				["Kitchen", "", [-39.5040,-65.5664], "kitchen"],
+				["Kitchen", "", [36.7389,-66.0938], "kitchen"]
 			]
         },
         {
@@ -751,7 +751,7 @@
 				[[29.3822,-135.5273],"male"]
 			],
             "other": [
-				["", [33.1376,-67.3242], "kitchen"]
+				["Kitchen", "", [33.1376,-67.3242], "kitchen"]
 			]
         },
 		{
@@ -786,8 +786,8 @@
 				[[29.3822,-135.5273],"male"]
 			],
             "other": [
-				["", [-39.2323,-68.0273], "kitchen"],
-				["", [36.0313,-67.1484], "kitchen"]
+				["Kitchen", "", [-39.2323,-68.0273], "kitchen"],
+				["Kitchen", "", [36.0313,-67.1484], "kitchen"]
 			]
         }]
     }]
