@@ -1,4 +1,3 @@
-# The Macquarie Interactive App (MIA)
 Note: these steps have only been tested for Windows.
 ## Prerequisites
 
@@ -8,58 +7,6 @@ Note: these steps have only been tested for Windows.
 <br>
 
 ## Installation + First time setup
-
-#### Before cloning from Git
-Set autocrlf to 'true' before making any changes (for consistency)
-
-    git config --global core.autocrlf true
-
-Set sslVerify to 'false' (Git throws an error when cloning over HTTPS otherwise)
-    
-	git config --global http.sslVerify false
-<br>
-
-#### 1. Clone the repository from Stash
-Navigate to the repo on Stash. Hit the clone button to get the URL to clone the repo.  
-You can then use this with the git clone command. 
-
-    git clone ssh://git@stash.internal.macquarie.com/~hgoh2/the-grad-project-mia.git
-This will require you to be added to the project on Stash. See Henry/Alec if you need access.
-<br>
-<br>
-
-#### 2. Download, install, setup and run CNTLM
-Download and install CNTLM from http://cntlm.sourceforge.net/
-Open the config file under ``C:\Program Files (x86)\Cntlm\cntlm.ini``  
-Run the following command using your network credentials (from the Cntlm install folder)
-
-    cntlm -H -u <username> -d pc.internal.macbank
-
-Enter your network password when prompted. Your hashed values (3 lines) will be displayed on the screen.    
-Copy these into the cntlm.ini file, e.g.
-
-    Username    acollie2
-    Domain      pc.internal.macbank
-    PassLM      xxxxxx (from output)
-    PassNT      xxxxxx (from output)
-    PassNTLMv2  xxxxxx (from output)
-
-Update cntlm.ini with the proxy info and forwarding port (used by npm) 
-
-    Proxy       proxy.lb.macbank:8080
-    Listen      53128
-    
-Start CNTLM (this can be done in Services as admin). Alternatively, you can run CNTLM from the commandline with `` cntlm -c cntlm.ini -v ``
-<br>
-<br>
-
-#### 3. Configure npm to use the CNTLM proxy
-If another process is using port 53128, it can be changed (in both cntlm.ini and the npm configuration)
-
-    npm config set proxy http://localhost:53128
-    npm config set https-proxy https://localhost:53128
-    npm config set registry "http://registry.npmjs.org"
-<br>    
 
 #### 4. Install dependent nodeJS packages
 Install required packages (it reads from package.json). 

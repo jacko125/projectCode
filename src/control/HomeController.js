@@ -44,7 +44,7 @@ module.exports = {
     },
     
     ajaxTestGetStaffProfile: function (req,res) {        
-        if (req.query.username == 'hgoh2')
+        if (req.query.username == 'jchan')
             res.json(require('../../resources/test/testGetStaffProfileA.json'));
         else            
             res.json(require('../../resources/test/testGetStaffProfileB.json'));

@@ -1,12 +1,12 @@
 {
   "name": "MIA",
   "version": "1.6.3",
-  "description": "Macquarie Interactive App",
+  "description": "MIA Prototype",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "The Grad Project",
+  "author": "MIA",
   "license": "ISC",
   "dependencies": {
     "angular-loading-bar": "^0.8.0",
